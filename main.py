@@ -345,7 +345,7 @@ def main(argv: list[str] | None = None) -> None:
     if args.serve:
         # Start FastAPI server
         import uvicorn  # type: ignore
-        uvicorn.run("api.server:app", host="0.0.0.0", port=8000, reload=True)
+        uvicorn.run("api.server:app", host="127.0.0.1", port=8081, reload=True)
         return
 
     engine = AdaptivePromptEngine(

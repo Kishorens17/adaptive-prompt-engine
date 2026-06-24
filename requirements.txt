@@ -1,20 +1,9 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# Adaptive Prompt Engine — Dependencies
-# ─────────────────────────────────────────────────────────────────────────────
-
-# Core (always required)
 python-dotenv>=1.0.0
-sentence-transformers>=2.2.0    # ComplexityEstimator + SemanticCache embeddings
-numpy>=1.24.0                   # Required by sentence-transformers + cache
-
-# Testing
+sentence-transformers>=2.2.0
+numpy>=1.24.0
 pytest>=7.4.0
-
-# LLM providers (uncomment the one(s) you need)
-google-genai>=1.0.0             # provider="gemini"
-# openai>=1.0.0                 # provider="openai"
-
-# REST API + dashboard
+google-genai>=1.0.0
+openai>=1.0.0
 fastapi>=0.110.0
 uvicorn>=0.29.0
-pydantic>=2.0.0                 # bundled with fastapi, listed explicitly for clarity
+pydantic>=2.0.0
