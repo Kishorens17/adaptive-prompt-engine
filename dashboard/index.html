@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adaptive Prompt Engine — Dashboard</title>
+  <meta name="description" content="Real-time analytics for the Adaptive Prompt Engine — token usage, cost savings, cache hit rate, and query logs." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ── Reset & tokens ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d0f14;
+      --surface:     #13161e;
+      --surface-2:   #1a1e28;
+      --border:      #252a38;
+      --accent:      #6c63ff;
+      --accent-glow: #6c63ff44;
+      --green:       #22d3a0;
+      --yellow:      #f6c94e;
+      --red:         #f46e6e;
+      --blue:        #4eb8f6;
+      --text:        #e8eaf0;
+      --muted:       #6b7280;
+      --radius:      12px;
+      --radius-sm:   8px;
+      --shadow:      0 4px 24px #0008;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Layout ───────────────────────────────────────────────────── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 32px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+
+    .status-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    /* ── Stat cards ───────────────────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .stat-card.purple::before { background: linear-gradient(90deg, var(--accent), transparent); }
+    .stat-card.green::before  { background: linear-gradient(90deg, var(--green), transparent); }
+    .stat-card.yellow::before { background: linear-gradient(90deg, var(--yellow), transparent); }
+    .stat-card.blue::before   { background: linear-gradient(90deg, var(--blue), transparent); }
+
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .stat-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .stat-sub.up   { color: var(--green); }
+    .stat-sub.down { color: var(--red); }
+
+    /* ── Charts row ───────────────────────────────────────────────── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 900px) {
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .card-badge {
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* ── Try it panel ─────────────────────────────────────────────── */
+    .try-it {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 32px;
+    }
+
+    .try-it-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .try-it-header h2 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .query-input {
+      flex: 1;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .query-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .select-input {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #8b85ff);
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--red);
+    }
+
+    .result-box {
+      margin-top: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      display: none;
+    }
+
+    .result-answer {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    .result-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .meta-tag {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      color: var(--muted);
+    }
+
+    .meta-tag span { color: var(--text); font-weight: 500; }
+
+    /* ── Query log table ──────────────────────────────────────────── */
+    .log-table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    th {
+      text-align: left;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tr:hover td { background: var(--surface-2); }
+
+    .tier-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .tier-low    { background: #22d3a022; color: var(--green); border: 1px solid #22d3a044; }
+    .tier-medium { background: #f6c94e22; color: var(--yellow); border: 1px solid #f6c94e44; }
+    .tier-high   { background: #f46e6e22; color: var(--red);   border: 1px solid #f46e6e44; }
+    .tier-cached { background: #4eb8f622; color: var(--blue);  border: 1px solid #4eb8f644; }
+
+    .cache-hit-yes { color: var(--green); }
+    .cache-hit-no  { color: var(--muted); }
+
+    /* ── Spinner ──────────────────────────────────────────────────── */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Cache controls ───────────────────────────────────────────── */
+    .cache-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .cache-info {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .cache-info strong { color: var(--text); }
+
+    /* ── Misc ─────────────────────────────────────────────────────── */
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .loading-row td {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">⚡</div>
+    Adaptive Prompt Engine
+  </div>
+  <div style="display:flex; gap:12px; align-items:center">
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      <span id="api-status">Connecting…</span>
+    </div>
+    <button class="btn btn-danger" onclick="clearCache()" style="padding:8px 16px; font-size:0.78rem">
+      Clear Cache
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- Stats Bar -->
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card purple">
+      <div class="stat-label">Total Queries</div>
+      <div class="stat-value" id="stat-total">—</div>
+      <div class="stat-sub" id="stat-cache-rate">—% cache hit rate</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Total Cost Saved</div>
+      <div class="stat-value" id="stat-saved">—</div>
+      <div class="stat-sub up">vs always using the best model</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">Total Spend</div>
+      <div class="stat-value" id="stat-cost">—</div>
+      <div class="stat-sub" id="stat-tokens">— tokens</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-label">Avg Latency</div>
+      <div class="stat-value" id="stat-latency">—</div>
+      <div class="stat-sub">ms per query</div>
+    </div>
+  </div>
+
+  <!-- Try it live -->
+  <div class="try-it">
+    <div class="try-it-header">
+      <span style="font-size:1.2rem">🧪</span>
+      <h2>Try It Live</h2>
+    </div>
+    <div class="input-row">
+      <input type="text" id="query-input" class="query-input"
+             placeholder="Ask anything… e.g. What is the capital of France?"
+             onkeydown="if(event.key==='Enter') sendQuery()" />
+      <select id="budget-select" class="select-input">
+        <option value="balanced" selected>⚖ Balanced</option>
+        <option value="low">💰 Low (cheapest)</option>
+        <option value="quality">✨ Quality (best)</option>
+      </select>
+      <select id="provider-select" class="select-input">
+        <option value="gemini" selected>Gemini</option>
+        <option value="mock">Mock</option>
+      </select>
+      <button class="btn btn-primary" id="send-btn" onclick="sendQuery()">Ask →</button>
+    </div>
+    <div class="result-box" id="result-box">
+      <div class="result-answer" id="result-answer"></div>
+      <div class="result-meta" id="result-meta"></div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-grid">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Token Usage (last 7 days)</span>
+        <span class="card-badge">Daily</span>
+      </div>
+      <canvas id="usage-chart" height="160"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Model Tier Distribution</span>
+        <span class="card-badge">All time</span>
+      </div>
+      <canvas id="dist-chart" height="160"></canvas>
+    </div>
+  </div>
+
+  <!-- Query Log -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Recent Queries</span>
+      <button class="btn" style="background:var(--surface-2);border:1px solid var(--border);color:var(--muted);padding:6px 14px;font-size:0.75rem"
+              onclick="loadLogs()">↻ Refresh</button>
+    </div>
+    <div class="log-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Query</th>
+            <th>Tier</th>
+            <th>Model</th>
+            <th>Tokens</th>
+            <th>Cost $</th>
+            <th>Saved $</th>
+            <th>Latency</th>
+            <th>Cache</th>
+            <th>Conf.</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody id="log-body">
+          <tr class="loading-row"><td colspan="10">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const API = '';   // same origin
+
+// ── Fetch stats ──────────────────────────────────────────────────────────
+async function loadStats() {
+  try {
+    const r = await fetch(`${API}/v1/stats`);
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    document.getElementById('stat-total').textContent   = d.total_queries.toLocaleString();
+    document.getElementById('stat-cache-rate').textContent =
+      `${(d.cache_hit_rate * 100).toFixed(1)}% cache hit rate`;
+    document.getElementById('stat-saved').textContent   = `$${d.total_saved_usd.toFixed(4)}`;
+    document.getElementById('stat-cost').textContent    = `$${d.total_cost_usd.toFixed(4)}`;
+    document.getElementById('stat-tokens').textContent  = `${(d.total_tokens||0).toLocaleString()} tokens`;
+    document.getElementById('stat-latency').textContent = `${d.avg_latency_ms.toFixed(0)}`;
+    document.getElementById('api-status').textContent   = 'API Online';
+  } catch {
+    document.getElementById('api-status').textContent = 'API Offline';
+  }
+}
+
+// ── Token usage chart ────────────────────────────────────────────────────
+let usageChart = null;
+async function loadUsageChart() {
+  const r = await fetch(`${API}/v1/daily-usage?days=7`);
+  const data = await r.json();
+  const labels = data.map(d => d.day);
+  const tokens = data.map(d => d.tokens);
+
+  const ctx = document.getElementById('usage-chart').getContext('2d');
+  if (usageChart) usageChart.destroy();
+  usageChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Tokens',
+        data: tokens,
+        borderColor: '#6c63ff',
+        backgroundColor: '#6c63ff22',
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#6c63ff',
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: '#252a38' }, ticks: { color: '#6b7280', font: { size: 11 } } },
+        y: { grid: { color: '#252a38' }, ticks: { color: '#6b7280', font: { size: 11 } } },
+      }
+    }
+  });
+}
+
+// ── Model distribution chart ─────────────────────────────────────────────
+let distChart = null;
+async function loadDistChart() {
+  const r = await fetch(`${API}/v1/model-dist`);
+  const data = await r.json();
+  if (!data.length) return;
+  const colors = { low: '#22d3a0', medium: '#f6c94e', high: '#f46e6e', cached: '#4eb8f6' };
+
+  const ctx = document.getElementById('dist-chart').getContext('2d');
+  if (distChart) distChart.destroy();
+  distChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: data.map(d => d.tier.charAt(0).toUpperCase() + d.tier.slice(1)),
+      datasets: [{
+        data: data.map(d => d.count),
+        backgroundColor: data.map(d => colors[d.tier] || '#6c63ff'),
+        borderColor: '#13161e',
+        borderWidth: 3,
+        hoverOffset: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#9ca3af', padding: 16, font: { size: 12 } } }
+      },
+      cutout: '65%',
+    }
+  });
+}
+
+// ── Query log ────────────────────────────────────────────────────────────
+async function loadLogs() {
+  const tbody = document.getElementById('log-body');
+  tbody.innerHTML = '<tr class="loading-row"><td colspan="10">Loading…</td></tr>';
+  const r = await fetch(`${API}/v1/logs?limit=30`);
+  const rows = await r.json();
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr class="loading-row"><td colspan="10">No queries yet.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map(row => {
+    const tierClass = `tier-${row.complexity_tier || 'low'}`;
+    const tierLabel = (row.complexity_tier || 'low').toUpperCase();
+    const cacheIcon = row.cache_hit ? '<span class="cache-hit-yes">✓ hit</span>' : '<span class="cache-hit-no">—</span>';
+    const query = row.query.length > 50 ? row.query.slice(0, 50) + '…' : row.query;
+    const time = new Date(row.timestamp).toLocaleTimeString();
+    return `<tr>
+      <td style="font-family:'Inter',sans-serif;white-space:normal;min-width:200px">${escHtml(query)}</td>
+      <td><span class="tier-badge ${tierClass}">${tierLabel}</span></td>
+      <td style="color:var(--muted);font-size:0.75rem">${row.model_used}</td>
+      <td>${(row.input_tokens + row.output_tokens).toLocaleString()}</td>
+      <td style="color:var(--yellow)">$${row.cost_usd.toFixed(6)}</td>
+      <td style="color:var(--green)">$${row.cost_saved_usd.toFixed(6)}</td>
+      <td>${row.latency_ms.toFixed(0)}ms</td>
+      <td>${cacheIcon}</td>
+      <td>${row.confidence.toFixed(2)}</td>
+      <td style="color:var(--muted)">${time}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Live query ───────────────────────────────────────────────────────────
+async function sendQuery() {
+  const q = document.getElementById('query-input').value.trim();
+  if (!q) return;
+
+  const btn = document.getElementById('send-btn');
+  btn.innerHTML = '<span class="spinner"></span>Thinking…';
+  btn.disabled = true;
+
+  const box = document.getElementById('result-box');
+  box.style.display = 'block';
+  document.getElementById('result-answer').textContent = '';
+  document.getElementById('result-meta').innerHTML = '';
+
+  try {
+    const r = await fetch(`${API}/v1/query`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: q,
+        budget: document.getElementById('budget-select').value,
+        provider: document.getElementById('provider-select').value,
+      })
+    });
+    if (!r.ok) throw new Error((await r.json()).detail || 'Error');
+    const d = await r.json();
+
+    document.getElementById('result-answer').textContent = d.answer;
+
+    const tierColors = { low: '#22d3a0', medium: '#f6c94e', high: '#f46e6e', cached: '#4eb8f6' };
+    const metaTags = [
+      { label: 'Model', value: d.model_used },
+      { label: 'Tier', value: d.complexity_tier, color: tierColors[d.complexity_tier] },
+      { label: 'Tokens', value: d.total_tokens },
+      { label: 'Cost', value: `$${d.cost_usd.toFixed(6)}` },
+      { label: 'Saved', value: `$${d.cost_saved_usd.toFixed(6)}`, color: '#22d3a0' },
+      { label: 'Latency', value: `${d.latency_ms.toFixed(0)}ms` },
+      { label: 'Confidence', value: d.confidence.toFixed(2) },
+      { label: 'Cache', value: d.cache_hit ? '✓ HIT' : 'MISS',
+        color: d.cache_hit ? '#22d3a0' : '#6b7280' },
+    ];
+
+    document.getElementById('result-meta').innerHTML = metaTags.map(t =>
+      `<div class="meta-tag">${t.label}: <span ${t.color ? `style="color:${t.color}"` : ''}>${t.value}</span></div>`
+    ).join('');
+
+    // Refresh dashboard
+    setTimeout(() => { loadStats(); loadLogs(); loadUsageChart(); loadDistChart(); }, 500);
+  } catch (e) {
+    document.getElementById('result-answer').textContent = `Error: ${e.message}`;
+  } finally {
+    btn.innerHTML = 'Ask →';
+    btn.disabled = false;
+  }
+}
+
+// ── Clear cache ──────────────────────────────────────────────────────────
+async function clearCache() {
+  if (!confirm('Clear the entire semantic cache?')) return;
+  await fetch(`${API}/v1/cache`, { method: 'DELETE' });
+  alert('Cache cleared.');
+  loadStats();
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────────
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Bootstrap ────────────────────────────────────────────────────────────
+(async () => {
+  await loadStats();
+  await Promise.allSettled([loadUsageChart(), loadDistChart(), loadLogs()]);
+  setInterval(loadStats, 15000);  // auto-refresh stats every 15s
+})();
+</script>
+</body>
+</html>

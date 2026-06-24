@@ -1,0 +1,52 @@
+# ── Python ────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ───────────────────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+
+# ── Environment / secrets ──────────────────────────────────────────────────
+.env
+!.env.example
+
+# ── Testing ────────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ── Runtime data (SQLite DBs, logs, model cache) ──────────────────────────
+cache/cache.db
+cache/query_log.db
+cache/chroma_db/
+logs/*.jsonl
+*.log
+
+# ── Sentence-transformers model cache ─────────────────────────────────────
+.cache/
+*.bin
+*.pt
+
+# ── Benchmark results ─────────────────────────────────────────────────────
+experiments/results/*.csv
+
+# ── OS artifacts ──────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
