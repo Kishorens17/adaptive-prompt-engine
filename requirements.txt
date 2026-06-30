@@ -4,17 +4,24 @@
 
 # Core (always required)
 python-dotenv>=1.0.0
-sentence-transformers>=2.2.0    # ComplexityEstimator + SemanticCache embeddings
-numpy>=1.24.0                   # Required by sentence-transformers + cache
+sentence-transformers>=2.2.0    # ComplexityEstimator + SemanticCache + KnowledgeBase
+numpy>=1.24.0                   # Vectorized embedding ops
 
 # Testing
 pytest>=7.4.0
 
-# LLM providers (uncomment the one(s) you need)
+# Token counting (real counts for OpenAI / Groq prompts)
+tiktoken>=0.7.0
+
+# LLM providers
 google-genai>=1.0.0             # provider="gemini"
-# openai>=1.0.0                 # provider="openai"
+openai>=1.0.0                   # provider="openai"
+groq>=0.9.0                     # provider="groq"
+
+# HTTP client (tool webhook calls)
+httpx>=0.27.0
 
 # REST API + dashboard
 fastapi>=0.110.0
 uvicorn>=0.29.0
-pydantic>=2.0.0                 # bundled with fastapi, listed explicitly for clarity
+pydantic>=2.0.0

@@ -50,7 +50,7 @@ class TestAdaptivePromptEngine:
     def test_verbose_format_includes_metadata(self):
         e = AdaptivePromptEngine(provider="mock", verbose=True, use_cache=False)
         out = e.ask_and_format("What is 2+2?")
-        assert "Model used:" in out
+        assert "Model:" in out
         assert "Tokens:" in out
 
     def test_budget_low_uses_mock_model(self):
