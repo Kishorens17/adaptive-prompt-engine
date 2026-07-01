@@ -18,10 +18,11 @@ class QueryRequest(BaseModel):
         "balanced",
         description="Model routing budget: low=cheapest, balanced=smart, quality=best",
     )
-    provider: Literal["gemini", "openai", "groq", "mock"] = Field(
+    provider: Literal["gemini", "openai", "groq", "nvidia", "mock"] = Field(
         "gemini",
         description="LLM provider to use",
     )
+    model: Optional[str] = Field(None, description="Optional model override")
 
 
 class QualityDimensions(BaseModel):
@@ -88,7 +89,8 @@ class SessionCreateResponse(BaseModel):
 class SessionQueryRequest(BaseModel):
     query: str = Field(..., description="The question to ask in this session")
     budget: Literal["low", "balanced", "quality"] = "balanced"
-    provider: Literal["gemini", "openai", "groq", "mock"] = "gemini"
+    provider: Literal["gemini", "openai", "groq", "nvidia", "mock"] = "gemini"
+    model: Optional[str] = None
 
 
 class MessageModel(BaseModel):

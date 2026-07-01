@@ -30,6 +30,12 @@ _COST_PER_1K: dict[str, float] = {
     # Groq (very cheap inference)
     "llama-3.3-70b-versatile": 0.000_059,
     "mixtral-8x7b-32768":    0.000_027,
+    # NVIDIA
+    "nvidia/nemotron-3-ultra-550b-a55b": 0.0,
+    "deepseek-ai/deepseek-r1-0528": 0.0,
+    "mistralai/mistral-medium-3-128k": 0.0,
+    "qwen/qwen3.5-122b-a10b": 0.0,
+    "nvidia/llama-3.1-nemotron-ultra-253b-v1": 0.0,
     # Mock / local
     "mock-model":            0.0,
 }
@@ -39,6 +45,7 @@ _BASELINE_MODEL: dict[str, str] = {
     "gemini": "gemini-2.5-pro",
     "openai": "gpt-4o",
     "groq":   "llama-3.3-70b-versatile",
+    "nvidia": "mistralai/mistral-medium-3-128k",
     "mock":   "mock-model",
 }
 
@@ -58,6 +65,11 @@ _TIER_DEFAULTS: dict[str, dict[str, str]] = {
         "low":    "llama-3.3-70b-versatile",
         "medium": "llama-3.3-70b-versatile",
         "high":   "llama-3.3-70b-versatile",
+    },
+    "nvidia": {
+        "low":    "mistralai/mistral-medium-3-128k",
+        "medium": "qwen/qwen3.5-122b-a10b",
+        "high":   "deepseek-ai/deepseek-r1-0528",
     },
     "mock": {
         "low":    "mock-model",

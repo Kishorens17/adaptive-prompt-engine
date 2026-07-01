@@ -478,11 +478,15 @@
         <option value="low">💰 Low (cheapest)</option>
         <option value="quality">✨ Quality (best)</option>
       </select>
-      <select id="provider-select" class="select-input">
+      <select id="provider-select" class="select-input" onchange="updateModels()">
         <option value="gemini" selected>⚡ Gemini</option>
         <option value="openai">🤖 OpenAI</option>
         <option value="groq">🚀 Groq</option>
+        <option value="nvidia">🟢 NVIDIA</option>
         <option value="mock">🔧 Mock</option>
+      </select>
+      <select id="model-select" class="select-input">
+        <option value="">Auto (Routing)</option>
       </select>
       <select id="stream-select" class="select-input" title="Response mode">
         <option value="normal">Normal</option>
@@ -591,6 +595,34 @@
 
 <script>
 const API = '';   // same origin
+
+const PROVIDER_MODELS = {
+  gemini: [],
+  openai: [],
+  groq: [],
+  mock: [],
+  nvidia: [
+    "nvidia/nemotron-3-ultra-550b-a55b",
+    "deepseek-ai/deepseek-r1-0528",
+    "mistralai/mistral-medium-3-128k",
+    "qwen/qwen3.5-122b-a10b",
+    "nvidia/llama-3.1-nemotron-ultra-253b-v1"
+  ]
+};
+
+function updateModels() {
+  const provider = document.getElementById('provider-select').value;
+  const select = document.getElementById('model-select');
+  select.innerHTML = '<option value="">Auto (Routing)</option>';
+  
+  const models = PROVIDER_MODELS[provider] || [];
+  models.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = m;
+    select.appendChild(opt);
+  });
+}
 
 // ── Fetch stats ──────────────────────────────────────────────────────────
 async function loadStats() {
@@ -740,7 +772,7 @@ async function sendQuery() {
       const r = await fetch(`${API}/v1/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q, budget, provider }),
+        body: JSON.stringify({ query: q, budget, provider, model: document.getElementById('model-select').value || null }),
       });
       if (!r.ok) throw new Error((await r.json()).detail || 'Error');
       d = await r.json();
@@ -796,7 +828,7 @@ async function sendQueryStream(q, budget, provider) {
   const res = await fetch(`${API}/v1/query/stream`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: q, budget, provider }),
+    body: JSON.stringify({ query: q, budget, provider, model: document.getElementById('model-select').value || null }),
   });
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
@@ -940,6 +972,7 @@ function escHtml(s) {
 
 // ── Bootstrap ────────────────────────────────────────────────────────────
 (async () => {
+  updateModels();
   await loadStats();
   await Promise.allSettled([loadUsageChart(), loadDistChart(), loadLogs(), loadKB(), loadTools()]);
   setInterval(() => { loadStats(); refreshSessionHistory(); }, 15000);

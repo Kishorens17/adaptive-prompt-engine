@@ -403,7 +403,7 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Adaptive Prompt Engine")
     parser.add_argument(
         "--provider", default="mock",
-        choices=["mock", "gemini", "openai", "groq"],
+        choices=["mock", "gemini", "openai", "groq", "nvidia"],
         help="LLM backend (default: mock — no API key needed)",
     )
     parser.add_argument("--model", default=None, help="Model override (skips smart routing)")
@@ -417,8 +417,8 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--no-cache", action="store_true")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--serve", action="store_true", help="Start REST API server")
-    parser.add_argument("--port", type=int, default=8000, help="Server port (default: 8000)")
-    parser.add_argument("--host", default="0.0.0.0", help="Server host (default: 0.0.0.0)")
+    parser.add_argument("--port", type=int, default=8081, help="Server port (default: 8081)")
+    parser.add_argument("--host", default="127.0.0.1", help="Server host (default: 127.0.0.1)")
     return parser.parse_args(argv)
 
 
@@ -429,14 +429,14 @@ def main(argv: list[str] | None = None) -> None:
         import uvicorn  # type: ignore
         port = args.port
         host = args.host
-        print("\n" + "─" * 55)
-        print("  🚀  Adaptive Prompt Engine — API Server")
-        print("─" * 55)
+        print("\n" + "-" * 55)
+        print("  >   Adaptive Prompt Engine - API Server")
+        print("-" * 55)
         print(f"  Local:      http://localhost:{port}")
         print(f"  Network:    http://{host}:{port}")
         print(f"  API docs:   http://localhost:{port}/docs")
         print(f"  Dashboard:  http://localhost:{port}/dashboard")
-        print("─" * 55 + "\n")
+        print("-" * 55 + "\n")
         uvicorn.run("api.server:app", host=host, port=port, reload=True)
         return
 

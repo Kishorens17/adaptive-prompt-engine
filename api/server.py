@@ -100,11 +100,12 @@ _engines: dict[str, AdaptivePromptEngine] = {}
 SESSION_TTL_HOURS = int(os.getenv("SESSION_TTL_HOURS", "24"))
 
 
-def _get_engine(provider: str, budget: str) -> AdaptivePromptEngine:
-    key = f"{provider}:{budget}"
+def _get_engine(provider: str, budget: str, model: Optional[str] = None) -> AdaptivePromptEngine:
+    key = f"{provider}:{budget}:{model}"
     if key not in _engines:
         _engines[key] = AdaptivePromptEngine(
             provider=provider,
+            model=model,
             budget=budget,
             use_cache=True,
             verbose=False,
@@ -147,7 +148,7 @@ def _build_query_response(result) -> QueryResponse:
 async def query_endpoint(request: QueryRequest):
     """Process a query and return the answer with full metadata."""
     try:
-        engine = _get_engine(request.provider, request.budget)
+        engine = _get_engine(request.provider, request.budget, request.model)
         loop = asyncio.get_event_loop()
         result = await loop.run_in_executor(None, engine.ask, request.query)
     except Exception as exc:
@@ -164,7 +165,7 @@ async def query_stream_endpoint(request: QueryRequest):
         data: {"chunk": "word ", "done": false}
         data: {"done": true, "answer": "...", "model_used": "...", ...}
     """
-    engine = _get_engine(request.provider, request.budget)
+    engine = _get_engine(request.provider, request.budget, request.model)
 
     async def event_generator():
         loop = asyncio.get_event_loop()
@@ -266,7 +267,7 @@ async def session_query_endpoint(session_id: str, request: SessionQueryRequest):
     llm_history = [{"role": m["role"], "content": m["content"]} for m in history]
 
     try:
-        engine = _get_engine(request.provider, request.budget)
+        engine = _get_engine(request.provider, request.budget, request.model)
         loop = asyncio.get_event_loop()
         result = await loop.run_in_executor(
             None, engine.ask_with_history, request.query, llm_history

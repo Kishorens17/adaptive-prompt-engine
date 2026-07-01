@@ -72,7 +72,7 @@ class LLMClient:
             print(chunk, end="", flush=True)
     """
 
-    SUPPORTED_PROVIDERS = ("gemini", "openai", "groq", "mock")
+    SUPPORTED_PROVIDERS = ("gemini", "openai", "groq", "nvidia", "mock")
 
     def __init__(
         self,
@@ -106,6 +106,10 @@ class LLMClient:
             self.model = model or "llama-3.3-70b-versatile"
             self.api_key = api_key or os.environ.get("GROQ_API_KEY")
             self._client = self._init_groq()
+        elif self.provider == "nvidia":
+            self.model = model or "mistralai/mistral-medium-3-128k"
+            self.api_key = api_key or os.environ.get("NVIDIA_API_KEY")
+            self._client = self._init_nvidia()
         else:  # mock
             self.model = model or "mock-model"
             self.api_key = None
@@ -154,6 +158,19 @@ class LLMClient:
             )
         return Groq(api_key=self.api_key, timeout=self.timeout)
 
+    def _init_nvidia(self):
+        try:
+            from openai import OpenAI  # type: ignore
+        except ImportError as exc:
+            raise LLMClientError(
+                "Install openai: pip install openai"
+            ) from exc
+        if not self.api_key:
+            raise LLMClientError(
+                "No NVIDIA API key. Set NVIDIA_API_KEY in .env"
+            )
+        return OpenAI(api_key=self.api_key, base_url="https://integrate.api.nvidia.com/v1", timeout=self.timeout)
+
     # ------------------------------------------------------------------
     # Public API — full response
     # ------------------------------------------------------------------
@@ -182,7 +199,7 @@ class LLMClient:
                     result = self._complete_gemini(
                         prompt, temp, system, effective_model, history
                     )
-                elif self.provider in ("openai", "groq"):
+                elif self.provider in ("openai", "groq", "nvidia"):
                     result = self._complete_openai_compat(
                         prompt, temp, system, effective_model, history
                     )
@@ -227,7 +244,7 @@ class LLMClient:
             yield from self._stream_gemini(
                 prompt, temp, system, effective_model, history
             )
-        elif self.provider in ("openai", "groq"):
+        elif self.provider in ("openai", "groq", "nvidia"):
             yield from self._stream_openai_compat(
                 prompt, temp, system, effective_model, history
             )
