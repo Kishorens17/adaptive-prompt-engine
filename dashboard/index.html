@@ -479,8 +479,14 @@
         <option value="quality">✨ Quality (best)</option>
       </select>
       <select id="provider-select" class="select-input">
-        <option value="gemini" selected>Gemini</option>
-        <option value="mock">Mock</option>
+        <option value="gemini" selected>⚡ Gemini</option>
+        <option value="openai">🤖 OpenAI</option>
+        <option value="groq">🚀 Groq</option>
+        <option value="mock">🔧 Mock</option>
+      </select>
+      <select id="stream-select" class="select-input" title="Response mode">
+        <option value="normal">Normal</option>
+        <option value="stream">⚡ Stream</option>
       </select>
       <button class="btn btn-primary" id="send-btn" onclick="sendQuery()">Ask →</button>
     </div>
@@ -536,6 +542,49 @@
         </tbody>
       </table>
     </div>
+  </div>
+
+  <!-- Feature Panels -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:32px">
+
+    <!-- RAG Upload -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">📚 Knowledge Base (RAG)</span><span class="card-badge" id="kb-count">0 docs</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <input id="kb-source" class="query-input" style="width:130px;flex:none" placeholder="source name" value="upload" />
+        <button class="btn btn-primary" style="font-size:0.8rem;padding:8px 14px" onclick="uploadDoc()">Upload Text</button>
+        <button class="btn" style="background:var(--surface-2);border:1px solid var(--border);color:var(--muted);font-size:0.8rem;padding:8px 12px" onclick="loadKB()">↻</button>
+      </div>
+      <textarea id="kb-text" style="width:100%;height:80px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:0.82rem;resize:vertical;outline:none" placeholder="Paste document text here…"></textarea>
+      <div id="kb-list" style="margin-top:10px;font-size:0.78rem;color:var(--muted)">Loading…</div>
+    </div>
+
+    <!-- Sessions -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">💬 Session Memory</span><span class="card-badge" id="session-id-badge">No session</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="btn btn-primary" style="font-size:0.8rem;padding:8px 14px" onclick="createSession()">New Session</button>
+        <button class="btn" style="background:var(--surface-2);border:1px solid var(--border);color:var(--muted);font-size:0.8rem;padding:8px 12px" onclick="clearSession()">Clear</button>
+      </div>
+      <div id="session-history" style="max-height:140px;overflow-y:auto;font-size:0.8rem;color:var(--muted)">Create a session to enable multi-turn conversations.</div>
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:8px">Active session is used automatically when you ask a query above.</p>
+    </div>
+
+    <!-- Tools -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">🔧 Tool Registry</span><span class="card-badge" id="tools-count">0 tools</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <input id="tool-name" class="query-input" style="width:120px;flex:none" placeholder="tool name" />
+        <input id="tool-webhook" class="query-input" placeholder="webhook URL" />
+      </div>
+      <input id="tool-desc" class="query-input" style="width:100%;margin-bottom:8px" placeholder="Description shown to LLM" />
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" style="font-size:0.8rem;padding:8px 14px" onclick="registerTool()">Register</button>
+        <button class="btn" style="background:var(--surface-2);border:1px solid var(--border);color:var(--muted);font-size:0.8rem;padding:8px 12px" onclick="loadTools()">↻ List</button>
+      </div>
+      <div id="tools-list" style="margin-top:10px;font-size:0.78rem;color:var(--muted)">Loading…</div>
+    </div>
+
   </div>
 
 </main>
@@ -666,6 +715,7 @@ async function loadLogs() {
 // ── Live query ───────────────────────────────────────────────────────────
 async function sendQuery() {
   const q = document.getElementById('query-input').value.trim();
+  const useStream = document.getElementById('stream-select').value === 'stream';
   if (!q) return;
 
   const btn = document.getElementById('send-btn');
@@ -677,25 +727,31 @@ async function sendQuery() {
   document.getElementById('result-answer').textContent = '';
   document.getElementById('result-meta').innerHTML = '';
 
-  try {
-    const r = await fetch(`${API}/v1/query`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: q,
-        budget: document.getElementById('budget-select').value,
-        provider: document.getElementById('provider-select').value,
-      })
-    });
-    if (!r.ok) throw new Error((await r.json()).detail || 'Error');
-    const d = await r.json();
+  const budget = document.getElementById('budget-select').value;
+  const provider = document.getElementById('provider-select').value;
 
-    document.getElementById('result-answer').textContent = d.answer;
+  try {
+    let d;
+    if (useStream) {
+      const meta = await sendQueryStream(q, budget, provider);
+      d = meta || {};
+      // meta already has the answer streamed
+    } else {
+      const r = await fetch(`${API}/v1/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q, budget, provider }),
+      });
+      if (!r.ok) throw new Error((await r.json()).detail || 'Error');
+      d = await r.json();
+      document.getElementById('result-answer').textContent = d.answer;
+    }
 
     const tierColors = { low: '#22d3a0', medium: '#f6c94e', high: '#f46e6e', cached: '#4eb8f6' };
     const metaTags = [
       { label: 'Model', value: d.model_used },
       { label: 'Tier', value: d.complexity_tier, color: tierColors[d.complexity_tier] },
+      { label: 'Strategy', value: d.strategy_used || 'adaptive', color: '#6c63ff' },
       { label: 'Tokens', value: d.total_tokens },
       { label: 'Cost', value: `$${d.cost_usd.toFixed(6)}` },
       { label: 'Saved', value: `$${d.cost_saved_usd.toFixed(6)}`, color: '#22d3a0' },
@@ -705,9 +761,23 @@ async function sendQuery() {
         color: d.cache_hit ? '#22d3a0' : '#6b7280' },
     ];
 
-    document.getElementById('result-meta').innerHTML = metaTags.map(t =>
+    let metaHtml = metaTags.map(t =>
       `<div class="meta-tag">${t.label}: <span ${t.color ? `style="color:${t.color}"` : ''}>${t.value}</span></div>`
     ).join('');
+
+    // Show LLM Judge quality dimensions if present
+    if (d.quality) {
+      const q = d.quality;
+      metaHtml += `<div class="meta-tag" style="border-color:#6c63ff44;background:#6c63ff11;margin-top:6px;width:100%">
+        🧑‍⚖️ Judge: <span style="color:#6c63ff">Acc ${q.accuracy}/10</span>
+        · <span style="color:#22d3a0">Comp ${q.completeness}/10</span>
+        · <span style="color:#4eb8f6">Rel ${q.relevance}/10</span>
+        · <span style="color:#f6c94e">Clarity ${q.clarity}/10</span>
+        &nbsp;·&nbsp; <em style="color:var(--muted);font-style:italic;font-size:0.68rem">${escHtml(q.reasoning||'')}</em>
+      </div>`;
+    }
+
+    document.getElementById('result-meta').innerHTML = metaHtml;
 
     // Refresh dashboard
     setTimeout(() => { loadStats(); loadLogs(); loadUsageChart(); loadDistChart(); }, 500);
@@ -717,6 +787,142 @@ async function sendQuery() {
     btn.innerHTML = 'Ask →';
     btn.disabled = false;
   }
+}
+
+// ── Streaming query ─────────────────────────────────────────────────────
+async function sendQueryStream(q, budget, provider) {
+  const answerEl = document.getElementById('result-answer');
+  answerEl.textContent = '';
+  const res = await fetch(`${API}/v1/query/stream`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: q, budget, provider }),
+  });
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let finalMeta = null;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    const text = decoder.decode(value);
+    for (const line of text.split('\n')) {
+      if (!line.startsWith('data: ')) continue;
+      try {
+        const ev = JSON.parse(line.slice(6));
+        if (ev.done) { finalMeta = ev; break; }
+        answerEl.textContent += ev.chunk || '';
+      } catch {}
+    }
+  }
+  return finalMeta;
+}
+
+// ── RAG knowledge base ───────────────────────────────────────────────────
+let _activeSession = null;
+
+async function loadKB() {
+  try {
+    const r = await fetch(`${API}/v1/knowledge-base`);
+    const d = await r.json();
+    document.getElementById('kb-count').textContent = `${d.document_count} doc${d.document_count!==1?'s':''}`;
+    const el = document.getElementById('kb-list');
+    if (!d.documents.length) { el.textContent = 'No documents indexed.'; return; }
+    el.innerHTML = d.documents.map(doc =>
+      `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--text)">${escHtml(doc.source)}</span>
+        <span style="color:var(--muted)">${doc.chunk_count} chunks
+          &nbsp;<button onclick="deleteDoc(${doc.doc_id})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:0.75rem">✕</button></span>
+      </div>`
+    ).join('');
+  } catch { document.getElementById('kb-list').textContent = 'Error loading KB.'; }
+}
+
+async function uploadDoc() {
+  const text = document.getElementById('kb-text').value.trim();
+  const source = document.getElementById('kb-source').value.trim() || 'upload';
+  if (!text) { alert('Paste document text first.'); return; }
+  const r = await fetch(`${API}/v1/knowledge-base/upload`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text, source }),
+  });
+  const d = await r.json();
+  alert(`✓ ${d.message}`);
+  document.getElementById('kb-text').value = '';
+  loadKB();
+}
+
+async function deleteDoc(docId) {
+  if (!confirm(`Delete document ${docId}?`)) return;
+  await fetch(`${API}/v1/knowledge-base/${docId}`, { method: 'DELETE' });
+  loadKB();
+}
+
+// ── Sessions ─────────────────────────────────────────────────────────────
+async function createSession() {
+  const r = await fetch(`${API}/v1/sessions`, { method: 'POST' });
+  const d = await r.json();
+  _activeSession = d.session_id;
+  document.getElementById('session-id-badge').textContent = _activeSession.slice(0,8) + '…';
+  document.getElementById('session-history').innerHTML = '<em style="color:var(--muted)">Session started. Ask a query above.</em>';
+}
+
+async function clearSession() {
+  if (!_activeSession) return;
+  await fetch(`${API}/v1/sessions/${_activeSession}/messages`, { method: 'DELETE' });
+  document.getElementById('session-history').innerHTML = '<em style="color:var(--muted)">Messages cleared.</em>';
+}
+
+async function refreshSessionHistory() {
+  if (!_activeSession) return;
+  try {
+    const r = await fetch(`${API}/v1/sessions/${_activeSession}/history`);
+    const d = await r.json();
+    const el = document.getElementById('session-history');
+    if (!d.messages.length) { el.innerHTML = '<em style="color:var(--muted)">No messages yet.</em>'; return; }
+    el.innerHTML = d.messages.slice(-6).map(m =>
+      `<div style="margin-bottom:6px"><strong style="color:${m.role==='user'?'var(--accent)':'var(--green)'}">${m.role}:</strong> ${escHtml(m.content.slice(0,120))}${m.content.length>120?'…':''}</div>`
+    ).join('');
+  } catch {}
+}
+
+// ── Tools ────────────────────────────────────────────────────────────────
+async function loadTools() {
+  try {
+    const r = await fetch(`${API}/v1/tools`);
+    const d = await r.json();
+    document.getElementById('tools-count').textContent = `${d.count} tool${d.count!==1?'s':''}`;
+    const el = document.getElementById('tools-list');
+    if (!d.tools.length) { el.textContent = 'No tools registered.'; return; }
+    el.innerHTML = d.tools.map(t =>
+      `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--text)">${escHtml(t.name)}</span>
+        <button onclick="deleteTool('${escHtml(t.name)}')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:0.75rem">✕ remove</button>
+      </div>`
+    ).join('');
+  } catch { document.getElementById('tools-list').textContent = 'Error loading tools.'; }
+}
+
+async function registerTool() {
+  const name = document.getElementById('tool-name').value.trim();
+  const webhook = document.getElementById('tool-webhook').value.trim();
+  const desc = document.getElementById('tool-desc').value.trim();
+  if (!name || !webhook || !desc) { alert('Fill in tool name, webhook URL, and description.'); return; }
+  await fetch(`${API}/v1/tools/register`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, description: desc, webhook_url: webhook,
+      parameters_schema: { type: 'object', properties: {}, required: [] } }),
+  });
+  alert(`✓ Tool '${name}' registered.`);
+  document.getElementById('tool-name').value = '';
+  document.getElementById('tool-webhook').value = '';
+  document.getElementById('tool-desc').value = '';
+  loadTools();
+}
+
+async function deleteTool(name) {
+  if (!confirm(`Remove tool '${name}'?`)) return;
+  await fetch(`${API}/v1/tools/${encodeURIComponent(name)}`, { method: 'DELETE' });
+  loadTools();
 }
 
 // ── Clear cache ──────────────────────────────────────────────────────────
@@ -735,8 +941,8 @@ function escHtml(s) {
 // ── Bootstrap ────────────────────────────────────────────────────────────
 (async () => {
   await loadStats();
-  await Promise.allSettled([loadUsageChart(), loadDistChart(), loadLogs()]);
-  setInterval(loadStats, 15000);  // auto-refresh stats every 15s
+  await Promise.allSettled([loadUsageChart(), loadDistChart(), loadLogs(), loadKB(), loadTools()]);
+  setInterval(() => { loadStats(); refreshSessionHistory(); }, 15000);
 })();
 </script>
 </body>

@@ -1,358 +1,358 @@
-# CODEBASE INFO — Adaptive Prompt Chain Engine (APCE)
+# CODEBASE INFO — Adaptive Prompt Engine v3.0
 
-This document explains what every file in this codebase does, how the
-three GoF design patterns are implemented, and how to extend the
-system. It's a companion to `HOW_TO_RUN.md` (which tells you how to
-*run* things) and to the original project context document (which
-explains the *why* behind the architecture and the research framing).
+This document explains what every file does, how the architecture works,
+and how to extend the system. Companion to `README.md`.
 
 ---
 
-## 1. What this project is
+## 1. What This Project Is
 
-APCE is a Python middleware system that sits between a user's query
-and an LLM API. It:
+A Python middleware system that sits between a user's query and an LLM API.
 
-1. Classifies the query type (FACTUAL / REASONING / CREATIVE / ANALYTICAL)
-2. Selects an appropriate starting prompting strategy
-3. Calls the LLM and scores the response's confidence
-4. Escalates to a stronger strategy if confidence is too low
-5. Returns the final answer once a strategy clears the threshold (or
-   the chain runs out of stronger options)
+**v3.0 pipeline:**
 
-Three classic design patterns form the architectural backbone:
-**Strategy**, **Chain of Responsibility**, and **Factory Method**.
+```
+Query → SessionStore → SemanticCache → ComplexityEstimator → ModelRouter
+      → Strategy (RAG / ToolUse / Adaptive) → LLM
+      → LLMJudgeEvaluator → [escalate?] → SelfConsistency
+      → CacheWrite + SessionAppend + QueryLog → Answer
+```
+
+**Design patterns used:**
+- **Strategy** — `strategies/` (swap prompting approach without touching routing)
+- **Chain of Responsibility** — `handlers/` (escalation: primary → self-consistency)
+- **Factory Method** — `core/model_router.py` (centralized model selection)
 
 ---
 
-## 2. Full file structure
+## 2. Full File Structure
 
 ```
 adaptive_prompt_engine/
-├── main.py                          Entry point / CLI, wires all 5 layers together
+│
+├── main.py                          Entry point — CLI + serve mode + engine facade
 ├── requirements.txt                 Python dependencies
-├── pytest.ini                       Test runner configuration
-├── .env.example                     Template for API key environment variables
+├── pytest.ini                       Test runner config
+├── .env.example                     API key template (copy to .env)
 ├── .gitignore
-├── HOW_TO_RUN.md                    Setup and usage instructions
+├── README.md
 ├── CODEBASE_INFO.md                 This file
 │
-├── classifier/
-│   ├── __init__.py
-│   └── query_classifier.py          Detects FACTUAL/REASONING/CREATIVE/ANALYTICAL
+├── core/
+│   ├── complexity_estimator.py      Continuous complexity score 0.0–1.0
+│   └── model_router.py              Tier → cheapest model + cost tracking
 │
-├── strategies/                      STRATEGY PATTERN
-│   ├── __init__.py
-│   ├── base_strategy.py             Abstract PromptStrategy
-│   ├── zero_shot.py                 ZeroShotStrategy
-│   ├── few_shot.py                  FewShotStrategy
-│   ├── chain_of_thought.py          ChainOfThoughtStrategy
-│   └── self_consistency.py          SelfConsistencyStrategy (3x LLM calls + vote)
-│
-├── handlers/                        CHAIN OF RESPONSIBILITY PATTERN
-│   ├── __init__.py
-│   ├── base_handler.py              Abstract PromptHandler + HandlerResult
-│   ├── zero_shot_handler.py
-│   ├── few_shot_handler.py
-│   ├── cot_handler.py
-│   └── self_consistency_handler.py  Always terminal (last resort)
-│
-├── factory/                         FACTORY METHOD PATTERN
-│   ├── __init__.py
-│   └── strategy_factory.py          StrategyFactory + HandlerChainBuilder
+├── strategies/
+│   ├── base_strategy.py             Abstract PromptStrategy base class
+│   ├── adaptive_prompt.py           Single meta-prompt (LLM self-calibrates)  ← PRIMARY
+│   ├── rag_strategy.py              RAG — retrieves KB context before answering ← NEW
+│   ├── tool_use_strategy.py         Function calling + webhook tool execution   ← NEW
+│   └── self_consistency.py          Escalation: 3× calls + majority vote
 │
 ├── evaluator/
-│   ├── __init__.py
-│   └── confidence_evaluator.py      Rule-based 0.0–1.0 confidence scorer
+│   ├── confidence_evaluator.py      Rule-based scorer (fallback + mock)
+│   └── llm_judge.py                 LLM-as-Judge: structured quality rubric     ← NEW
+│
+├── cache/
+│   ├── semantic_cache.py            Vectorized numpy similarity cache (SQLite)
+│   ├── knowledge_base.py            RAG document store — chunk/embed/search      ← NEW
+│   ├── session_store.py             Conversation memory with 24h TTL             ← NEW
+│   └── query_log.py                 Audit log (tokens, cost, latency per query)
 │
 ├── llm/
-│   ├── __init__.py
-│   └── llm_client.py                Provider-agnostic LLM wrapper (mock/OpenAI/Gemini)
+│   └── llm_client.py                Gemini / OpenAI / Groq / Mock — unified API
+│
+├── api/
+│   ├── server.py                    FastAPI REST server (20+ endpoints)
+│   └── models.py                    Pydantic request/response models
+│
+├── handlers/
+│   ├── base_handler.py              Chain of Responsibility abstract base
+│   └── self_consistency_handler.py  Terminal escalation handler
+│
+├── dashboard/
+│   └── index.html                   Dark-mode analytics dashboard
 │
 ├── experiments/
-│   ├── __init__.py
-│   ├── benchmark_queries.py         50-query benchmark dataset (4 types)
-│   ├── run_benchmark.py             Runs adaptive vs zero-shot vs CoT baselines
-│   └── results/
-│       └── benchmark_*.csv          Sample benchmark output (already generated)
+│   ├── benchmark_queries.py         50-query benchmark dataset
+│   └── run_benchmark.py             Benchmark runner → CSV output
 │
 └── tests/
-    ├── __init__.py
-    ├── conftest.py                  Path setup so pytest finds the package
-    ├── test_strategies.py           Tests for Strategy classes + evaluator
-    ├── test_handlers.py             Tests for Chain of Responsibility
-    └── test_factory.py              Tests for Factory Method + classifier
+    ├── conftest.py                  Path setup for pytest
+    ├── test_factory.py              Engine integration tests
+    ├── test_handlers.py             Handler escalation tests
+    └── test_strategies.py           Strategy + evaluator tests
 ```
 
 ---
 
-## 3. The five-layer architecture
+## 3. Layer Architecture
 
-| Layer | Components | File(s) | Responsibility |
+| Layer | Component | File | Responsibility |
 |---|---|---|---|
-| L1 — Input | `QueryReceiver` | `main.py` | Accept and validate raw user query |
-| L2 — Classification | `QueryClassifier` | `classifier/query_classifier.py` | Detect query type |
-| L3 — Creation | `StrategyFactory`, `HandlerChainBuilder` | `factory/strategy_factory.py` | Build the right handler chain |
-| L4 — Execution | `PromptHandler`s, `PromptStrategy`s | `handlers/`, `strategies/` | Format prompt, call LLM, score confidence |
-| L5 — Output | `ResponseFormatter` | `main.py` | Clean and return the final answer |
-
-Each layer only talks to the layer next to it. `main.py`'s
-`AdaptivePromptChainEngine` class is the facade that wires all five
-together — most external integrations (a web API, a different CLI)
-should depend on that class rather than reaching into individual
-layers.
+| L1 — Input | `QueryReceiver` | `main.py` | Validate and sanitize raw query |
+| L2 — Memory | `SessionStore` | `cache/session_store.py` | Inject conversation history |
+| L3 — Cache | `SemanticCache` | `cache/semantic_cache.py` | Return instantly if seen before |
+| L4 — Complexity | `ComplexityEstimator` | `core/complexity_estimator.py` | Score query difficulty 0–1 |
+| L5 — Routing | `ModelRouter` | `core/model_router.py` | Map score → cheapest model |
+| L6 — Strategy | `RAG/ToolUse/Adaptive` | `strategies/` | Build and send the right prompt |
+| L7 — Evaluation | `LLMJudgeEvaluator` | `evaluator/llm_judge.py` | LLM rates its own answer |
+| L8 — Escalation | `SelfConsistencyStrategy` | `strategies/self_consistency.py` | Retry if confidence too low |
+| L9 — Output | `ResponseFormatter` | `main.py` | Clean and present the final answer |
 
 ---
 
-## 4. Pattern 1 — Strategy (`strategies/`)
+## 4. ComplexityEstimator (`core/complexity_estimator.py`)
 
-**Problem it solves:** without Strategy, you'd have one function full
-of `if query_type == 'factual': ... elif query_type == 'reasoning': ...`
-branches. Every new prompting technique means editing that function
-and risking breaking the existing branches.
+Scores a query's complexity as a continuous float in `[0.0, 1.0]`:
 
-**How it's implemented here:** `base_strategy.py` defines the abstract
-`PromptStrategy` with a single contract:
+- Two "pole" embeddings averaged from anchor sentences:
+  - **Simple pole**: "What is the capital of France?", "How many planets?", etc.
+  - **Complex pole**: "Prove sqrt(2) is irrational step by step", "Write a detailed essay...", etc.
+- Incoming query embedded → cosine similarity to each pole computed
+- Score = `sim_complex / (sim_simple + sim_complex)` → normalized position between poles
 
-```python
-execute(query: str) -> tuple[str, float]   # (response_text, confidence_score)
-```
+No category boxes. "Somewhat complex" gets `0.5`, not forced into MEDIUM.
 
-Four concrete strategies implement it:
+**Tier mapping:**
 
-- **`ZeroShotStrategy`** — sends the query directly, minimal wrapping. Cheapest.
-- **`FewShotStrategy`** — prepends worked examples to steer style/format.
-- **`ChainOfThoughtStrategy`** — asks the model to reason step by step.
-- **`SelfConsistencyStrategy`** — calls the LLM 3x (configurable via
-  `num_samples`) at a higher temperature, takes a majority vote over
-  extracted final answers, and blends the agreement ratio with the
-  rule-based evaluator score. This is the strongest and most expensive
-  strategy, always used as the last resort in every chain.
-
-**To add a new strategy:** create a new file in `strategies/`
-subclassing `PromptStrategy`, implement `name` and `build_prompt`.
-That's it — nothing in `handlers/` or `factory/` needs to change
-unless you also want a dedicated Handler/chain-position for it (see
-Pattern 2 and 3 below).
-
----
-
-## 5. Pattern 2 — Chain of Responsibility (`handlers/`)
-
-**Problem it solves:** escalation logic ("if this strategy's answer
-isn't good enough, try a stronger one") needs to be decoupled from any
-specific ordering of strategies, so the chain can be reordered/extended
-without touching existing handler code.
-
-**How it's implemented here:** `base_handler.py` defines the abstract
-`PromptHandler`. Each handler wraps exactly one `PromptStrategy` and
-implements the shared `handle()` method (you don't need to override
-this in subclasses — it's implemented once in the base class):
-
-```python
-def handle(self, query):
-    response, confidence = self.strategy.execute(query)
-    if confidence >= self.threshold or self.is_terminal:
-        return HandlerResult(...)          # done
-    return self._next.handle(query, ...)   # escalate
-```
-
-A handler only knows about `self._next` as an opaque reference — it
-never knows what kind of handler comes after it, or how many more
-links remain. `set_next()` wires handlers together; `is_terminal`
-(true when `set_next` was never called) means "always return,
-regardless of confidence" — this is how `SelfConsistencyHandler` is
-guaranteed to be the final answer-giver in every chain.
-
-Four concrete handlers exist, one per strategy:
-`ZeroShotHandler`, `FewShotHandler`, `CoTHandler`, `SelfConsistencyHandler`.
-
-`HandlerResult` (also in `base_handler.py`) carries the final answer,
-confidence, which strategy actually answered, the full escalation
-trail (list of strategy names that were tried and rejected), and the
-total number of underlying LLM calls made (useful for cost analysis in
-the benchmark).
-
----
-
-## 6. Pattern 3 — Factory Method (`factory/strategy_factory.py`)
-
-**Problem it solves:** something has to decide which Handler chain to
-build for a given query type, and centralizing that decision means the
-rest of the codebase never needs to import concrete Handler classes
-directly — reducing coupling.
-
-**How it's implemented here:** `StrategyFactory.create_chain(query_type)`
-builds and wires the appropriate chain, returning the entry-point
-handler. The escalation paths implemented match the project's Table 4:
-
-| Query Type | Chain (entry → escalation → ... → terminal) |
+| Score | Tier |
 |---|---|
-| FACTUAL | Zero-Shot → Few-Shot → Self-Consistency |
-| REASONING | CoT → Self-Consistency |
-| CREATIVE | Few-Shot → CoT → Self-Consistency |
-| ANALYTICAL | CoT → Few-Shot → Self-Consistency |
-
-Every chain terminates at `SelfConsistencyHandler` so there's always a
-final answer, no matter how a query escalates.
-
-`HandlerChainBuilder` is a small convenience class combining
-`QueryClassifier.classify()` and `StrategyFactory.create_chain()` into
-one call — `build_chain_for_query(query)` returns
-`(entry_handler, detected_query_type)`. `main.py` uses this rather than
-calling the classifier and factory separately.
-
-**To change an escalation path:** edit the relevant `_build_*_chain()`
-private method in `StrategyFactory`. No other file needs to change.
-
-**To add a fifth query type/strategy combination:** add the enum value
-to `QueryType` in `classifier/query_classifier.py`, add a new
-`_build_..._chain()` method in `StrategyFactory`, and register it in
-the `builders` dict inside `create_chain()`.
+| 0.00 – 0.35 | `LOW` |
+| 0.35 – 0.65 | `MEDIUM` |
+| 0.65 – 1.00 | `HIGH` |
 
 ---
 
-## 7. The Confidence Evaluator (`evaluator/confidence_evaluator.py`)
+## 5. ModelRouter (`core/model_router.py`)
 
-Not a GoF pattern, but the decision engine that makes the Chain of
-Responsibility's escalation choices meaningful. Returns a float in
-`[0.0, 1.0]` by combining three signals:
+Maps a `ComplexityTier` to the most cost-effective model per provider:
 
-1. **Self-reported confidence tag** — if the LLM was prompted to
-   append `[CONFIDENCE: 0.82]`, that's parsed directly via regex and
-   used as the dominant signal (weighted 85%), lightly adjusted (15%)
-   by the hedge-language signal below so a confidently-tagged-but-
-   visibly-hedging response doesn't get a free pass.
-2. **Uncertainty/hedge language detection** — counts hedging phrases
-   ("I think", "possibly", "I'm not sure", etc.) with diminishing
-   penalty per additional hedge found.
-3. **Response length relative to query complexity** — queries matching
-   "complex" patterns (prove, compare, explain why, derive, ...) are
-   expected to need longer answers; a short answer to such a query is
-   penalized proportionally.
+| Tier | Gemini | OpenAI | Groq |
+|---|---|---|---|
+| LOW | gemini-2.5-flash | gpt-4o-mini | llama-3.3-70b-versatile |
+| MEDIUM | gemini-2.5-flash | gpt-4o-mini | llama-3.3-70b-versatile |
+| HIGH | gemini-2.5-pro | gpt-4o | llama-3.3-70b-versatile |
 
-When no self-reported tag is present, signals 2 and 3 are blended
-50/50 by default (`EvaluatorWeights`).
+Budget override:
+- `low` → always use LOW tier model
+- `balanced` → cap at MEDIUM even for HIGH complexity
+- `quality` → always use HIGH tier model
 
-This is deliberately rule-based and fully explainable rather than a
-trained model — per the project's design rationale, this keeps the
-system inspectable for the accompanying research paper, with a
-trained reward model noted as a future-work direction.
+All model prices tracked in `_COST_PER_1K` dict for cost saving calculations.
 
 ---
 
-## 8. The LLM Client (`llm/llm_client.py`)
+## 6. LLM Client (`llm/llm_client.py`)
 
-A thin, provider-agnostic wrapper. Every Strategy depends on this
-class, never on the OpenAI or Gemini SDKs directly — so switching
-providers, or adding a new one, only touches this one file.
+Provider-agnostic wrapper. Supports:
 
-Three providers are supported:
+| Provider | SDK | Key env var |
+|---|---|---|
+| `gemini` | `google-genai` | `GEMINI_API_KEY` |
+| `openai` | `openai` | `OPENAI_API_KEY` |
+| `groq` | `groq` | `GROQ_API_KEY` |
+| `mock` | built-in | none |
 
-- **`mock`** (default) — deterministic, offline, no API key or network
-  needed. Produces plausible-looking text that scales loosely with
-  prompt complexity, so the rest of the pipeline (confidence scoring,
-  escalation) can be exercised meaningfully without spending API
-  budget. This is what the test suite uses exclusively.
-- **`openai`** — wraps the official `openai` Python SDK
-  (`pip install openai`, requires `OPENAI_API_KEY`).
-- **`gemini`** — wraps `google-generativeai`
-  (`pip install google-generativeai`, requires `GEMINI_API_KEY`).
+Key methods:
+- `complete(prompt, system, model, history)` → `LLMResponse`
+- `complete_stream(prompt, system, model, history)` → generator of text chunks
 
-`LLMResponse` is the normalized return shape (`text`, `prompt_tokens`,
-`completion_tokens`, `total_tokens`, `latency_seconds`) so the rest of
-the system never has to branch on which provider answered.
+Token counting:
+- Gemini: real counts from `usage_metadata` (API-reported)
+- OpenAI/Groq: exact BPE counts via `tiktoken`
+- Mock: word-split approximation
 
----
+Conversation history is passed through the `history` parameter — a list of
+`{"role": "user"|"assistant", "content": str}` dicts. Each provider formats
+this natively (Gemini uses `contents` list, OpenAI/Groq use `messages`).
 
-## 9. The Query Classifier (`classifier/query_classifier.py`)
-
-Lightweight keyword/regex heuristic classifier — no GPU, no embeddings
-required, per the project's tech-stack rationale (a heavier
-sentence-transformers-based semantic classifier could be swapped in
-later behind the same `classify(query) -> QueryType` interface without
-touching any other module).
-
-Pattern banks exist for each of the four `QueryType` values
-(`FACTUAL`, `REASONING`, `CREATIVE`, `ANALYTICAL`). When a query
-matches multiple categories, a fixed precedence order
-(`CREATIVE > REASONING > ANALYTICAL > FACTUAL`) breaks the tie, since
-creative/reasoning intent phrasing tends to be more deliberate/specific
-than a generic factual-looking question opener.
+**To add a new provider:** add `_init_<name>()` and `_complete_<name>()` methods.
+The rest of the system is unaffected — they only call `client.complete()`.
 
 ---
 
-## 10. The benchmark harness (`experiments/`)
+## 7. Strategy Pattern (`strategies/`)
 
-- **`benchmark_queries.py`** — 50 queries, evenly spread across the
-  four query types (12-13 each), each labeled with its expected type.
-- **`run_benchmark.py`** — runs every query through three
-  configurations (`adaptive`, `always_zero_shot`, `always_cot`),
-  records the strategy that answered, confidence score, escalation
-  trail, and total LLM call count for each, writes everything to a CSV
-  under `experiments/results/`, and prints a console summary table.
+All strategies implement `PromptStrategy` with two methods:
+- `name: str` — short identifier
+- `build_prompt(query) -> str` — transform query into prompt text
+- `execute(query, model, baseline_model) -> (text, confidence)` — run end-to-end
 
-This directly produces the data needed for Section 5 ("Experiments
-and Results") of the research paper structure outlined in the
-project's original context document — comparing the adaptive system
-against naive single-strategy baselines on quality (via confidence as
-a proxy, or your own manual/BLEU scoring on the saved CSV) and token
-cost (via the LLM-call count, or actual token counts if you switch to
-a real provider, since `LLMResponse` already tracks `total_tokens`).
+### AdaptivePromptStrategy (`adaptive_prompt.py`)
+Single meta-prompt. System instruction tells LLM to calibrate its own verbosity:
+- Simple fact → one word
+- Needs context → 2–3 sentences
+- Needs explanation → clear and direct
+- Needs step-by-step → numbered steps
 
----
+No regex, no keyword matching. The LLM reads the system instruction and decides.
 
-## 11. The test suite (`tests/`)
+### RAGStrategy (`rag_strategy.py`) ← NEW
+Auto-activates when `KnowledgeBase.has_documents()` is True.
+- Retrieves top-3 most relevant chunks via cosine similarity
+- Prepends them as context with source labels
+- System instruction tells LLM to answer ONLY from provided context
+- Falls back to adaptive behavior when KB is empty
 
-57 tests, all running offline against the mock LLM provider — no API
-key needed to verify the system works:
+### ToolUseStrategy (`tool_use_strategy.py`) ← NEW
+- Loads registered tools from `ToolRegistry`
+- Uses provider's native function-calling API (OpenAI/Groq `tools=`, Gemini `FunctionDeclaration`)
+- If LLM returns a tool call: executes it (builtin or webhook POST) → feeds result back → gets final answer
+- Falls back to adaptive if no tools registered or provider is mock
 
-- **`test_strategies.py`** — each Strategy's `name`, `build_prompt`,
-  and `execute` behavior; `SelfConsistencyStrategy`'s majority-vote and
-  multi-call logic; every signal inside `ConfidenceEvaluator`.
-- **`test_handlers.py`** — escalation behavior using a `StubStrategy`/
-  `StubHandler` test double for precise confidence control, plus
-  integration tests against the real concrete handlers with the mock
-  LLM, including a full zero-shot → self-consistency escalation trail
-  and LLM-call counting.
-- **`test_factory.py`** — `QueryClassifier` routing for representative
-  queries of each type, `StrategyFactory`'s chain construction (entry
-  point matches Table 4, every chain terminates at
-  `SelfConsistencyHandler`), and `HandlerChainBuilder`'s end-to-end
-  convenience path.
+Built-in tools (no webhook needed):
+- `get_current_datetime` → current UTC time
+- `calculate` → safe math expression evaluator
+
+### SelfConsistencyStrategy (`self_consistency.py`)
+Escalation only — called when primary strategy confidence < threshold.
+Calls LLM 3× at higher temperature, takes majority vote on final answers.
 
 ---
 
-## 12. Extending the system — common scenarios
+## 8. LLM Judge (`evaluator/llm_judge.py`) ← NEW
 
-**Add a new prompting strategy (e.g. "Tree of Thought"):**
-1. Create `strategies/tree_of_thought.py` subclassing `PromptStrategy`.
-2. Create `handlers/tot_handler.py` subclassing `PromptHandler`,
-   wrapping the new strategy.
-3. Wire it into one or more `_build_*_chain()` methods in
-   `factory/strategy_factory.py`.
-4. Add tests mirroring the existing pattern in `tests/test_strategies.py`
-   and `tests/test_handlers.py`.
+Replaces rule-based confidence scoring with LLM self-evaluation.
 
-No existing strategy, handler, or factory code needs to be modified —
-only added to. This is the Open/Closed Principle benefit the project's
-research paper argues for.
+**Judge prompt** asks the LLM to rate the answer on:
+- `accuracy` (0–10): Is the information correct?
+- `completeness` (0–10): Does it fully answer the question?
+- `relevance` (0–10): Is it on topic?
+- `clarity` (0–10): Is it well-structured?
+- `overall` (0.0–1.0): Single quality score
+- `reasoning`: One-sentence explanation
 
-**Add a new query type:**
-1. Add the value to `QueryType` in `classifier/query_classifier.py`
-   and a pattern bank for it.
-2. Add a `_build_<type>_chain()` method in `StrategyFactory` and
-   register it in the `builders` dict.
+Returns JSON. `overall` → confidence score used for escalation decisions.
 
-**Swap in a different confidence-scoring approach (e.g. a trained
-reward model):**
-Implement a class with the same `score(query, response_text) -> float`
-interface as `ConfidenceEvaluator` and pass an instance of it wherever
-`evaluator=` is accepted (strategies, handlers, the factory). Nothing
-else needs to change.
+**Caching:** Results cached by `SHA256(query + answer)` in `cache/judge_cache.db`.
+Same query+answer pair is never judged twice.
 
-**Add a new LLM provider:**
-Add a new branch in `LLMClient.__init__` and a `_complete_<provider>()`
-method in `llm/llm_client.py`. Every Strategy/Handler/Factory keeps
-working unmodified since they only depend on `LLMClient.complete()`'s
-normalized `LLMResponse` return shape.
+**Fallback:** If judge call fails or returns invalid JSON → silently uses old
+`ConfidenceEvaluator` score. Zero regressions, never crashes the engine.
+
+**Judge model:** Always uses the fastest/cheapest model (not the routed model):
+- Gemini → `gemini-2.5-flash`
+- OpenAI → `gpt-4o-mini`
+- Groq → `llama-3.3-70b-versatile`
+
+---
+
+## 9. Semantic Cache (`cache/semantic_cache.py`)
+
+SQLite-backed with vectorized numpy similarity search.
+
+**v3.0 improvement:** All stored embeddings loaded into a numpy matrix on init.
+Similarity computed as a single matrix-vector multiplication — ~100× faster
+than the previous row-by-row Python loop.
+
+```python
+# O(N) but fully vectorized — one numpy call for all N entries
+sims = (emb_matrix @ q_emb) / (norms * q_norm + 1e-10)
+best_idx = np.argmax(sims)
+```
+
+Matrix updated incrementally on each `put()` — no full rebuild needed.
+
+**Threshold:** Default 0.92 (configurable via `CACHE_SIMILARITY_THRESHOLD` in `.env`).
+At 0.92: "What is the capital of France?" and "Tell me France's capital city?" → cache hit.
+"What is the capital of Germany?" → cache miss (different answer).
+
+---
+
+## 10. Knowledge Base (`cache/knowledge_base.py`) ← NEW
+
+SQLite-backed document store for RAG.
+
+**Flow:**
+1. `add_document(text, source)` → chunk into 400-word overlapping segments → embed each → store
+2. `search(query, k=3)` → embed query → vectorized cosine similarity → return top-k chunks
+3. `has_documents()` → triggers auto-RAG in the engine
+
+**Chunking:** 400 words per chunk with 50-word overlap to preserve context at boundaries.
+
+**Storage:** `cache/knowledge_base.db` (two tables: `documents`, `chunks`)
+
+---
+
+## 11. Session Store (`cache/session_store.py`) ← NEW
+
+Conversation memory backed by SQLite.
+
+- Sessions created via `create_session()` → returns UUID
+- Messages appended via `append(session_id, role, content)`
+- History retrieved as list of `{"role", "content", "timestamp"}` dicts
+- **24h TTL** — expires after 24 hours of inactivity; reset on each query
+- `_cleanup_expired()` runs on init to remove stale sessions
+- **Graceful expiry:** expired session → 404 response, not a crash
+
+---
+
+## 12. REST API (`api/server.py`)
+
+### Core Endpoints
+| Method | Path | Description |
+|---|---|---|
+| POST | `/v1/query` | Process query, return answer + metadata |
+| POST | `/v1/query/stream` | Streaming SSE — word-by-word then final metadata event |
+
+### Sessions
+| Method | Path | Description |
+|---|---|---|
+| POST | `/v1/sessions` | Create session |
+| POST | `/v1/sessions/{id}/query` | Query within session |
+| GET | `/v1/sessions/{id}/history` | Get message history |
+| DELETE | `/v1/sessions/{id}` | Delete session |
+| DELETE | `/v1/sessions/{id}/messages` | Clear messages only |
+
+### Knowledge Base
+| Method | Path | Description |
+|---|---|---|
+| POST | `/v1/knowledge-base/upload` | Upload and index a document |
+| GET | `/v1/knowledge-base` | List all documents |
+| DELETE | `/v1/knowledge-base/{doc_id}` | Delete a document |
+
+### Tools
+| Method | Path | Description |
+|---|---|---|
+| POST | `/v1/tools/register` | Register a webhook tool |
+| GET | `/v1/tools` | List all tools |
+| DELETE | `/v1/tools/{name}` | Remove a tool |
+
+### Analytics
+| Method | Path | Description |
+|---|---|---|
+| GET | `/v1/stats` | Aggregate stats |
+| GET | `/v1/logs` | Recent query log |
+| GET | `/v1/daily-usage` | Token/cost per day |
+| GET | `/v1/model-dist` | Queries per complexity tier |
+| GET | `/v1/cache/stats` | Cache size and hits |
+| DELETE | `/v1/cache` | Clear cache |
+| GET | `/dashboard` | Analytics dashboard UI |
+
+---
+
+## 13. Extending the System
+
+### Add a new LLM provider
+1. Add `_init_<name>()` and `_complete_<name>()` to `llm/llm_client.py`
+2. Add cost table entry to `core/model_router.py._COST_PER_1K`
+3. Add tier defaults to `core/model_router.py._TIER_DEFAULTS`
+4. Add to `SUPPORTED_PROVIDERS` and `choices` in CLI args
+
+### Add a new prompting strategy
+1. Create `strategies/<name>.py` subclassing `PromptStrategy`
+2. Implement `name` property and `build_prompt()` (or override `execute()`)
+3. Wire it into `AdaptivePromptEngine._build_strategies()` in `main.py`
+
+### Add a new built-in tool
+Add to `_BUILTIN_TOOLS` dict and `_run_builtin()` in `strategies/tool_use_strategy.py`.
+No other file needs to change.
+
+### Swap confidence scoring approach
+Implement a class with `.score(query, response_text) -> float` and `.threshold: float`.
+Pass it as `evaluator=` in `AdaptivePromptEngine.__init__()`. Nothing else changes.
+
+### Add a new API endpoint
+Add a FastAPI route to `api/server.py` and a Pydantic model to `api/models.py`.
+The engine facade in `main.py` is the only integration point needed.

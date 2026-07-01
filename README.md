@@ -1,304 +1,400 @@
 # Adaptive Prompt Engine
 
 > Intelligent LLM middleware that routes every query to the cheapest appropriate model,
-> caches semantically similar results, and lets the LLM calibrate its own answer depth —
-> all with zero rule-based routing.
+> answers from your knowledge base automatically, remembers conversation history,
+> lets the LLM judge its own answer quality, and caches semantically similar results —
+> all without a single hardcoded rule.
+
+[![Tests](https://img.shields.io/badge/tests-31%20passed-brightgreen)]()
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)]()
+[![Providers](https://img.shields.io/badge/providers-Gemini%20%7C%20OpenAI%20%7C%20Groq-orange)]()
 
 ---
 
-## What This Project Is
+## What This Does
 
-The Adaptive Prompt Engine is a Python-based LLM middleware layer. You put it between
-your application and any LLM provider (Gemini, OpenAI). It automatically:
+The Adaptive Prompt Engine sits between your application and any LLM provider. It automatically:
 
-- **Scores the complexity** of every incoming query (continuous 0–1 score, not rigid categories)
-- **Routes to the cheapest model** that can handle that complexity
-- **Caches semantically similar queries** so identical or paraphrased questions cost zero tokens
-- **Uses a single adaptive meta-prompt** so the LLM itself decides how detailed to be
-- **Logs every call** with full cost, latency, and token metadata
-- **Exposes a REST API + live dashboard** for integration and monitoring
-
----
-
-## Journey: What Was Built (Session by Session)
-
-### Phase 0 — Initial Prototype (Before This Session)
-The project started as a rule-based multi-strategy engine:
-- **SemanticQueryClassifier** — classified queries into 4 boxes: FACTUAL / REASONING / CREATIVE / ANALYTICAL
-- **StrategyFactory** — routed each box to a different handler chain
-- **Handler Chain** (Chain of Responsibility) — ZeroShotHandler → FewShotHandler → CoTHandler → SelfConsistencyHandler
-- **ChainOfThoughtStrategy** — used regex keyword matching (`_REASONING_KEYWORDS`, `_SIMPLE_FACTUAL_KEYWORDS`) to pick prompt templates
-- **ConfidenceEvaluator** — rule-based scorer using hedge-phrase detection + word-count heuristics
-
-**Problem identified:** The engine was contradicting its own goal. It was using rules to decide what the LLM should do, when the LLM itself is intelligent enough to calibrate its own verbosity.
+| Capability | How |
+|---|---|
+| **Smart model routing** | Continuous complexity score (0–1) routes cheap queries to Flash/mini, hard ones to Pro/GPT-4o |
+| **Multi-provider** | Gemini · OpenAI · Groq — switch with `--provider` |
+| **Semantic cache** | Vectorized numpy similarity search; same question = 0 tokens spent |
+| **RAG (auto)** | Upload docs → every query automatically uses them as context |
+| **Tool use** | LLM calls your registered webhook tools via native function calling |
+| **Session memory** | Multi-turn conversations with 24h expiry |
+| **LLM-as-Judge** | LLM rates its own answer (accuracy, completeness, relevance, clarity) — no word-counting rules |
+| **Streaming** | Token-by-token SSE stream endpoint |
+| **REST API + Dashboard** | FastAPI with 20+ endpoints and a live analytics dashboard |
 
 ---
 
-### Phase 1 — Token Efficiency Fix (Early This Session)
-- Added `verbose` flag to `ResponseFormatter` — debug metadata (query type, handler name, escalations, LLM call count) now hidden by default
-- Stripped `[CONFIDENCE: x.xx]` tag from user-facing output (it's internal signal, not user text)
-- Added `--verbose` CLI flag to `main.py`
-- Added 3-tier prompt selection to `ChainOfThoughtStrategy` (later superseded)
-
----
-
-### Phase 2 — Core Architecture Refactor
-**Removed** (rule-based, no longer needed):
-- `classifier/query_classifier.py` — the entire 4-category semantic classifier
-- `factory/strategy_factory.py` — the routing-by-category factory
-- `strategies/zero_shot.py` — replaced by single adaptive strategy
-- `strategies/few_shot.py` — replaced by single adaptive strategy
-- `strategies/chain_of_thought.py` — replaced by single adaptive strategy
-- `handlers/zero_shot_handler.py`, `few_shot_handler.py`, `cot_handler.py`
-
-**Created:**
-
-#### `core/complexity_estimator.py`
-Replaces the 4-category classifier with a **continuous complexity score** (0.0–1.0).
-- Uses the same `sentence-transformers` model already in the project (no new imports)
-- Embeds the query and measures its cosine distance between a "simple pole" and a "complex pole"
-- 0.0 = maximally simple (factual lookup), 1.0 = maximally complex (detailed proof/essay)
-- No artificial category boxes. "Sort of complex" gets a mid-range score.
-
-#### `core/model_router.py`
-Maps complexity score to the cheapest model for that tier:
-
-| Tier | Score | Gemini | OpenAI |
-|------|-------|--------|--------|
-| LOW | 0.00–0.35 | `gemini-2.5-flash` | `gpt-3.5-turbo` |
-| MEDIUM | 0.35–0.65 | `gemini-2.5-flash` | `gpt-4o-mini` |
-| HIGH | 0.65–1.00 | `gemini-2.5-pro` | `gpt-4o` |
-
-Also tracks cost per 1K tokens and computes `cost_saved_usd` vs always using the premium model.
-
-#### `strategies/adaptive_prompt.py`
-A **single meta-prompt** replacing all three old strategies.
-The system instruction tells the LLM to calibrate its own depth:
-- Simple fact → one phrase or sentence
-- Needs context → 2–3 sentences
-- Needs explanation → clear and direct, no padding
-- Needs step-by-step → numbered steps, then a one-line summary
-
-No regex. No keyword matching. The LLM reads and decides.
-
-#### `llm/llm_client.py` (modified)
-- Added `model` and `baseline_model` override parameters to `complete()`
-- Added `cost_usd` and `cost_saved_usd` to `LLMResponse`
-- Gemini now uses `system_instruction` natively in `GenerateContentConfig`
-
----
-
-### Phase 3 — Semantic Caching
-
-#### `cache/semantic_cache.py`
-SQLite-backed cache with embedding-based similarity matching:
-1. Every query is embedded with `sentence-transformers`
-2. Cosine similarity compared against all stored embeddings
-3. If best match > 0.92 → return cached answer (0 LLM tokens, instant)
-4. On miss → call LLM, store result for next time
-
-Configurable via `CACHE_SIMILARITY_THRESHOLD` in `.env`.
-
-#### `cache/query_log.py`
-Append-only audit log of every engine call:
-- Query, complexity tier, model used, input/output tokens
-- Cost in USD, cost saved vs baseline
-- Latency in ms, cache hit flag, confidence score, timestamp
-- Powers the analytics dashboard and future fine-tuning data export
-
----
-
-### Phase 4 — REST API
-
-#### `api/server.py` (FastAPI)
-| Endpoint | Method | Description |
-|---|---|---|
-| `/v1/query` | POST | Process a query, return answer + full metadata |
-| `/v1/stats` | GET | Aggregate stats (cost, tokens, cache hit rate) |
-| `/v1/logs` | GET | Recent query log entries |
-| `/v1/daily-usage` | GET | Token + cost per day (last N days) |
-| `/v1/model-dist` | GET | Query count per complexity tier |
-| `/v1/cache/stats` | GET | Cache size and hit count |
-| `/v1/cache` | DELETE | Clear the semantic cache |
-| `/dashboard` | GET | Web analytics dashboard |
-
----
-
-### Phase 5 — Web Analytics Dashboard
-
-#### `dashboard/index.html`
-A single-page dark-mode dashboard with:
-- **Stats bar** — Total queries, cost saved, total spend, avg latency (auto-refreshes every 15s)
-- **Token usage chart** — Daily token usage for the last 7 days (Chart.js line graph)
-- **Model tier distribution** — Donut chart showing how often each tier was used
-- **Try It Live panel** — Type a query, choose budget + provider, see answer + metadata instantly
-- **Recent query log** — Scrollable table of the last 30 queries with all metadata
-
----
-
-### Phase 6 — Cleanup
-- Deleted all 8 obsolete files (`classifier/`, `factory/`, old strategy files, old handlers)
-- Rewrote all 3 test files to match the new architecture
-- Rewrote the benchmark runner to use the new engine
-- **31/31 tests pass**
-
----
-
-## Final Project Structure
+## Project Structure
 
 ```
 adaptive_prompt_engine/
 │
-├── main.py                         ← Engine entry point (CLI + serve mode)
+├── main.py                          ← Engine entry point (CLI + serve mode)
 │
 ├── core/
-│   ├── complexity_estimator.py     ← Continuous query complexity score (0.0–1.0)
-│   └── model_router.py             ← Cheapest-model routing + cost tracking
+│   ├── complexity_estimator.py      ← Continuous complexity score 0.0–1.0 (embeddings)
+│   └── model_router.py              ← Routes tier → cheapest model + cost tracking
 │
 ├── strategies/
-│   ├── base_strategy.py            ← Abstract base
-│   ├── adaptive_prompt.py          ← Single meta-prompt (THE core strategy)
-│   └── self_consistency.py         ← Escalation fallback only
-│
-├── handlers/
-│   ├── base_handler.py             ← Chain of Responsibility base
-│   └── self_consistency_handler.py ← Last-resort escalation handler
-│
-├── cache/
-│   ├── semantic_cache.py           ← SQLite + embedding cache
-│   └── query_log.py                ← Full audit log
+│   ├── base_strategy.py             ← Abstract base class
+│   ├── adaptive_prompt.py           ← Single meta-prompt (LLM self-calibrates depth)
+│   ├── rag_strategy.py              ← RAG — auto-retrieves KB context before answering
+│   ├── tool_use_strategy.py         ← Function calling + webhook tool execution
+│   └── self_consistency.py          ← Escalation fallback (3× votes)
 │
 ├── evaluator/
-│   └── confidence_evaluator.py     ← Rule-based confidence scorer (safety net)
+│   ├── confidence_evaluator.py      ← Rule-based scorer (fallback / mock provider)
+│   └── llm_judge.py                 ← LLM-as-Judge: accuracy/completeness/relevance/clarity
+│
+├── cache/
+│   ├── semantic_cache.py            ← Vectorized numpy similarity cache (SQLite)
+│   ├── knowledge_base.py            ← RAG document store — chunk/embed/search
+│   ├── session_store.py             ← Conversation memory with 24h TTL
+│   └── query_log.py                 ← Full audit log (tokens, cost, latency)
 │
 ├── llm/
-│   └── llm_client.py               ← Provider-agnostic LLM wrapper (Gemini/OpenAI/Mock)
+│   └── llm_client.py                ← Gemini / OpenAI / Groq / Mock — unified interface
 │
 ├── api/
-│   ├── server.py                   ← FastAPI REST server
-│   └── models.py                   ← Pydantic request/response models
+│   ├── server.py                    ← FastAPI REST server (20+ endpoints)
+│   └── models.py                    ← Pydantic request/response models
 │
 ├── dashboard/
-│   └── index.html                  ← Web analytics dashboard
+│   └── index.html                   ← Live analytics dashboard (dark mode)
+│
+├── handlers/
+│   ├── base_handler.py              ← Chain of Responsibility base
+│   └── self_consistency_handler.py  ← Last-resort escalation handler
 │
 ├── experiments/
-│   ├── benchmark_queries.py        ← 50-query test set
-│   └── run_benchmark.py            ← Benchmark runner (CSV output)
+│   ├── benchmark_queries.py         ← 50-query test dataset
+│   └── run_benchmark.py             ← Benchmark runner (CSV output)
 │
 ├── tests/
-│   ├── test_factory.py             ← Engine integration tests
-│   ├── test_handlers.py            ← Handler layer tests
-│   └── test_strategies.py          ← Strategy + evaluator tests
+│   ├── test_factory.py              ← Engine integration tests
+│   ├── test_handlers.py             ← Handler layer tests
+│   └── test_strategies.py           ← Strategy + evaluator tests
 │
-├── .env                            ← API keys + config (never commit this)
+├── .env.example                     ← Copy to .env and fill in your keys
 ├── requirements.txt
-└── README.md                       ← This file
+└── README.md
 ```
 
 ---
 
-## How to Run
+## Quick Start
 
-### 1. Install Dependencies
+### 1. Clone & Create a Virtual Environment
+
+```bash
+git clone https://github.com/Kishorens17/adaptive-prompt-engine.git
+cd adaptive-prompt-engine
+
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# macOS / Linux
+source venv/bin/activate
+```
+
+### 2. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-> If you see a Keras version warning, also run:
+> If you see a Keras/tf-keras warning from sentence-transformers, run:
 > ```bash
 > pip install tf-keras
 > ```
 
-### 2. Set Your API Key
+### 3. Configure API Keys
 
-Open `.env` and fill in your key:
-
-```env
-GEMINI_API_KEY=your_key_here
-# or
-OPENAI_API_KEY=your_key_here
-```
-
-### 3. Run Interactively (CLI)
+Copy the template and fill in your keys:
 
 ```bash
-# Default: mock provider (no API key needed, for testing)
+cp .env.example .env
+```
+
+Edit `.env`:
+
+```env
+# Required — pick at least one provider
+GEMINI_API_KEY=your_gemini_key_here
+OPENAI_API_KEY=your_openai_key_here
+GROQ_API_KEY=your_groq_key_here
+```
+
+> **Groq is free** with generous limits — great for testing. Get a key at [console.groq.com](https://console.groq.com).
+
+---
+
+## Running the Engine
+
+### Interactive CLI (no server needed)
+
+```bash
+# Offline mode — no API key needed (for testing the pipeline)
 python main.py
 
-# With Gemini (smart model routing)
+# With Gemini
 python main.py --provider gemini
 
-# With budget control
-python main.py --provider gemini --budget low       # always cheapest model
-python main.py --provider gemini --budget quality   # always best model
+# With OpenAI
+python main.py --provider openai
 
-# Show full metadata (tokens, cost, model, latency)
+# With Groq (free + ultra-fast)
+python main.py --provider groq
+
+# Force cheapest model for all queries
+python main.py --provider gemini --budget low
+
+# Force best model for all queries
+python main.py --provider gemini --budget quality
+
+# Show full metadata: model used, tokens, cost, latency, confidence, judge rating
 python main.py --provider gemini --verbose
 
 # Disable semantic cache
 python main.py --provider gemini --no-cache
 ```
 
-### 4. Run a Single Query (non-interactive)
+### Single Query (non-interactive)
 
 ```bash
-python main.py --provider gemini --query "what is the capital of france?"
-python main.py --provider gemini --query "why does ice float on water?" --verbose
+python main.py --provider gemini --query "What is the capital of France?"
+python main.py --provider groq   --query "Explain how transformers work" --verbose
+python main.py --provider openai --query "Write a haiku about recursion" --budget quality
 ```
 
-### 5. Start the REST API + Dashboard
+### Start the REST API + Dashboard
 
 ```bash
 python main.py --serve
 ```
 
-Then open:
-- **API docs**: http://localhost:8000/docs
-- **Dashboard**: http://localhost:8000/dashboard
+The terminal will print:
+
+```
+───────────────────────────────────────────────────
+  🚀  Adaptive Prompt Engine — API Server
+───────────────────────────────────────────────────
+  Local:      http://localhost:8000
+  Network:    http://0.0.0.0:8000
+  API docs:   http://localhost:8000/docs
+  Dashboard:  http://localhost:8000/dashboard
+───────────────────────────────────────────────────
+```
+
+Custom port:
+
+```bash
+python main.py --serve --port 9000
+```
 
 Or run uvicorn directly:
+
 ```bash
 uvicorn api.server:app --reload --port 8000
 ```
 
-### 6. Call the API
-
-```bash
-# Ask a question
-curl -X POST http://localhost:8000/v1/query \
-  -H "Content-Type: application/json" \
-  -d '{"query": "What is the capital of France?", "budget": "balanced", "provider": "gemini"}'
-
-# Get stats
-curl http://localhost:8000/v1/stats
-
-# View recent queries
-curl http://localhost:8000/v1/logs?limit=10
-
-# Clear cache
-curl -X DELETE http://localhost:8000/v1/cache
-```
-
-### 7. Run Tests
+### Run Tests
 
 ```bash
 python -m pytest tests/ -v
 ```
 
-Expected output: **31 passed**
+Expected: **31 passed** (all offline — no API key needed)
 
-### 8. Run the Benchmark
+### Run the Benchmark
 
 ```bash
-# Offline (mock provider, instant)
+# Offline / mock (instant)
 python -m experiments.run_benchmark
 
-# With real LLM
+# With a real provider
 python -m experiments.run_benchmark --provider gemini --budget balanced
 ```
 
-Results saved to `experiments/results/benchmark_<timestamp>.csv`.
+Results are saved to `experiments/results/benchmark_<timestamp>.csv`.
+
+---
+
+## API Reference
+
+### Core Query
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/v1/query` | Process a query, return answer + full metadata |
+| `POST` | `/v1/query/stream` | Stream answer as Server-Sent Events |
+
+**Example — regular query:**
+```bash
+curl -X POST http://localhost:8000/v1/query \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What is the capital of France?",
+    "provider": "gemini",
+    "budget": "balanced"
+  }'
+```
+
+**Response:**
+```json
+{
+  "answer": "Paris",
+  "complexity_tier": "low",
+  "complexity_score": 0.08,
+  "model_used": "gemini-2.5-flash",
+  "total_tokens": 42,
+  "cost_usd": 0.000016,
+  "cost_saved_usd": 0.000141,
+  "latency_ms": 312.4,
+  "cache_hit": false,
+  "confidence": 0.94,
+  "strategy_used": "adaptive",
+  "quality": {
+    "accuracy": 10,
+    "completeness": 10,
+    "relevance": 10,
+    "clarity": 10,
+    "overall": 0.97,
+    "reasoning": "Direct, correct single-word answer to a simple factual question."
+  }
+}
+```
+
+**Example — streaming:**
+```bash
+curl -X POST http://localhost:8000/v1/query/stream \
+  -H "Content-Type: application/json" \
+  -d '{"query": "Explain gravity", "provider": "gemini"}'
+```
+
+Events received:
+```
+data: {"chunk": "Gravity ", "done": false}
+data: {"chunk": "is ", "done": false}
+...
+data: {"done": true, "answer": "Gravity is...", "model_used": "gemini-2.5-flash", ...}
+```
+
+---
+
+### Session Memory (Multi-Turn)
+
+```bash
+# Create a session
+SESSION=$(curl -s -X POST http://localhost:8000/v1/sessions | python -c "import sys,json; print(json.load(sys.stdin)['session_id'])")
+
+# Ask within the session
+curl -X POST http://localhost:8000/v1/sessions/$SESSION/query \
+  -H "Content-Type: application/json" \
+  -d '{"query": "My name is Kishore", "provider": "gemini"}'
+
+# Follow-up — engine remembers the name
+curl -X POST http://localhost:8000/v1/sessions/$SESSION/query \
+  -H "Content-Type: application/json" \
+  -d '{"query": "What is my name?", "provider": "gemini"}'
+
+# View history
+curl http://localhost:8000/v1/sessions/$SESSION/history
+
+# Delete session
+curl -X DELETE http://localhost:8000/v1/sessions/$SESSION
+```
+
+---
+
+### Knowledge Base (RAG)
+
+Once a document is uploaded, **all queries automatically use it as context**.
+
+```bash
+# Upload a document
+curl -X POST http://localhost:8000/v1/knowledge-base/upload \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "The Eiffel Tower is 330 metres tall and was completed in 1889.",
+    "source": "facts.txt"
+  }'
+
+# Query — engine auto-retrieves relevant context
+curl -X POST http://localhost:8000/v1/query \
+  -H "Content-Type: application/json" \
+  -d '{"query": "How tall is the Eiffel Tower?", "provider": "gemini"}'
+
+# List documents
+curl http://localhost:8000/v1/knowledge-base
+
+# Delete a document
+curl -X DELETE http://localhost:8000/v1/knowledge-base/1
+```
+
+---
+
+### Tool Registration
+
+Register a webhook tool — the LLM will call it automatically when relevant.
+
+```bash
+curl -X POST http://localhost:8000/v1/tools/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "get_weather",
+    "description": "Get current weather for a city",
+    "parameters_schema": {
+      "type": "object",
+      "properties": {
+        "city": {"type": "string", "description": "City name"}
+      },
+      "required": ["city"]
+    },
+    "webhook_url": "https://your-service.com/weather"
+  }'
+
+# List tools
+curl http://localhost:8000/v1/tools
+
+# Remove a tool
+curl -X DELETE http://localhost:8000/v1/tools/get_weather
+```
+
+Built-in tools (always available, no webhook needed):
+- `get_current_datetime` — returns current UTC time
+- `calculate` — evaluates math expressions safely
+
+---
+
+### Analytics & Cache
+
+```bash
+# Aggregate statistics
+curl http://localhost:8000/v1/stats
+
+# Recent queries (last 50)
+curl http://localhost:8000/v1/logs
+
+# Daily token usage (last 7 days)
+curl http://localhost:8000/v1/daily-usage
+
+# Model tier distribution
+curl http://localhost:8000/v1/model-dist
+
+# Cache stats
+curl http://localhost:8000/v1/cache/stats
+
+# Clear cache
+curl -X DELETE http://localhost:8000/v1/cache
+```
 
 ---
 
@@ -306,30 +402,109 @@ Results saved to `experiments/results/benchmark_<timestamp>.csv`.
 
 | Flag | Default | Description |
 |---|---|---|
-| `--provider` | `mock` | `mock` \| `gemini` \| `openai` |
+| `--provider` | `mock` | `mock` \| `gemini` \| `openai` \| `groq` |
 | `--budget` | `balanced` | `low` \| `balanced` \| `quality` |
 | `--model` | auto | Override model (skips smart routing) |
 | `--api-key` | from `.env` | API key override |
 | `--threshold` | `0.75` | Confidence threshold for escalation |
-| `--query` | — | Single query, non-interactive |
-| `--no-cache` | off | Disable semantic cache |
-| `--verbose` | off | Show full metadata in output |
+| `--query` | — | Single query, non-interactive mode |
+| `--no-cache` | off | Disable semantic cache for this session |
+| `--verbose` | off | Show full metadata (model, tokens, cost, judge score) |
 | `--serve` | off | Start REST API server |
+| `--port` | `8000` | Server port (used with `--serve`) |
+| `--host` | `0.0.0.0` | Server host (used with `--serve`) |
 
 ---
 
-## Environment Variables (`.env`)
+## Model Routing Table
+
+| Tier | Score | Gemini | OpenAI | Groq | Cost/1K tokens |
+|---|---|---|---|---|---|
+| LOW | 0.00–0.35 | gemini-2.5-flash | gpt-4o-mini | llama-3.3-70b | ~$0.00006–0.00015 |
+| MEDIUM | 0.35–0.65 | gemini-2.5-flash | gpt-4o-mini | llama-3.3-70b | ~$0.00015–0.00038 |
+| HIGH | 0.65–1.00 | gemini-2.5-pro | gpt-4o | llama-3.3-70b | ~$0.00250–0.00375 |
+
+Override per tier via `.env`:
+```env
+ROUTER_LOW_MODEL_GEMINI=gemini-2.0-flash-lite
+ROUTER_HIGH_MODEL_OPENAI=gpt-4o
+```
+
+---
+
+## Environment Variables
 
 ```env
-# LLM keys
-GEMINI_API_KEY=...
-OPENAI_API_KEY=...
+# ── API Keys ──────────────────────────────────────────────────────────────
+GEMINI_API_KEY=your_key
+OPENAI_API_KEY=your_key
+GROQ_API_KEY=your_key
 
-# Model routing overrides (optional)
+# ── Model Routing Overrides (optional) ───────────────────────────────────
 ROUTER_LOW_MODEL_GEMINI=gemini-2.5-flash
-ROUTER_MEDIUM_MODEL_GEMINI=gemini-2.5-flash
 ROUTER_HIGH_MODEL_GEMINI=gemini-2.5-pro
+ROUTER_LOW_MODEL_OPENAI=gpt-4o-mini
+ROUTER_HIGH_MODEL_OPENAI=gpt-4o
 
-# Cache sensitivity (0.0–1.0, higher = stricter matching)
-CACHE_SIMILARITY_THRESHOLD=0.92
+# ── Semantic Cache ────────────────────────────────────────────────────────
+CACHE_SIMILARITY_THRESHOLD=0.92   # 0.0–1.0, higher = stricter match required
+
+# ── Session Memory ────────────────────────────────────────────────────────
+SESSION_TTL_HOURS=24              # Session expiry (resets on each query)
 ```
+
+---
+
+## How It Works — Architecture
+
+```
+User Query
+    │
+    ▼
+SessionStore ──────── inject conversation history (if session query)
+    │
+    ▼
+SemanticCache ─────── return instantly if similar query seen before (0 tokens)
+    │ (miss)
+    ▼
+ComplexityEstimator ── embed query → cosine distance between simple/complex poles → 0.0–1.0 score
+    │
+    ▼
+ModelRouter ─────────── score → tier (LOW/MEDIUM/HIGH) → cheapest model for that tier
+    │
+    ▼
+Strategy Selector:
+    ├── RAGStrategy       if KnowledgeBase has documents (auto)
+    ├── ToolUseStrategy   if tools are registered (auto)
+    └── AdaptivePromptStrategy  (default)
+    │
+    ▼
+LLM Call (Gemini / OpenAI / Groq)
+    │
+    ▼
+LLMJudgeEvaluator ── LLM rates its own answer: accuracy/completeness/relevance/clarity
+    │  (fallback: rule-based ConfidenceEvaluator on error or mock provider)
+    │
+    ├── confidence ≥ 0.75 → done
+    └── confidence < 0.75 → SelfConsistencyStrategy (3× calls + majority vote)
+    │
+    ▼
+CacheStore + SessionStore.append + QueryLogger
+    │
+    ▼
+Clean answer + metadata
+```
+
+---
+
+## Design Patterns
+
+| Pattern | Where | Why |
+|---|---|---|
+| **Strategy** | `strategies/` | Swap prompting techniques without touching routing logic |
+| **Chain of Responsibility** | `handlers/` | Escalation chain: primary → self-consistency |
+| **Factory Method** | `core/model_router.py` | Centralized model selection logic |
+
+---
+
+*Built as part of Software Design Patterns (SDP) coursework — Amrita Vishwa Vidyapeetham.*

@@ -28,6 +28,11 @@ htmlcov/
 # ── Runtime data (SQLite DBs, logs, model cache) ──────────────────────────
 cache/cache.db
 cache/query_log.db
+cache/knowledge_base.db
+cache/sessions.db
+cache/judge_cache.db
+evaluator/judge_cache.db
+cache/tools.db
 cache/chroma_db/
 logs/*.jsonl
 *.log
