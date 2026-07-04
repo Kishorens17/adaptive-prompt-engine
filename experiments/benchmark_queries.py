@@ -13,7 +13,13 @@ desired. Feel free to edit/extend this list — it's a reasonable
 starting set covering a spread of difficulty within each type.
 """
 
-from classifier.query_classifier import QueryType
+from enum import Enum
+
+class QueryType(str, Enum):
+    FACTUAL = "factual"
+    REASONING = "reasoning"
+    CREATIVE = "creative"
+    ANALYTICAL = "analytical"
 
 BENCHMARK_QUERIES = [
     # ---- FACTUAL (12) ----
