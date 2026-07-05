@@ -1,0 +1,119 @@
+query,expected_type,config,complexity_tier,model_used,input_tokens,output_tokens,cost_usd,cost_saved_usd,latency_ms,confidence,cache_hit
+What is the capital of France?,factual,adaptive_v2,cached,cache,0,0,0.0,0.0,62.959909439086914,1.0,True
+Who wrote the novel 1984?,factual,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,85,1,0.0,0.0,73009.75012779236,0.6,False
+Who wrote the novel 1984?,factual,always_medium,medium,qwen/qwen3.5-122b-a10b,85,4,0.0,0.0,2225.38423538208,1.0,False
+Who wrote the novel 1984?,factual,no_cache,medium,qwen/qwen3.5-122b-a10b,85,4,0.0,0.0,2305.957317352295,1.0,False
+Define photosynthesis.,factual,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,82,24,0.0,0.0,8076.947927474976,1.0,False
+Define photosynthesis.,factual,always_medium,medium,qwen/qwen3.5-122b-a10b,82,37,0.0,0.0,2867.412805557251,1.0,False
+Define photosynthesis.,factual,no_cache,medium,qwen/qwen3.5-122b-a10b,82,38,0.0,0.0,2612.530469894409,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,adaptive_v2,high,qwen/qwen3.5-122b-a10b,91,59,0.0,0.0,3202.552318572998,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,always_medium,high,qwen/qwen3.5-122b-a10b,91,60,0.0,0.0,4588.310480117798,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,no_cache,high,qwen/qwen3.5-122b-a10b,91,89,0.0,0.0,35071.7875957489,0.8,False
+Prove that the square root of 2 is irrational.,reasoning,adaptive_v2,high,qwen/qwen3.5-122b-a10b,89,64,0.0,0.0,4569.007158279419,1.0,False
+Prove that the square root of 2 is irrational.,reasoning,always_medium,high,qwen/qwen3.5-122b-a10b,89,55,0.0,0.0,3398.1878757476807,1.0,False
+Prove that the square root of 2 is irrational.,reasoning,no_cache,high,qwen/qwen3.5-122b-a10b,89,56,0.0,0.0,3854.9418449401855,1.0,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,adaptive_v2,high,qwen/qwen3.5-122b-a10b,86,42,0.0,0.0,10661.485433578491,1.0,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,always_medium,high,qwen/qwen3.5-122b-a10b,86,85,0.0,0.0,177329.64205741882,0.6,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,no_cache,high,qwen/qwen3.5-122b-a10b,86,80,0.0,0.0,60473.59371185303,0.6,False
+Show that the product of two even numbers is even.,reasoning,adaptive_v2,high,qwen/qwen3.5-122b-a10b,90,94,0.0,0.0,39294.70181465149,0.6,False
+Show that the product of two even numbers is even.,reasoning,always_medium,high,qwen/qwen3.5-122b-a10b,90,88,0.0,0.0,95452.81434059143,0.6,False
+Show that the product of two even numbers is even.,reasoning,no_cache,high,qwen/qwen3.5-122b-a10b,90,39,0.0,0.0,4081.575632095337,1.0,False
+Why does increasing temperature increase reaction rate?,reasoning,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,87,36,0.0,0.0,5226.977586746216,1.0,False
+Why does increasing temperature increase reaction rate?,reasoning,always_medium,medium,qwen/qwen3.5-122b-a10b,87,37,0.0,0.0,33283.855676651,1.0,False
+Why does increasing temperature increase reaction rate?,reasoning,no_cache,medium,qwen/qwen3.5-122b-a10b,87,39,0.0,0.0,2764.0621662139893,0.983,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,92,23,0.0,0.0,3075.0136375427246,1.0,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,always_medium,medium,qwen/qwen3.5-122b-a10b,92,26,0.0,0.0,37561.43093109131,1.0,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,no_cache,medium,qwen/qwen3.5-122b-a10b,92,26,0.0,0.0,17278.4903049469,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,adaptive_v2,high,qwen/qwen3.5-122b-a10b,95,37,0.0,0.0,3350.008010864258,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,always_medium,high,qwen/qwen3.5-122b-a10b,95,77,0.0,0.0,70046.22459411621,0.6,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,no_cache,high,qwen/qwen3.5-122b-a10b,95,36,0.0,0.0,22274.69301223755,1.0,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,92,58,0.0,0.0,3199.007272720337,1.0,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,always_medium,medium,qwen/qwen3.5-122b-a10b,92,68,0.0,0.0,28572.260856628418,1.0,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,no_cache,medium,qwen/qwen3.5-122b-a10b,92,1,0.0,0.0,14242.414712905884,0.6,False
+Prove that there are infinitely many prime numbers.,reasoning,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,88,56,0.0,0.0,4580.5487632751465,1.0,False
+Prove that there are infinitely many prime numbers.,reasoning,always_medium,medium,qwen/qwen3.5-122b-a10b,88,46,0.0,0.0,3208.5719108581543,1.0,False
+Prove that there are infinitely many prime numbers.,reasoning,no_cache,medium,qwen/qwen3.5-122b-a10b,88,46,0.0,0.0,4980.941295623779,1.0,False
+Derive Newton's second law from the definition of momentum.,reasoning,adaptive_v2,high,qwen/qwen3.5-122b-a10b,89,71,0.0,0.0,68968.19972991943,0.6,False
+Derive Newton's second law from the definition of momentum.,reasoning,always_medium,high,qwen/qwen3.5-122b-a10b,89,1,0.0,0.0,46509.912967681885,0.4,False
+Derive Newton's second law from the definition of momentum.,reasoning,no_cache,high,qwen/qwen3.5-122b-a10b,89,48,0.0,0.0,22498.555421829224,1.0,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,adaptive_v2,high,qwen/qwen3.5-122b-a10b,92,90,0.0,0.0,4896.081924438477,1.0,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,always_medium,high,qwen/qwen3.5-122b-a10b,92,60,0.0,0.0,12174.957036972046,1.0,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,no_cache,high,qwen/qwen3.5-122b-a10b,92,94,0.0,0.0,34041.309118270874,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,91,50,0.0,0.0,12117.532968521118,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,always_medium,medium,qwen/qwen3.5-122b-a10b,91,64,0.0,0.0,4908.048868179321,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,no_cache,medium,qwen/qwen3.5-122b-a10b,91,55,0.0,0.0,3061.134099960327,1.0,False
+Why does ice float on water? Explain logically using density.,reasoning,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,90,44,0.0,0.0,21644.980907440186,1.0,False
+Why does ice float on water? Explain logically using density.,reasoning,always_medium,medium,qwen/qwen3.5-122b-a10b,90,41,0.0,0.0,2904.468297958374,1.0,False
+Why does ice float on water? Explain logically using density.,reasoning,no_cache,medium,qwen/qwen3.5-122b-a10b,90,55,0.0,0.0,2899.9531269073486,1.0,False
+Write a Tamil folk song about monsoon season.,creative,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,88,16,0.0,0.0,2810.483932495117,0.9575,False
+Write a Tamil folk song about monsoon season.,creative,always_medium,medium,qwen/qwen3.5-122b-a10b,88,19,0.0,0.0,3187.361478805542,0.9575,False
+Write a Tamil folk song about monsoon season.,creative,no_cache,medium,qwen/qwen3.5-122b-a10b,88,18,0.0,0.0,2696.6071128845215,0.9575,False
+Write a short poem about the ocean at sunset.,creative,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,89,29,0.0,0.0,2751.7759799957275,1.0,False
+Write a short poem about the ocean at sunset.,creative,always_medium,medium,qwen/qwen3.5-122b-a10b,89,18,0.0,0.0,2466.30597114563,1.0,False
+Write a short poem about the ocean at sunset.,creative,no_cache,medium,qwen/qwen3.5-122b-a10b,89,29,0.0,0.0,33557.55019187927,0.983,False
+Write a short story about a robot learning to paint.,creative,adaptive_v2,high,qwen/qwen3.5-122b-a10b,90,21,0.0,0.0,3198.6305713653564,1.0,False
+Write a short story about a robot learning to paint.,creative,always_medium,high,qwen/qwen3.5-122b-a10b,90,1,0.0,0.0,13015.361309051514,0.4,False
+Write a short story about a robot learning to paint.,creative,no_cache,high,qwen/qwen3.5-122b-a10b,90,25,0.0,0.0,2497.7946281433105,0.9575,False
+Imagine a city built entirely underwater and describe a day there.,creative,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,91,49,0.0,0.0,33458.274841308594,0.9575,False
+Imagine a city built entirely underwater and describe a day there.,creative,always_medium,medium,qwen/qwen3.5-122b-a10b,91,52,0.0,0.0,2871.516466140747,1.0,False
+Imagine a city built entirely underwater and describe a day there.,creative,no_cache,medium,qwen/qwen3.5-122b-a10b,91,56,0.0,0.0,3199.3846893310547,0.9575,False
+Write a joke about software developers.,creative,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,86,12,0.0,0.0,7061.5234375,1.0,False
+Write a joke about software developers.,creative,always_medium,medium,qwen/qwen3.5-122b-a10b,86,12,0.0,0.0,24612.24675178528,0.9575,False
+Write a joke about software developers.,creative,no_cache,medium,qwen/qwen3.5-122b-a10b,86,94,0.0,0.0,60132.89022445679,0.6,False
+Brainstorm three creative names for a coffee shop.,creative,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,88,83,0.0,0.0,173245.5017566681,0.49,False
+Brainstorm three creative names for a coffee shop.,creative,always_medium,medium,qwen/qwen3.5-122b-a10b,88,1,0.0,0.0,45151.63803100586,0.4,False
+Brainstorm three creative names for a coffee shop.,creative,no_cache,medium,qwen/qwen3.5-122b-a10b,88,14,0.0,0.0,10313.690662384033,0.9575,False
+Write a lullaby about the stars.,creative,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,86,94,0.0,0.0,21542.468070983887,0.49,False
+Write a lullaby about the stars.,creative,always_medium,medium,qwen/qwen3.5-122b-a10b,86,80,0.0,0.0,68448.67157936096,0.6,False
+Write a lullaby about the stars.,creative,no_cache,medium,qwen/qwen3.5-122b-a10b,86,23,0.0,0.0,13122.846603393555,1.0,False
+Compose a short script for a two-character comedy sketch.,creative,adaptive_v2,high,qwen/qwen3.5-122b-a10b,89,59,0.0,0.0,3580.002546310425,1.0,False
+Compose a short script for a two-character comedy sketch.,creative,always_medium,high,qwen/qwen3.5-122b-a10b,89,70,0.0,0.0,34173.63238334656,1.0,False
+Compose a short script for a two-character comedy sketch.,creative,no_cache,high,qwen/qwen3.5-122b-a10b,89,64,0.0,0.0,34925.65155029297,1.0,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,92,93,0.0,0.0,23370.301723480225,0.6,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,always_medium,medium,qwen/qwen3.5-122b-a10b,92,19,0.0,0.0,2509.3278884887695,0.9575,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,no_cache,medium,qwen/qwen3.5-122b-a10b,92,16,0.0,0.0,6606.273174285889,0.932,False
+Imagine you are a tree and describe your life across four seasons.,creative,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,92,28,0.0,0.0,33123.92020225525,0.9575,False
+Imagine you are a tree and describe your life across four seasons.,creative,always_medium,medium,qwen/qwen3.5-122b-a10b,92,31,0.0,0.0,31533.692598342896,0.9575,False
+Imagine you are a tree and describe your life across four seasons.,creative,no_cache,medium,qwen/qwen3.5-122b-a10b,92,50,0.0,0.0,14004.104137420654,0.983,False
+Write a creative product description for a futuristic backpack.,creative,adaptive_v2,high,qwen/qwen3.5-122b-a10b,89,48,0.0,0.0,4097.681283950806,0.9575,False
+Write a creative product description for a futuristic backpack.,creative,always_medium,high,qwen/qwen3.5-122b-a10b,89,32,0.0,0.0,8786.556959152222,0.9575,False
+Write a creative product description for a futuristic backpack.,creative,no_cache,high,qwen/qwen3.5-122b-a10b,89,55,0.0,0.0,5008.351802825928,0.9575,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,88,31,0.0,0.0,8251.91879272461,0.983,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,always_medium,medium,qwen/qwen3.5-122b-a10b,88,41,0.0,0.0,2959.7785472869873,0.983,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,no_cache,medium,qwen/qwen3.5-122b-a10b,88,45,0.0,0.0,2936.438798904419,0.983,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,adaptive_v2,high,qwen/qwen3.5-122b-a10b,90,39,0.0,0.0,3196.7129707336426,0.983,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,always_medium,high,qwen/qwen3.5-122b-a10b,90,52,0.0,0.0,2929.5260906219482,0.983,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,no_cache,high,qwen/qwen3.5-122b-a10b,90,82,0.0,0.0,25818.10688972473,1.0,False
+Contrast supervised and unsupervised learning approaches.,analytical,adaptive_v2,high,qwen/qwen3.5-122b-a10b,86,47,0.0,0.0,28040.936946868896,1.0,False
+Contrast supervised and unsupervised learning approaches.,analytical,always_medium,high,qwen/qwen3.5-122b-a10b,86,45,0.0,0.0,4181.8225383758545,1.0,False
+Contrast supervised and unsupervised learning approaches.,analytical,no_cache,high,qwen/qwen3.5-122b-a10b,86,46,0.0,0.0,2808.15052986145,1.0,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,adaptive_v2,high,qwen/qwen3.5-122b-a10b,89,30,0.0,0.0,2743.1507110595703,0.9575,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,always_medium,high,qwen/qwen3.5-122b-a10b,89,56,0.0,0.0,2934.703826904297,0.9575,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,no_cache,high,qwen/qwen3.5-122b-a10b,89,32,0.0,0.0,3701.8370628356934,0.9575,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,adaptive_v2,high,qwen/qwen3.5-122b-a10b,88,46,0.0,0.0,5990.465402603149,0.983,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,always_medium,high,qwen/qwen3.5-122b-a10b,88,54,0.0,0.0,2771.351099014282,0.9575,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,no_cache,high,qwen/qwen3.5-122b-a10b,88,40,0.0,0.0,33070.44315338135,0.9575,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,adaptive_v2,high,qwen/qwen3.5-122b-a10b,90,40,0.0,0.0,3561.079263687134,0.9575,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,always_medium,high,qwen/qwen3.5-122b-a10b,90,38,0.0,0.0,33323.38452339172,0.9575,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,no_cache,high,qwen/qwen3.5-122b-a10b,90,49,0.0,0.0,3472.8012084960938,0.983,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,90,38,0.0,0.0,2747.187614440918,0.983,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,always_medium,medium,qwen/qwen3.5-122b-a10b,90,43,0.0,0.0,2829.346179962158,0.983,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,no_cache,medium,qwen/qwen3.5-122b-a10b,90,40,0.0,0.0,2698.3699798583984,0.983,False
+Contrast agile and waterfall software development methodologies.,analytical,adaptive_v2,high,qwen/qwen3.5-122b-a10b,87,40,0.0,0.0,2897.629737854004,0.983,False
+Contrast agile and waterfall software development methodologies.,analytical,always_medium,high,qwen/qwen3.5-122b-a10b,87,46,0.0,0.0,2790.436267852783,1.0,False
+Contrast agile and waterfall software development methodologies.,analytical,no_cache,high,qwen/qwen3.5-122b-a10b,87,42,0.0,0.0,2651.1173248291016,1.0,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,91,42,0.0,0.0,4941.545724868774,0.983,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,always_medium,medium,qwen/qwen3.5-122b-a10b,91,60,0.0,0.0,24469.20919418335,0.983,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,no_cache,medium,qwen/qwen3.5-122b-a10b,91,37,0.0,0.0,21097.163438796997,0.983,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,adaptive_v2,medium,qwen/qwen3.5-122b-a10b,93,50,0.0,0.0,3019.2086696624756,0.9575,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,always_medium,medium,qwen/qwen3.5-122b-a10b,93,41,0.0,0.0,64065.380811691284,0.9575,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,no_cache,medium,qwen/qwen3.5-122b-a10b,93,68,0.0,0.0,4128.2958984375,0.9575,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,adaptive_v2,high,qwen/qwen3.5-122b-a10b,89,46,0.0,0.0,15113.114356994629,0.983,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,always_medium,high,qwen/qwen3.5-122b-a10b,89,60,0.0,0.0,2898.7319469451904,0.9575,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,no_cache,high,qwen/qwen3.5-122b-a10b,89,69,0.0,0.0,3234.8406314849854,0.9575,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,adaptive_v2,high,qwen/qwen3.5-122b-a10b,91,44,0.0,0.0,3139.0743255615234,0.983,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,always_medium,high,qwen/qwen3.5-122b-a10b,91,59,0.0,0.0,3220.2365398406982,0.983,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,no_cache,high,qwen/qwen3.5-122b-a10b,91,45,0.0,0.0,2714.803457260132,0.9575,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,adaptive_v2,high,qwen/qwen3.5-122b-a10b,90,53,0.0,0.0,21909.95454788208,0.983,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,always_medium,high,qwen/qwen3.5-122b-a10b,90,58,0.0,0.0,2934.189796447754,0.9575,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,no_cache,high,qwen/qwen3.5-122b-a10b,90,52,0.0,0.0,2833.732843399048,0.9575,False

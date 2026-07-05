@@ -43,7 +43,7 @@ logs/*.jsonl
 *.pt
 
 # ── Benchmark results ─────────────────────────────────────────────────────
-experiments/results/*.csv
+
 
 # ── OS artifacts ──────────────────────────────────────────────────────────
 .DS_Store
