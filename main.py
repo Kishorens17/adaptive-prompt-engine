@@ -153,6 +153,7 @@ class AdaptivePromptEngine:
         verbose: bool = False,
     ) -> None:
         self.provider = provider
+        self.model_override = model
         self.receiver = QueryReceiver()
         self.formatter = ResponseFormatter(verbose=verbose)
         self.llm_client = LLMClient(provider=provider, model=model, api_key=api_key)
@@ -288,6 +289,8 @@ class AdaptivePromptEngine:
             score, tier = 0.5, ComplexityTier.MEDIUM
 
         routing = self.router.route(tier)
+        if self.model_override:
+            routing.model = self.model_override
 
         # ── Primary strategy ──────────────────────────────────────────
         # Pass history to LLM client if session-aware

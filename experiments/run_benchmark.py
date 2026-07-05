@@ -101,9 +101,9 @@ def main(argv: list[str] | None = None) -> None:
     args = parser.parse_args(argv if argv is not None else sys.argv[1:])
 
     # Three configurations
-    adaptive = AdaptivePromptEngine(provider=args.provider, budget=args.budget, use_cache=True)
-    always_medium = AdaptivePromptEngine(provider=args.provider, budget="balanced", use_cache=False)
-    no_cache_eng = AdaptivePromptEngine(provider=args.provider, budget=args.budget, use_cache=False)
+    adaptive = AdaptivePromptEngine(provider=args.provider, model=args.model, budget=args.budget, use_cache=True)
+    always_medium = AdaptivePromptEngine(provider=args.provider, model=args.model, budget="balanced", use_cache=False)
+    no_cache_eng = AdaptivePromptEngine(provider=args.provider, model=args.model, budget=args.budget, use_cache=False)
 
     out = Path(args.resume) if args.resume else (Path(args.output) if args.output else None)
     if out is None:
