@@ -1,0 +1,151 @@
+query,expected_type,config,complexity_tier,model_used,input_tokens,output_tokens,cost_usd,cost_saved_usd,latency_ms,confidence,cache_hit
+What year was Python created?,factual,adaptive_v2,low,llama-3.3-70b-versatile,85,3,5.192e-06,0.0,12871.385335922241,1.0,False
+What year was Python created?,factual,always_medium,low,llama-3.3-70b-versatile,85,3,5.192e-06,0.0,415.14039039611816,1.0,False
+What year was Python created?,factual,no_cache,low,llama-3.3-70b-versatile,85,3,5.192e-06,0.0,431.9002628326416,1.0,False
+What is the capital of France?,factual,adaptive_v2,low,llama-3.3-70b-versatile,86,3,5.250999999999999e-06,0.0,1139.6214962005615,1.0,False
+What is the capital of France?,factual,always_medium,low,llama-3.3-70b-versatile,86,3,5.250999999999999e-06,0.0,675.7616996765137,1.0,False
+What is the capital of France?,factual,no_cache,low,llama-3.3-70b-versatile,86,3,5.250999999999999e-06,0.0,431.901216506958,1.0,False
+Who wrote the novel 1984?,factual,adaptive_v2,medium,llama-3.3-70b-versatile,85,4,5.250999999999999e-06,0.0,740.654468536377,1.0,False
+Who wrote the novel 1984?,factual,always_medium,medium,llama-3.3-70b-versatile,85,4,5.250999999999999e-06,0.0,421.24223709106445,1.0,False
+Who wrote the novel 1984?,factual,no_cache,medium,llama-3.3-70b-versatile,85,4,5.250999999999999e-06,0.0,470.1497554779053,1.0,False
+What is the boiling point of water at sea level?,factual,adaptive_v2,low,llama-3.3-70b-versatile,90,5,5.605e-06,0.0,976.2558937072754,1.0,False
+What is the boiling point of water at sea level?,factual,always_medium,low,llama-3.3-70b-versatile,90,3,5.486999999999999e-06,0.0,784.4069004058838,1.0,False
+What is the boiling point of water at sea level?,factual,no_cache,low,llama-3.3-70b-versatile,90,3,5.486999999999999e-06,0.0,371.08659744262695,1.0,False
+How many continents are there on Earth?,factual,adaptive_v2,low,llama-3.3-70b-versatile,87,3,5.31e-06,0.0,808.3350658416748,1.0,False
+How many continents are there on Earth?,factual,always_medium,low,llama-3.3-70b-versatile,87,3,5.31e-06,0.0,229.8266887664795,1.0,False
+How many continents are there on Earth?,factual,no_cache,low,llama-3.3-70b-versatile,87,3,5.31e-06,0.0,234.88712310791016,1.0,False
+Define photosynthesis.,factual,adaptive_v2,medium,llama-3.3-70b-versatile,82,50,7.787999999999999e-06,0.0,736.3297939300537,0.98,False
+Define photosynthesis.,factual,always_medium,medium,llama-3.3-70b-versatile,82,59,8.319e-06,0.0,645.7579135894775,1.0,False
+Define photosynthesis.,factual,no_cache,medium,llama-3.3-70b-versatile,82,51,7.847e-06,0.0,923.8979816436768,1.0,False
+What is the chemical symbol for gold?,factual,adaptive_v2,low,llama-3.3-70b-versatile,87,3,5.31e-06,0.0,1113.8792037963867,1.0,False
+What is the chemical symbol for gold?,factual,always_medium,low,llama-3.3-70b-versatile,87,3,5.31e-06,0.0,4967.009782791138,1.0,False
+What is the chemical symbol for gold?,factual,no_cache,low,llama-3.3-70b-versatile,87,3,5.31e-06,0.0,2510.077714920044,1.0,False
+When did World War II end?,factual,adaptive_v2,low,llama-3.3-70b-versatile,86,5,5.369e-06,0.0,5381.123781204224,1.0,False
+When did World War II end?,factual,always_medium,low,llama-3.3-70b-versatile,86,10,5.6639999999999995e-06,0.0,5047.581672668457,1.0,False
+When did World War II end?,factual,no_cache,low,llama-3.3-70b-versatile,86,5,5.369e-06,0.0,2648.7910747528076,1.0,False
+What is the capital of Japan?,factual,adaptive_v2,low,llama-3.3-70b-versatile,86,3,5.250999999999999e-06,0.0,5260.94651222229,1.0,False
+What is the capital of Japan?,factual,always_medium,low,llama-3.3-70b-versatile,86,3,5.250999999999999e-06,0.0,2495.0950145721436,1.0,False
+What is the capital of Japan?,factual,no_cache,low,llama-3.3-70b-versatile,86,3,5.250999999999999e-06,0.0,2809.2546463012695,1.0,False
+How many bones are in the human body?,factual,adaptive_v2,low,llama-3.3-70b-versatile,88,3,5.369e-06,0.0,5961.643218994141,1.0,False
+How many bones are in the human body?,factual,always_medium,low,llama-3.3-70b-versatile,88,3,5.369e-06,0.0,2434.800386428833,1.0,False
+How many bones are in the human body?,factual,no_cache,low,llama-3.3-70b-versatile,88,3,5.369e-06,0.0,3048.0005741119385,1.0,False
+What is the speed of light in a vacuum?,factual,adaptive_v2,low,llama-3.3-70b-versatile,89,4,5.486999999999999e-06,0.0,5229.099273681641,1.0,False
+What is the speed of light in a vacuum?,factual,always_medium,low,llama-3.3-70b-versatile,89,6,5.605e-06,0.0,6445.670366287231,1.0,False
+What is the speed of light in a vacuum?,factual,no_cache,low,llama-3.3-70b-versatile,89,4,5.486999999999999e-06,0.0,2755.476474761963,1.0,False
+Who is credited with inventing the telephone?,factual,adaptive_v2,low,llama-3.3-70b-versatile,87,5,5.4279999999999995e-06,0.0,6384.560585021973,0.96,False
+Who is credited with inventing the telephone?,factual,always_medium,low,llama-3.3-70b-versatile,87,5,5.4279999999999995e-06,0.0,2674.5169162750244,0.96,False
+Who is credited with inventing the telephone?,factual,no_cache,low,llama-3.3-70b-versatile,87,5,5.4279999999999995e-06,0.0,3640.902280807495,0.96,False
+Prove that the sum of two odd numbers is always even.,reasoning,adaptive_v2,high,llama-3.3-70b-versatile,91,56,8.673e-06,0.0,5416.992425918579,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,always_medium,high,llama-3.3-70b-versatile,91,60,8.909e-06,0.0,5814.664125442505,0.99,False
+Prove that the sum of two odd numbers is always even.,reasoning,no_cache,high,llama-3.3-70b-versatile,91,55,8.614000000000001e-06,0.0,5452.861309051514,0.99,False
+Prove that the square root of 2 is irrational.,reasoning,adaptive_v2,high,llama-3.3-70b-versatile,89,106,1.1504999999999999e-05,0.0,5417.250871658325,0.99,False
+Prove that the square root of 2 is irrational.,reasoning,always_medium,high,llama-3.3-70b-versatile,89,104,1.1387e-05,0.0,6657.076597213745,0.98,False
+Prove that the square root of 2 is irrational.,reasoning,no_cache,high,llama-3.3-70b-versatile,89,125,1.2626e-05,0.0,5202.787399291992,0.98,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,adaptive_v2,high,llama-3.3-70b-versatile,86,145,1.3629e-05,0.0,7871.028423309326,0.98,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,always_medium,high,llama-3.3-70b-versatile,86,77,9.617e-06,0.0,4854.998350143433,0.99,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,no_cache,high,llama-3.3-70b-versatile,86,103,1.1150999999999999e-05,0.0,5427.313804626465,0.99,False
+Show that the product of two even numbers is even.,reasoning,adaptive_v2,high,llama-3.3-70b-versatile,90,51,8.319e-06,0.0,5542.281627655029,1.0,False
+Show that the product of two even numbers is even.,reasoning,always_medium,high,llama-3.3-70b-versatile,90,25,6.784999999999999e-06,0.0,5780.304431915283,1.0,False
+Show that the product of two even numbers is even.,reasoning,no_cache,high,llama-3.3-70b-versatile,90,33,7.256999999999999e-06,0.0,4420.356512069702,1.0,False
+Why does increasing temperature increase reaction rate?,reasoning,adaptive_v2,medium,llama-3.3-70b-versatile,87,64,8.909e-06,0.0,5518.731594085693,0.9,False
+Why does increasing temperature increase reaction rate?,reasoning,always_medium,medium,llama-3.3-70b-versatile,87,45,7.787999999999999e-06,0.0,5414.1552448272705,0.97,False
+Why does increasing temperature increase reaction rate?,reasoning,no_cache,medium,llama-3.3-70b-versatile,87,40,7.492999999999999e-06,0.0,5123.161554336548,0.96,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,adaptive_v2,medium,llama-3.3-70b-versatile,92,58,8.85e-06,0.0,5552.137613296509,1.0,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,always_medium,medium,llama-3.3-70b-versatile,92,50,8.378e-06,0.0,5456.64644241333,1.0,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,no_cache,medium,llama-3.3-70b-versatile,92,63,9.145e-06,0.0,5132.704019546509,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,adaptive_v2,high,llama-3.3-70b-versatile,95,54,8.791000000000001e-06,0.0,6284.694671630859,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,always_medium,high,llama-3.3-70b-versatile,95,80,1.0324999999999999e-05,0.0,5458.076953887939,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,no_cache,high,llama-3.3-70b-versatile,95,82,1.0443e-05,0.0,5812.765836715698,1.0,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,adaptive_v2,medium,llama-3.3-70b-versatile,92,96,1.1092e-05,0.0,5634.247541427612,0.96,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,always_medium,medium,llama-3.3-70b-versatile,92,74,9.793999999999998e-06,0.0,5762.116193771362,0.9,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,no_cache,medium,llama-3.3-70b-versatile,92,99,1.1269e-05,0.0,5812.804222106934,0.96,False
+Prove that there are infinitely many prime numbers.,reasoning,adaptive_v2,medium,llama-3.3-70b-versatile,88,104,1.1327999999999999e-05,0.0,5479.087352752686,0.99,False
+Prove that there are infinitely many prime numbers.,reasoning,always_medium,medium,llama-3.3-70b-versatile,88,122,1.239e-05,0.0,6707.72910118103,0.99,False
+Prove that there are infinitely many prime numbers.,reasoning,no_cache,medium,llama-3.3-70b-versatile,88,122,1.239e-05,0.0,6888.781785964966,0.98,False
+Derive Newton's second law from the definition of momentum.,reasoning,adaptive_v2,high,llama-3.3-70b-versatile,89,83,1.0147999999999998e-05,0.0,6232.4769496917725,0.98,False
+Derive Newton's second law from the definition of momentum.,reasoning,always_medium,high,llama-3.3-70b-versatile,89,120,1.2331e-05,0.0,4742.848634719849,0.98,False
+Derive Newton's second law from the definition of momentum.,reasoning,no_cache,high,llama-3.3-70b-versatile,89,115,1.2036e-05,0.0,6097.945213317871,0.98,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,adaptive_v2,high,llama-3.3-70b-versatile,92,108,1.18e-05,0.0,6318.563461303711,0.98,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,always_medium,high,llama-3.3-70b-versatile,92,105,1.1623e-05,0.0,5937.954902648926,0.98,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,no_cache,high,llama-3.3-70b-versatile,92,108,1.18e-05,0.0,5665.7257080078125,0.98,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,adaptive_v2,medium,llama-3.3-70b-versatile,91,67,9.322e-06,0.0,5863.6322021484375,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,always_medium,medium,llama-3.3-70b-versatile,91,79,1.0029999999999999e-05,0.0,5657.732248306274,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,no_cache,medium,llama-3.3-70b-versatile,91,87,1.0501999999999999e-05,0.0,5717.238664627075,1.0,False
+Why does ice float on water? Explain logically using density.,reasoning,adaptive_v2,medium,llama-3.3-70b-versatile,90,47,8.083e-06,0.0,6529.3402671813965,1.0,False
+Why does ice float on water? Explain logically using density.,reasoning,always_medium,medium,llama-3.3-70b-versatile,90,40,7.67e-06,0.0,5794.432640075684,0.9,False
+Why does ice float on water? Explain logically using density.,reasoning,no_cache,medium,llama-3.3-70b-versatile,90,48,8.142e-06,0.0,5135.6751918792725,1.0,False
+Write a Tamil folk song about monsoon season.,creative,adaptive_v2,medium,llama-3.3-70b-versatile,88,34,7.1979999999999995e-06,0.0,6192.22354888916,0.87,False
+Write a Tamil folk song about monsoon season.,creative,always_medium,medium,llama-3.3-70b-versatile,88,45,7.847e-06,0.0,6275.264739990234,0.8,False
+Write a Tamil folk song about monsoon season.,creative,no_cache,medium,llama-3.3-70b-versatile,88,41,7.611e-06,0.0,6333.573818206787,0.85,False
+Write a short poem about the ocean at sunset.,creative,adaptive_v2,medium,llama-3.3-70b-versatile,89,29,6.962e-06,0.0,5502.831697463989,0.92,False
+Write a short poem about the ocean at sunset.,creative,always_medium,medium,llama-3.3-70b-versatile,89,43,7.787999999999999e-06,0.0,4077.5444507598877,1.0,False
+Write a short poem about the ocean at sunset.,creative,no_cache,medium,llama-3.3-70b-versatile,89,39,7.552e-06,0.0,6585.711717605591,1.0,False
+Compose a haiku about autumn leaves.,creative,adaptive_v2,low,llama-3.3-70b-versatile,86,13,5.841e-06,0.0,5558.46643447876,1.0,False
+Compose a haiku about autumn leaves.,creative,always_medium,low,llama-3.3-70b-versatile,86,13,5.841e-06,0.0,6213.8991355896,1.0,False
+Compose a haiku about autumn leaves.,creative,no_cache,low,llama-3.3-70b-versatile,86,13,5.841e-06,0.0,3031.1660766601562,1.0,False
+Write a short story about a robot learning to paint.,creative,adaptive_v2,high,llama-3.3-70b-versatile,90,160,1.475e-05,0.0,6503.615617752075,0.95,False
+Write a short story about a robot learning to paint.,creative,always_medium,high,llama-3.3-70b-versatile,90,170,1.534e-05,0.0,5786.967754364014,0.95,False
+Write a short story about a robot learning to paint.,creative,no_cache,high,llama-3.3-70b-versatile,90,199,1.7051e-05,0.0,5974.112272262573,0.95,False
+Imagine a city built entirely underwater and describe a day there.,creative,adaptive_v2,medium,llama-3.3-70b-versatile,91,236,1.9292999999999996e-05,0.0,6838.818788528442,0.9,False
+Imagine a city built entirely underwater and describe a day there.,creative,always_medium,medium,llama-3.3-70b-versatile,91,276,2.1652999999999997e-05,0.0,6626.585960388184,0.9,False
+Imagine a city built entirely underwater and describe a day there.,creative,no_cache,medium,llama-3.3-70b-versatile,91,229,1.8880000000000002e-05,0.0,4524.909257888794,0.9,False
+Write a joke about software developers.,creative,adaptive_v2,medium,llama-3.3-70b-versatile,86,91,1.0443e-05,0.0,4917.814016342163,1.0,False
+Write a joke about software developers.,creative,always_medium,medium,llama-3.3-70b-versatile,86,12,5.782e-06,0.0,4673.448324203491,1.0,False
+Write a joke about software developers.,creative,no_cache,medium,llama-3.3-70b-versatile,86,12,5.782e-06,0.0,4672.900199890137,1.0,False
+Brainstorm three creative names for a coffee shop.,creative,adaptive_v2,medium,llama-3.3-70b-versatile,88,12,5.9e-06,0.0,4790.393352508545,1.0,False
+Brainstorm three creative names for a coffee shop.,creative,always_medium,medium,llama-3.3-70b-versatile,88,12,5.9e-06,0.0,4861.617803573608,1.0,False
+Brainstorm three creative names for a coffee shop.,creative,no_cache,medium,llama-3.3-70b-versatile,88,12,5.9e-06,0.0,4743.9610958099365,1.0,False
+Write a lullaby about the stars.,creative,adaptive_v2,medium,llama-3.3-70b-versatile,86,62,8.732e-06,0.0,5063.762903213501,1.0,False
+Write a lullaby about the stars.,creative,always_medium,medium,llama-3.3-70b-versatile,86,50,8.024e-06,0.0,4972.03516960144,1.0,False
+Write a lullaby about the stars.,creative,no_cache,medium,llama-3.3-70b-versatile,86,83,9.970999999999998e-06,0.0,5411.0870361328125,1.0,False
+Compose a short script for a two-character comedy sketch.,creative,adaptive_v2,high,llama-3.3-70b-versatile,89,94,1.0797e-05,0.0,5491.063356399536,0.92,False
+Compose a short script for a two-character comedy sketch.,creative,always_medium,high,llama-3.3-70b-versatile,89,98,1.1033e-05,0.0,5760.99419593811,0.9,False
+Compose a short script for a two-character comedy sketch.,creative,no_cache,high,llama-3.3-70b-versatile,89,84,1.0206999999999999e-05,0.0,6156.938314437866,0.9,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,adaptive_v2,medium,llama-3.3-70b-versatile,92,79,1.0089e-05,0.0,5609.940528869629,0.88,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,always_medium,medium,llama-3.3-70b-versatile,92,85,1.0443e-05,0.0,5506.18577003479,0.88,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,no_cache,medium,llama-3.3-70b-versatile,92,84,1.0384e-05,0.0,5538.36989402771,0.92,False
+Imagine you are a tree and describe your life across four seasons.,creative,adaptive_v2,medium,llama-3.3-70b-versatile,92,50,8.378e-06,0.0,6429.718017578125,0.92,False
+Imagine you are a tree and describe your life across four seasons.,creative,always_medium,medium,llama-3.3-70b-versatile,92,55,8.673e-06,0.0,4993.266582489014,0.92,False
+Imagine you are a tree and describe your life across four seasons.,creative,no_cache,medium,llama-3.3-70b-versatile,92,71,9.617e-06,0.0,5031.383275985718,0.99,False
+Write a creative product description for a futuristic backpack.,creative,adaptive_v2,high,llama-3.3-70b-versatile,89,90,1.0561e-05,0.0,5681.290149688721,0.95,False
+Write a creative product description for a futuristic backpack.,creative,always_medium,high,llama-3.3-70b-versatile,89,85,1.0266e-05,0.0,6334.234952926636,0.98,False
+Write a creative product description for a futuristic backpack.,creative,no_cache,high,llama-3.3-70b-versatile,89,105,1.1446e-05,0.0,5131.837606430054,0.95,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,adaptive_v2,medium,llama-3.3-70b-versatile,88,170,1.5222e-05,0.0,5604.887247085571,0.85,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,always_medium,medium,llama-3.3-70b-versatile,88,58,8.614000000000001e-06,0.0,5132.01642036438,0.83,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,no_cache,medium,llama-3.3-70b-versatile,88,47,7.964999999999999e-06,0.0,5102.051496505737,0.8,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,adaptive_v2,high,llama-3.3-70b-versatile,90,86,1.0384e-05,0.0,5682.479619979858,0.88,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,always_medium,high,llama-3.3-70b-versatile,90,145,1.3864999999999999e-05,0.0,7572.92628288269,0.85,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,no_cache,high,llama-3.3-70b-versatile,90,90,1.062e-05,0.0,5385.317325592041,0.9,False
+Contrast supervised and unsupervised learning approaches.,analytical,adaptive_v2,high,llama-3.3-70b-versatile,86,39,7.375e-06,0.0,5135.923385620117,0.92,False
+Contrast supervised and unsupervised learning approaches.,analytical,always_medium,high,llama-3.3-70b-versatile,86,44,7.67e-06,0.0,4951.984643936157,0.85,False
+Contrast supervised and unsupervised learning approaches.,analytical,no_cache,high,llama-3.3-70b-versatile,86,38,7.316e-06,0.0,5947.55482673645,0.85,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,adaptive_v2,high,llama-3.3-70b-versatile,89,106,1.1504999999999999e-05,0.0,5263.183116912842,0.9,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,always_medium,high,llama-3.3-70b-versatile,89,47,8.024e-06,0.0,6151.614427566528,0.75,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,no_cache,high,llama-3.3-70b-versatile,89,52,8.319e-06,0.0,5104.023218154907,0.88,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,adaptive_v2,high,llama-3.3-70b-versatile,88,138,1.3333999999999998e-05,0.0,5869.773864746094,0.85,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,always_medium,high,llama-3.3-70b-versatile,88,155,1.4336999999999998e-05,0.0,6149.378538131714,0.85,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,no_cache,high,llama-3.3-70b-versatile,88,85,1.0206999999999999e-05,0.0,6543.342113494873,0.88,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,adaptive_v2,high,llama-3.3-70b-versatile,90,67,9.263000000000001e-06,0.0,6109.304666519165,0.87,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,always_medium,high,llama-3.3-70b-versatile,90,42,7.787999999999999e-06,0.0,6155.115127563477,0.83,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,no_cache,high,llama-3.3-70b-versatile,90,38,7.552e-06,0.0,4904.978513717651,0.8,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,adaptive_v2,medium,llama-3.3-70b-versatile,90,89,1.0561e-05,0.0,6591.034173965454,0.85,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,always_medium,medium,llama-3.3-70b-versatile,90,101,1.1269e-05,0.0,5869.7686195373535,0.92,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,no_cache,medium,llama-3.3-70b-versatile,90,92,1.0738e-05,0.0,5281.083106994629,0.85,False
+Contrast agile and waterfall software development methodologies.,analytical,adaptive_v2,high,llama-3.3-70b-versatile,87,55,8.378e-06,0.0,5569.2138671875,0.9,False
+Contrast agile and waterfall software development methodologies.,analytical,always_medium,high,llama-3.3-70b-versatile,87,67,9.086e-06,0.0,5341.6430950164795,0.9,False
+Contrast agile and waterfall software development methodologies.,analytical,no_cache,high,llama-3.3-70b-versatile,87,38,7.375e-06,0.0,4923.968553543091,0.9,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,adaptive_v2,medium,llama-3.3-70b-versatile,91,113,1.2036e-05,0.0,5105.889320373535,0.85,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,always_medium,medium,llama-3.3-70b-versatile,91,110,1.1859e-05,0.0,5385.741710662842,0.92,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,no_cache,medium,llama-3.3-70b-versatile,91,178,1.5871e-05,0.0,6789.351463317871,0.875,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,adaptive_v2,medium,llama-3.3-70b-versatile,93,107,1.18e-05,0.0,5459.335565567017,0.92,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,always_medium,medium,llama-3.3-70b-versatile,93,137,1.3569999999999999e-05,0.0,5581.859350204468,0.88,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,no_cache,medium,llama-3.3-70b-versatile,93,121,1.2626e-05,0.0,7090.903043746948,0.87,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,adaptive_v2,high,llama-3.3-70b-versatile,89,60,8.791000000000001e-06,0.0,6823.219299316406,0.83,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,always_medium,high,llama-3.3-70b-versatile,89,104,1.1387e-05,0.0,7376.845598220825,0.88,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,no_cache,high,llama-3.3-70b-versatile,89,103,1.1327999999999999e-05,0.0,5884.007453918457,0.85,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,adaptive_v2,high,llama-3.3-70b-versatile,91,76,9.852999999999999e-06,0.0,5418.404102325439,0.85,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,always_medium,high,llama-3.3-70b-versatile,91,110,1.1859e-05,0.0,5416.002988815308,0.85,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,no_cache,high,llama-3.3-70b-versatile,91,83,1.0266e-05,0.0,5390.350103378296,0.9,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,adaptive_v2,high,llama-3.3-70b-versatile,90,67,9.263000000000001e-06,0.0,6234.028577804565,0.87,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,always_medium,high,llama-3.3-70b-versatile,90,70,9.440000000000001e-06,0.0,5804.185390472412,0.88,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,no_cache,high,llama-3.3-70b-versatile,90,49,8.201e-06,0.0,5344.233274459839,0.83,False
