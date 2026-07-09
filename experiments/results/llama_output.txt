@@ -1,0 +1,4 @@
+Config              Avg Conf    Avg Tokens    Avg Cost $    Avg Saved $   Cache Hit%
+adaptive_v2         0.947       153.8         0.000009      0.000000      0.0%
+always_medium       0.943       153.2         0.000009      0.000000      0.0%
+no_cache            0.949       151.9         0.000009      0.000000      0.0%
