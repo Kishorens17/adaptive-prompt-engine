@@ -1,0 +1,23 @@
+
+============================================================
+RULE-BASED CLASSIFIER — BENCHMARK SUMMARY
+============================================================
+Total queries                  50
+Overall accuracy               68.0%  (34/50 correct)
+Avg latency per query          0.0069 ms
+
+Class           Correct   Total   Accuracy
+---------------------------------------------
+factual              12      12     100.0%
+reasoning             3      13      23.1%
+creative             12      12     100.0%
+analytical            7      13      53.8%
+
+Confusion Matrix (predicted →, expected ↓):
+
+                 factual   reasoning    creative  analytical
+     factual          12           0           0           0
+   reasoning          10           3           0           0
+    creative           0           0          12           0
+  analytical           5           0           1           7
+============================================================
