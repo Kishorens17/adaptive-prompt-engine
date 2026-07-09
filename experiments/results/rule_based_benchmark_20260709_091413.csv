@@ -1,0 +1,51 @@
+query,expected_type,predicted_type,correct,latency_ms
+What year was Python created?,factual,factual,True,0.013499986380338669
+What is the capital of France?,factual,factual,True,0.007899943739175797
+Who wrote the novel 1984?,factual,factual,True,0.005899928510189056
+What is the boiling point of water at sea level?,factual,factual,True,0.00800006091594696
+How many continents are there on Earth?,factual,factual,True,0.007200054824352264
+Define photosynthesis.,factual,factual,True,0.004400033503770828
+What is the chemical symbol for gold?,factual,factual,True,0.006600050255656242
+When did World War II end?,factual,factual,True,0.005100155249238014
+What is the capital of Japan?,factual,factual,True,0.006400048732757568
+How many bones are in the human body?,factual,factual,True,0.011999858543276787
+What is the speed of light in a vacuum?,factual,factual,True,0.011300202459096909
+Who is credited with inventing the telephone?,factual,factual,True,0.011700205504894257
+Prove that the sum of two odd numbers is always even.,reasoning,reasoning,True,0.004600035026669502
+Prove that the square root of 2 is irrational.,reasoning,reasoning,True,0.002299901098012924
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,factual,False,0.008400063961744308
+Show that the product of two even numbers is even.,reasoning,factual,False,0.007899943739175797
+Why does increasing temperature increase reaction rate?,reasoning,factual,False,0.00800006091594696
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,factual,False,0.00900006853044033
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,factual,False,0.011999858543276787
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,factual,False,0.009499955922365189
+Prove that there are infinitely many prime numbers.,reasoning,reasoning,True,0.001500127837061882
+Derive Newton's second law from the definition of momentum.,reasoning,factual,False,0.008600065484642982
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,factual,False,0.01009996049106121
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,factual,False,0.009899958968162537
+Why does ice float on water? Explain logically using density.,reasoning,factual,False,0.00900006853044033
+Write a Tamil folk song about monsoon season.,creative,creative,True,0.002700136974453926
+Write a short poem about the ocean at sunset.,creative,creative,True,0.002299901098012924
+Compose a haiku about autumn leaves.,creative,creative,True,0.0029997900128364563
+Write a short story about a robot learning to paint.,creative,creative,True,0.002699904143810272
+Imagine a city built entirely underwater and describe a day there.,creative,creative,True,0.005200039595365524
+Write a joke about software developers.,creative,creative,True,0.002100132405757904
+Brainstorm three creative names for a coffee shop.,creative,creative,True,0.005600042641162872
+Write a lullaby about the stars.,creative,creative,True,0.00209989957511425
+Compose a short script for a two-character comedy sketch.,creative,creative,True,0.004200031980872154
+Write a poem in the style of a monsoon evening in Chennai.,creative,creative,True,0.002400018274784088
+Imagine you are a tree and describe your life across four seasons.,creative,creative,True,0.004800036549568176
+Write a creative product description for a futuristic backpack.,creative,creative,True,0.002800021320581436
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,analytical,True,0.00690016895532608
+Analyze the pros and cons of microservices versus a monolith.,analytical,factual,False,0.008899951353669167
+Contrast supervised and unsupervised learning approaches.,analytical,analytical,True,0.0070999376475811005
+Compare SQL and NoSQL databases for a high-write workload.,analytical,creative,False,0.00300002284348011
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,factual,False,0.007899943739175797
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,analytical,True,0.0078000593930482864
+Analyze the differences between TCP and UDP for real-time applications.,analytical,factual,False,0.009400071576237679
+Contrast agile and waterfall software development methodologies.,analytical,analytical,True,0.007999828085303307
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,analytical,True,0.008200062438845634
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,factual,False,0.011400086805224419
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,analytical,True,0.00790017656981945
+Analyze the pros and cons of remote work versus in-office work.,analytical,factual,False,0.00909995287656784
+Contrast classical machine learning and deep learning for tabular data.,analytical,analytical,True,0.00900006853044033

@@ -7,7 +7,7 @@
 
 [![Tests](https://img.shields.io/badge/tests-31%20passed-brightgreen)]()
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)]()
-[![Providers](https://img.shields.io/badge/providers-Gemini%20%7C%20OpenAI%20%7C%20Groq-orange)]()
+[![Providers](https://img.shields.io/badge/providers-Gemini%20%7C%20OpenAI%20%7C%20Groq%20%7C%20NVIDIA-orange)]()
 
 ---
 
@@ -18,7 +18,7 @@ The Adaptive Prompt Engine sits between your application and any LLM provider. I
 | Capability | How |
 |---|---|
 | **Smart model routing** | Continuous complexity score (0–1) routes cheap queries to Flash/mini, hard ones to Pro/GPT-4o |
-| **Multi-provider** | Gemini · OpenAI · Groq — switch with `--provider` |
+| **Multi-provider** | Gemini · OpenAI · Groq · NVIDIA NIM — switch with `--provider` |
 | **Semantic cache** | Vectorized numpy similarity search; same question = 0 tokens spent |
 | **RAG (auto)** | Upload docs → every query automatically uses them as context |
 | **Tool use** | LLM calls your registered webhook tools via native function calling |
@@ -58,7 +58,7 @@ adaptive_prompt_engine/
 │   └── query_log.py                 ← Full audit log (tokens, cost, latency)
 │
 ├── llm/
-│   └── llm_client.py                ← Gemini / OpenAI / Groq / Mock — unified interface
+│   └── llm_client.py                ← Gemini / OpenAI / Groq / NVIDIA / Mock — unified interface
 │
 ├── api/
 │   ├── server.py                    ← FastAPI REST server (20+ endpoints)
@@ -130,9 +130,12 @@ Edit `.env`:
 GEMINI_API_KEY=your_gemini_key_here
 OPENAI_API_KEY=your_openai_key_here
 GROQ_API_KEY=your_groq_key_here
+NVIDIA_API_KEY=your_nvidia_key_here
 ```
 
 > **Groq is free** with generous limits — great for testing. Get a key at [console.groq.com](https://console.groq.com).
+
+> **NVIDIA NIM** offers free credits for hosted models (Mistral, DeepSeek, Qwen, Nemotron). Get a key at [build.nvidia.com](https://build.nvidia.com).
 
 ---
 
@@ -153,6 +156,9 @@ python main.py --provider openai
 # With Groq (free + ultra-fast)
 python main.py --provider groq
 
+# With NVIDIA NIM (free credits — Mistral, DeepSeek, Qwen, Nemotron)
+python main.py --provider nvidia
+
 # Force cheapest model for all queries
 python main.py --provider gemini --budget low
 
@@ -172,6 +178,7 @@ python main.py --provider gemini --no-cache
 python main.py --provider gemini --query "What is the capital of France?"
 python main.py --provider groq   --query "Explain how transformers work" --verbose
 python main.py --provider openai --query "Write a haiku about recursion" --budget quality
+python main.py --provider nvidia --query "Analyze the trade-offs of microservices" --budget quality
 ```
 
 ### Start the REST API + Dashboard
@@ -183,26 +190,27 @@ python main.py --serve
 The terminal will print:
 
 ```
-───────────────────────────────────────────────────
-  🚀  Adaptive Prompt Engine — API Server
-───────────────────────────────────────────────────
-  Local:      http://localhost:8000
-  Network:    http://0.0.0.0:8000
-  API docs:   http://localhost:8000/docs
-  Dashboard:  http://localhost:8000/dashboard
-───────────────────────────────────────────────────
+-------------------------------------------------------
+  >   Adaptive Prompt Engine - API Server
+-------------------------------------------------------
+  Local:      http://localhost:8081
+  Network:    http://127.0.0.1:8081
+  API docs:   http://localhost:8081/docs
+  Dashboard:  http://localhost:8081/dashboard
+-------------------------------------------------------
 ```
 
-Custom port:
+Custom port / host:
 
 ```bash
 python main.py --serve --port 9000
+python main.py --serve --host 0.0.0.0 --port 8081
 ```
 
 Or run uvicorn directly:
 
 ```bash
-uvicorn api.server:app --reload --port 8000
+uvicorn api.server:app --reload --port 8081
 ```
 
 ### Run Tests
@@ -216,12 +224,24 @@ Expected: **31 passed** (all offline — no API key needed)
 ### Run the Benchmark
 
 ```bash
-# Offline / mock (instant)
+# Offline / mock (instant, no API key needed)
 python -m experiments.run_benchmark
 
-# With a real provider
-python -m experiments.run_benchmark --provider gemini --budget balanced
+# Gemini free tier — add --delay 12 to stay under the 5 RPM quota
+# (the benchmark fires 3 calls per query; 12 s gap = ~1 req/4 s)
+python -m experiments.run_benchmark --provider gemini --budget balanced --delay 12
+
+# Groq / NVIDIA — generous limits, a small delay is enough
+python -m experiments.run_benchmark --provider groq  --budget balanced --delay 2
+python -m experiments.run_benchmark --provider nvidia --budget balanced --delay 2
+
+# Run only specific configurations
+python -m experiments.run_benchmark --provider gemini --configs adaptive_v2 no_cache --delay 12
 ```
+
+> **Rate-limit tip:** Without `--delay`, real providers will hit quota errors after a few queries.
+> The benchmark automatically retries rate-limited calls with exponential back-off, and saves
+> partial results if you interrupt with Ctrl+C.
 
 Results are saved to `experiments/results/benchmark_<timestamp>.csv`.
 
@@ -238,7 +258,7 @@ Results are saved to `experiments/results/benchmark_<timestamp>.csv`.
 
 **Example — regular query:**
 ```bash
-curl -X POST http://localhost:8000/v1/query \
+curl -X POST http://localhost:8081/v1/query \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What is the capital of France?",
@@ -274,7 +294,7 @@ curl -X POST http://localhost:8000/v1/query \
 
 **Example — streaming:**
 ```bash
-curl -X POST http://localhost:8000/v1/query/stream \
+curl -X POST http://localhost:8081/v1/query/stream \
   -H "Content-Type: application/json" \
   -d '{"query": "Explain gravity", "provider": "gemini"}'
 ```
@@ -293,23 +313,23 @@ data: {"done": true, "answer": "Gravity is...", "model_used": "gemini-2.5-flash"
 
 ```bash
 # Create a session
-SESSION=$(curl -s -X POST http://localhost:8000/v1/sessions | python -c "import sys,json; print(json.load(sys.stdin)['session_id'])")
+SESSION=$(curl -s -X POST http://localhost:8081/v1/sessions | python -c "import sys,json; print(json.load(sys.stdin)['session_id'])")
 
 # Ask within the session
-curl -X POST http://localhost:8000/v1/sessions/$SESSION/query \
+curl -X POST http://localhost:8081/v1/sessions/$SESSION/query \
   -H "Content-Type: application/json" \
   -d '{"query": "My name is Kishore", "provider": "gemini"}'
 
 # Follow-up — engine remembers the name
-curl -X POST http://localhost:8000/v1/sessions/$SESSION/query \
+curl -X POST http://localhost:8081/v1/sessions/$SESSION/query \
   -H "Content-Type: application/json" \
   -d '{"query": "What is my name?", "provider": "gemini"}'
 
 # View history
-curl http://localhost:8000/v1/sessions/$SESSION/history
+curl http://localhost:8081/v1/sessions/$SESSION/history
 
 # Delete session
-curl -X DELETE http://localhost:8000/v1/sessions/$SESSION
+curl -X DELETE http://localhost:8081/v1/sessions/$SESSION
 ```
 
 ---
@@ -320,7 +340,7 @@ Once a document is uploaded, **all queries automatically use it as context**.
 
 ```bash
 # Upload a document
-curl -X POST http://localhost:8000/v1/knowledge-base/upload \
+curl -X POST http://localhost:8081/v1/knowledge-base/upload \
   -H "Content-Type: application/json" \
   -d '{
     "text": "The Eiffel Tower is 330 metres tall and was completed in 1889.",
@@ -328,15 +348,15 @@ curl -X POST http://localhost:8000/v1/knowledge-base/upload \
   }'
 
 # Query — engine auto-retrieves relevant context
-curl -X POST http://localhost:8000/v1/query \
+curl -X POST http://localhost:8081/v1/query \
   -H "Content-Type: application/json" \
   -d '{"query": "How tall is the Eiffel Tower?", "provider": "gemini"}'
 
 # List documents
-curl http://localhost:8000/v1/knowledge-base
+curl http://localhost:8081/v1/knowledge-base
 
 # Delete a document
-curl -X DELETE http://localhost:8000/v1/knowledge-base/1
+curl -X DELETE http://localhost:8081/v1/knowledge-base/1
 ```
 
 ---
@@ -346,7 +366,7 @@ curl -X DELETE http://localhost:8000/v1/knowledge-base/1
 Register a webhook tool — the LLM will call it automatically when relevant.
 
 ```bash
-curl -X POST http://localhost:8000/v1/tools/register \
+curl -X POST http://localhost:8081/v1/tools/register \
   -H "Content-Type: application/json" \
   -d '{
     "name": "get_weather",
@@ -362,10 +382,10 @@ curl -X POST http://localhost:8000/v1/tools/register \
   }'
 
 # List tools
-curl http://localhost:8000/v1/tools
+curl http://localhost:8081/v1/tools
 
 # Remove a tool
-curl -X DELETE http://localhost:8000/v1/tools/get_weather
+curl -X DELETE http://localhost:8081/v1/tools/get_weather
 ```
 
 Built-in tools (always available, no webhook needed):
@@ -378,22 +398,22 @@ Built-in tools (always available, no webhook needed):
 
 ```bash
 # Aggregate statistics
-curl http://localhost:8000/v1/stats
+curl http://localhost:8081/v1/stats
 
 # Recent queries (last 50)
-curl http://localhost:8000/v1/logs
+curl http://localhost:8081/v1/logs
 
 # Daily token usage (last 7 days)
-curl http://localhost:8000/v1/daily-usage
+curl http://localhost:8081/v1/daily-usage
 
 # Model tier distribution
-curl http://localhost:8000/v1/model-dist
+curl http://localhost:8081/v1/model-dist
 
 # Cache stats
-curl http://localhost:8000/v1/cache/stats
+curl http://localhost:8081/v1/cache/stats
 
 # Clear cache
-curl -X DELETE http://localhost:8000/v1/cache
+curl -X DELETE http://localhost:8081/v1/cache
 ```
 
 ---
@@ -402,7 +422,7 @@ curl -X DELETE http://localhost:8000/v1/cache
 
 | Flag | Default | Description |
 |---|---|---|
-| `--provider` | `mock` | `mock` \| `gemini` \| `openai` \| `groq` |
+| `--provider` | `mock` | `mock` \| `gemini` \| `openai` \| `groq` \| `nvidia` |
 | `--budget` | `balanced` | `low` \| `balanced` \| `quality` |
 | `--model` | auto | Override model (skips smart routing) |
 | `--api-key` | from `.env` | API key override |
@@ -411,18 +431,20 @@ curl -X DELETE http://localhost:8000/v1/cache
 | `--no-cache` | off | Disable semantic cache for this session |
 | `--verbose` | off | Show full metadata (model, tokens, cost, judge score) |
 | `--serve` | off | Start REST API server |
-| `--port` | `8000` | Server port (used with `--serve`) |
-| `--host` | `0.0.0.0` | Server host (used with `--serve`) |
+| `--port` | `8081` | Server port (used with `--serve`) |
+| `--host` | `127.0.0.1` | Server host (used with `--serve`) |
 
 ---
 
 ## Model Routing Table
 
-| Tier | Score | Gemini | OpenAI | Groq | Cost/1K tokens |
+| Tier | Score | Gemini | OpenAI | Groq | NVIDIA NIM |
 |---|---|---|---|---|---|
-| LOW | 0.00–0.35 | gemini-2.5-flash | gpt-4o-mini | llama-3.3-70b | ~$0.00006–0.00015 |
-| MEDIUM | 0.35–0.65 | gemini-2.5-flash | gpt-4o-mini | llama-3.3-70b | ~$0.00015–0.00038 |
-| HIGH | 0.65–1.00 | gemini-2.5-pro | gpt-4o | llama-3.3-70b | ~$0.00250–0.00375 |
+| LOW | 0.00–0.35 | gemini-2.5-flash | gpt-4o-mini | llama-3.3-70b | mistral-medium-3 |
+| MEDIUM | 0.35–0.65 | gemini-2.5-flash | gpt-4o-mini | llama-3.3-70b | qwen3.5-122b |
+| HIGH | 0.65–1.00 | gemini-2.5-pro | gpt-4o | llama-3.3-70b | deepseek-r1-0528 |
+
+> NVIDIA NIM costs are $0.00 (free credits) for all tiers during the evaluation period.
 
 Override per tier via `.env`:
 ```env
@@ -439,6 +461,7 @@ ROUTER_HIGH_MODEL_OPENAI=gpt-4o
 GEMINI_API_KEY=your_key
 OPENAI_API_KEY=your_key
 GROQ_API_KEY=your_key
+NVIDIA_API_KEY=your_key          # get free credits at build.nvidia.com
 
 # ── Model Routing Overrides (optional) ───────────────────────────────────
 ROUTER_LOW_MODEL_GEMINI=gemini-2.5-flash
@@ -479,7 +502,7 @@ Strategy Selector:
     └── AdaptivePromptStrategy  (default)
     │
     ▼
-LLM Call (Gemini / OpenAI / Groq)
+LLM Call (Gemini / OpenAI / Groq / NVIDIA NIM)
     │
     ▼
 LLMJudgeEvaluator ── LLM rates its own answer: accuracy/completeness/relevance/clarity
