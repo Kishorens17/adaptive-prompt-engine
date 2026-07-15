@@ -597,7 +597,11 @@
 const API = '';   // same origin
 
 const PROVIDER_MODELS = {
-  gemini: [],
+  gemini: [
+    "gemini-2.5-flash",
+    "gemini-2.5-pro",
+    "gemini-2.0-flash-lite"
+  ],
   openai: [],
   groq: [
     "llama-3.3-70b-versatile",
@@ -611,7 +615,8 @@ const PROVIDER_MODELS = {
     "mistralai/mistral-medium-3-128k",
     "qwen/qwen3.5-122b-a10b",
     "nvidia/llama-3.1-nemotron-ultra-253b-v1",
-    "openai/gpt-oss-120b"
+    "openai/gpt-oss-120b",
+    "google/gemma-3n-e4b-it"
   ]
 };
 
