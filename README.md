@@ -5,6 +5,8 @@
 > lets the LLM judge its own answer quality, and caches semantically similar results —
 > all without a single hardcoded rule.
 
+![Architecture Diagram](docs/architecture.png)
+
 [![Tests](https://img.shields.io/badge/tests-31%20passed-brightgreen)]()
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)]()
 [![Providers](https://img.shields.io/badge/providers-Gemini%20%7C%20OpenAI%20%7C%20Groq%20%7C%20NVIDIA-orange)]()
