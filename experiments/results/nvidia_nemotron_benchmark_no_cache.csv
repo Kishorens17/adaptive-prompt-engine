@@ -1,0 +1,151 @@
+query,expected_type,config,complexity_tier,model_used,input_tokens,output_tokens,cost_usd,cost_saved_usd,latency_ms,confidence,cache_hit
+What year was Python created?,factual,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,85,3,0.0,0.0,17456.759691238403,1.0,False
+What year was Python created?,factual,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,85,3,0.0,0.0,3698.310375213623,1.0,False
+What year was Python created?,factual,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,85,3,0.0,0.0,1652.3046493530273,1.0,False
+What is the capital of France?,factual,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,86,3,0.0,0.0,4214.621305465698,1.0,False
+What is the capital of France?,factual,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,86,3,0.0,0.0,1577.1408081054688,1.0,False
+What is the capital of France?,factual,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,86,3,0.0,0.0,1627.6395320892334,1.0,False
+Who wrote the novel 1984?,factual,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,85,4,0.0,0.0,4066.394805908203,1.0,False
+Who wrote the novel 1984?,factual,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,85,4,0.0,0.0,1706.2022686004639,1.0,False
+Who wrote the novel 1984?,factual,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,85,4,0.0,0.0,29633.52680206299,1.0,False
+What is the boiling point of water at sea level?,factual,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,90,3,0.0,0.0,1880.57279586792,1.0,False
+What is the boiling point of water at sea level?,factual,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,90,4,0.0,0.0,10281.125783920288,1.0,False
+What is the boiling point of water at sea level?,factual,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,90,4,0.0,0.0,2836.561679840088,1.0,False
+How many continents are there on Earth?,factual,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,87,3,0.0,0.0,2981.9998741149902,0.9575,False
+How many continents are there on Earth?,factual,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,87,3,0.0,0.0,4854.334354400635,0.9575,False
+How many continents are there on Earth?,factual,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,87,3,0.0,0.0,5285.520792007446,0.9915,False
+Define photosynthesis.,factual,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,82,29,0.0,0.0,16062.416315078735,1.0,False
+Define photosynthesis.,factual,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,82,30,0.0,0.0,7336.702585220337,1.0,False
+Define photosynthesis.,factual,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,82,30,0.0,0.0,5361.183404922485,1.0,False
+What is the chemical symbol for gold?,factual,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,87,3,0.0,0.0,2729.6900749206543,1.0,False
+What is the chemical symbol for gold?,factual,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,87,3,0.0,0.0,4042.593479156494,1.0,False
+What is the chemical symbol for gold?,factual,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,87,3,0.0,0.0,35348.22463989258,1.0,False
+When did World War II end?,factual,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,86,5,0.0,0.0,8005.062818527222,0.9915,False
+When did World War II end?,factual,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,86,13,0.0,0.0,3806.699275970459,1.0,False
+When did World War II end?,factual,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,86,5,0.0,0.0,4700.505971908569,1.0,False
+What is the capital of Japan?,factual,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,86,3,0.0,0.0,31411.48805618286,1.0,False
+What is the capital of Japan?,factual,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,86,3,0.0,0.0,12377.419710159302,1.0,False
+What is the capital of Japan?,factual,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,86,3,0.0,0.0,9117.598533630371,1.0,False
+How many bones are in the human body?,factual,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,88,3,0.0,0.0,13440.116167068481,1.0,False
+How many bones are in the human body?,factual,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,88,3,0.0,0.0,50546.45252227783,1.0,False
+How many bones are in the human body?,factual,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,88,3,0.0,0.0,10401.966571807861,0.9915,False
+What is the speed of light in a vacuum?,factual,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,89,4,0.0,0.0,6548.431396484375,1.0,False
+What is the speed of light in a vacuum?,factual,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,89,6,0.0,0.0,4955.549478530884,1.0,False
+What is the speed of light in a vacuum?,factual,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,89,6,0.0,0.0,8790.044784545898,1.0,False
+Who is credited with inventing the telephone?,factual,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,87,5,0.0,0.0,21029.74557876587,0.9915,False
+Who is credited with inventing the telephone?,factual,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,87,5,0.0,0.0,3221.498966217041,0.9915,False
+Who is credited with inventing the telephone?,factual,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,87,5,0.0,0.0,4238.926410675049,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,91,60,0.0,0.0,5254.595994949341,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,91,25,0.0,0.0,5779.9835205078125,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,91,34,0.0,0.0,2878.5111904144287,1.0,False
+Prove that the square root of 2 is irrational.,reasoning,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,89,82,0.0,0.0,3593.661308288574,1.0,False
+Prove that the square root of 2 is irrational.,reasoning,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,89,73,0.0,0.0,3423.6528873443604,1.0,False
+Prove that the square root of 2 is irrational.,reasoning,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,89,80,0.0,0.0,4062.619924545288,1.0,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,86,82,0.0,0.0,4808.656930923462,1.0,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,86,98,0.0,0.0,3742.419958114624,1.0,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,86,102,0.0,0.0,3983.3879470825195,1.0,False
+Show that the product of two even numbers is even.,reasoning,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,90,39,0.0,0.0,2587.4884128570557,1.0,False
+Show that the product of two even numbers is even.,reasoning,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,90,37,0.0,0.0,2809.6094131469727,1.0,False
+Show that the product of two even numbers is even.,reasoning,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,90,37,0.0,0.0,3259.1307163238525,1.0,False
+Why does increasing temperature increase reaction rate?,reasoning,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,87,38,0.0,0.0,3791.8381690979004,0.9915,False
+Why does increasing temperature increase reaction rate?,reasoning,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,87,34,0.0,0.0,13764.323234558105,0.9915,False
+Why does increasing temperature increase reaction rate?,reasoning,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,87,43,0.0,0.0,3931.2474727630615,0.9915,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,92,30,0.0,0.0,7655.536651611328,1.0,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,92,31,0.0,0.0,4520.732641220093,1.0,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,92,20,0.0,0.0,3539.6482944488525,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,95,47,0.0,0.0,10400.35367012024,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,95,34,0.0,0.0,3103.04594039917,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,95,58,0.0,0.0,5829.542398452759,1.0,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,92,117,0.0,0.0,66577.69465446472,0.9915,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,92,133,0.0,0.0,3828.596591949463,0.9915,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,92,79,0.0,0.0,14090.238332748413,0.9915,False
+Prove that there are infinitely many prime numbers.,reasoning,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,88,50,0.0,0.0,4510.079860687256,1.0,False
+Prove that there are infinitely many prime numbers.,reasoning,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,88,46,0.0,0.0,3777.1670818328857,1.0,False
+Prove that there are infinitely many prime numbers.,reasoning,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,88,105,0.0,0.0,4389.193296432495,1.0,False
+Derive Newton's second law from the definition of momentum.,reasoning,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,89,63,0.0,0.0,3853.5146713256836,1.0,False
+Derive Newton's second law from the definition of momentum.,reasoning,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,89,53,0.0,0.0,7270.713329315186,1.0,False
+Derive Newton's second law from the definition of momentum.,reasoning,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,89,59,0.0,0.0,5278.963327407837,1.0,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,92,62,0.0,0.0,2857.2113513946533,1.0,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,92,89,0.0,0.0,3351.353883743286,1.0,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,92,68,0.0,0.0,5885.072946548462,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,91,60,0.0,0.0,2835.695266723633,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,91,53,0.0,0.0,3226.332664489746,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,91,63,0.0,0.0,3151.4692306518555,1.0,False
+Why does ice float on water? Explain logically using density.,reasoning,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,90,48,0.0,0.0,6908.547401428223,0.9915,False
+Why does ice float on water? Explain logically using density.,reasoning,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,90,71,0.0,0.0,3498.168468475342,1.0,False
+Why does ice float on water? Explain logically using density.,reasoning,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,90,74,0.0,0.0,3567.8372383117676,1.0,False
+Write a Tamil folk song about monsoon season.,creative,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,88,97,0.0,0.0,7212.570667266846,0.915,False
+Write a Tamil folk song about monsoon season.,creative,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,88,117,0.0,0.0,10367.499113082886,0.932,False
+Write a Tamil folk song about monsoon season.,creative,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,88,113,0.0,0.0,4993.676424026489,0.8724999999999999,False
+Write a short poem about the ocean at sunset.,creative,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,89,29,0.0,0.0,2963.8073444366455,1.0,False
+Write a short poem about the ocean at sunset.,creative,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,89,26,0.0,0.0,3100.2252101898193,0.9575,False
+Write a short poem about the ocean at sunset.,creative,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,89,27,0.0,0.0,6287.503719329834,0.9575,False
+Compose a haiku about autumn leaves.,creative,adaptive_v2,low,nvidia/nemotron-3-ultra-550b-a55b,86,15,0.0,0.0,3251.1889934539795,1.0,False
+Compose a haiku about autumn leaves.,creative,always_medium,low,nvidia/nemotron-3-ultra-550b-a55b,86,15,0.0,0.0,2747.0319271087646,1.0,False
+Compose a haiku about autumn leaves.,creative,no_cache,low,nvidia/nemotron-3-ultra-550b-a55b,86,13,0.0,0.0,3140.2556896209717,0.9575,False
+Write a short story about a robot learning to paint.,creative,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,90,151,0.0,0.0,35516.57772064209,0.932,False
+Write a short story about a robot learning to paint.,creative,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,90,181,0.0,0.0,7147.899627685547,0.9575,False
+Write a short story about a robot learning to paint.,creative,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,90,169,0.0,0.0,4240.464687347412,0.932,False
+Imagine a city built entirely underwater and describe a day there.,creative,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,91,208,0.0,0.0,26976.0479927063,0.932,False
+Imagine a city built entirely underwater and describe a day there.,creative,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,91,174,0.0,0.0,5360.534191131592,0.9575,False
+Imagine a city built entirely underwater and describe a day there.,creative,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,91,112,0.0,0.0,4610.495090484619,0.932,False
+Write a joke about software developers.,creative,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,86,12,0.0,0.0,18560.978651046753,1.0,False
+Write a joke about software developers.,creative,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,86,12,0.0,0.0,6569.651126861572,1.0,False
+Write a joke about software developers.,creative,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,86,12,0.0,0.0,2912.4844074249268,1.0,False
+Brainstorm three creative names for a coffee shop.,creative,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,88,35,0.0,0.0,3366.78147315979,0.9575,False
+Brainstorm three creative names for a coffee shop.,creative,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,88,14,0.0,0.0,4056.441068649292,1.0,False
+Brainstorm three creative names for a coffee shop.,creative,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,88,15,0.0,0.0,35078.076124191284,0.9575,False
+Write a lullaby about the stars.,creative,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,86,152,0.0,0.0,8045.859098434448,1.0,False
+Write a lullaby about the stars.,creative,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,86,73,0.0,0.0,5014.233350753784,0.9575,False
+Write a lullaby about the stars.,creative,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,86,73,0.0,0.0,9703.201532363892,0.9575,False
+Compose a short script for a two-character comedy sketch.,creative,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,89,395,0.0,0.0,26038.069009780884,0.875,False
+Compose a short script for a two-character comedy sketch.,creative,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,89,231,0.0,0.0,11134.263753890991,0.9575,False
+Compose a short script for a two-character comedy sketch.,creative,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,89,186,0.0,0.0,6356.370210647583,1.0,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,92,77,0.0,0.0,3564.884901046753,0.932,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,92,137,0.0,0.0,14876.211881637573,1.0,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,92,125,0.0,0.0,5842.422008514404,0.9575,False
+Imagine you are a tree and describe your life across four seasons.,creative,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,92,101,0.0,0.0,5226.631879806519,0.9575,False
+Imagine you are a tree and describe your life across four seasons.,creative,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,92,85,0.0,0.0,12118.605852127075,0.9575,False
+Imagine you are a tree and describe your life across four seasons.,creative,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,92,93,0.0,0.0,6962.412357330322,0.9575,False
+Write a creative product description for a futuristic backpack.,creative,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,89,92,0.0,0.0,4012.0773315429688,0.9575,False
+Write a creative product description for a futuristic backpack.,creative,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,89,120,0.0,0.0,4085.606098175049,0.9575,False
+Write a creative product description for a futuristic backpack.,creative,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,89,155,0.0,0.0,5458.4410190582275,0.932,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,88,167,0.0,0.0,10524.295091629028,0.983,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,88,151,0.0,0.0,7011.968612670898,0.9575,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,88,180,0.0,0.0,44765.580892562866,0.9575,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,90,138,0.0,0.0,37583.58192443848,0.9405,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,90,188,0.0,0.0,5247.852325439453,0.9575,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,90,207,0.0,0.0,37383.63218307495,0.875,False
+Contrast supervised and unsupervised learning approaches.,analytical,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,86,89,0.0,0.0,4089.9603366851807,0.983,False
+Contrast supervised and unsupervised learning approaches.,analytical,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,86,97,0.0,0.0,3864.793062210083,0.983,False
+Contrast supervised and unsupervised learning approaches.,analytical,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,86,91,0.0,0.0,5574.503660202026,0.9575,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,89,129,0.0,0.0,9201.71570777893,0.932,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,89,81,0.0,0.0,4637.972831726074,0.932,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,89,128,0.0,0.0,6306.811571121216,0.932,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,88,90,0.0,0.0,20077.56233215332,0.9575,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,88,87,0.0,0.0,3278.4571647644043,0.9575,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,88,112,0.0,0.0,12982.041597366333,0.932,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,90,109,0.0,0.0,67149.12605285645,0.932,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,90,145,0.0,0.0,5266.486644744873,0.9575,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,90,127,0.0,0.0,4078.7951946258545,0.932,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,90,114,0.0,0.0,5546.247720718384,0.983,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,90,119,0.0,0.0,13737.236261367798,0.9575,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,90,126,0.0,0.0,8699.242115020752,0.9575,False
+Contrast agile and waterfall software development methodologies.,analytical,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,87,110,0.0,0.0,4303.719997406006,0.9575,False
+Contrast agile and waterfall software development methodologies.,analytical,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,87,95,0.0,0.0,20150.52032470703,0.9575,False
+Contrast agile and waterfall software development methodologies.,analytical,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,87,113,0.0,0.0,36209.58495140076,0.983,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,91,100,0.0,0.0,49928.90644073486,0.983,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,91,128,0.0,0.0,37686.31410598755,0.9575,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,91,118,0.0,0.0,3857.6443195343018,0.983,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,adaptive_v2,medium,nvidia/nemotron-3-ultra-550b-a55b,93,272,0.0,0.0,7796.367406845093,0.9405,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,always_medium,medium,nvidia/nemotron-3-ultra-550b-a55b,93,147,0.0,0.0,19407.21368789673,0.9575,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,no_cache,medium,nvidia/nemotron-3-ultra-550b-a55b,93,282,0.0,0.0,76585.13236045837,0.932,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,89,121,0.0,0.0,11287.123203277588,0.9575,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,89,179,0.0,0.0,29491.820573806763,0.932,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,89,153,0.0,0.0,4259.90891456604,0.9575,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,91,135,0.0,0.0,5296.237468719482,0.9575,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,91,160,0.0,0.0,17182.46030807495,0.9575,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,91,138,0.0,0.0,39494.378328323364,0.9575,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,adaptive_v2,high,nvidia/nemotron-3-ultra-550b-a55b,90,102,0.0,0.0,4545.431613922119,1.0,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,always_medium,high,nvidia/nemotron-3-ultra-550b-a55b,90,135,0.0,0.0,9111.11068725586,0.9575,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,no_cache,high,nvidia/nemotron-3-ultra-550b-a55b,90,120,0.0,0.0,10754.852533340454,0.9575,False
