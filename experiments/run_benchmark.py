@@ -101,7 +101,11 @@ def main(argv: list[str] | None = None) -> None:
     args = parser.parse_args(argv if argv is not None else sys.argv[1:])
 
     # Three configurations
-    adaptive = AdaptivePromptEngine(provider=args.provider, model=args.model, budget=args.budget, use_cache=True)
+    # NOTE: use_cache=False for ALL configs to ensure benchmark isolation.
+    # The semantic cache is a production feature but must never be active
+    # during benchmarking — cached answers from a prior provider's run would
+    # silently contaminate later providers (v1 bug, fixed here).
+    adaptive = AdaptivePromptEngine(provider=args.provider, model=args.model, budget=args.budget, use_cache=False)
     always_medium = AdaptivePromptEngine(provider=args.provider, model=args.model, budget="balanced", use_cache=False)
     no_cache_eng = AdaptivePromptEngine(provider=args.provider, model=args.model, budget=args.budget, use_cache=False)
 

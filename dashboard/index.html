@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Adaptive Prompt Engine — Dashboard</title>
-  <meta name="description" content="Real-time analytics for the Adaptive Prompt Engine — token usage, cost savings, cache hit rate, and query logs." />
+  <meta name="description" content="Real-time analytics for the Adaptive Prompt Engine — token usage, cost savings, model routing, and query logs." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -363,10 +363,6 @@
     .tier-low    { background: #22d3a022; color: var(--green); border: 1px solid #22d3a044; }
     .tier-medium { background: #f6c94e22; color: var(--yellow); border: 1px solid #f6c94e44; }
     .tier-high   { background: #f46e6e22; color: var(--red);   border: 1px solid #f46e6e44; }
-    .tier-cached { background: #4eb8f622; color: var(--blue);  border: 1px solid #4eb8f644; }
-
-    .cache-hit-yes { color: var(--green); }
-    .cache-hit-no  { color: var(--muted); }
 
     /* ── Spinner ──────────────────────────────────────────────────── */
     .spinner {
@@ -382,20 +378,7 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Cache controls ───────────────────────────────────────────── */
-    .cache-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 32px;
-    }
 
-    .cache-info {
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    .cache-info strong { color: var(--text); }
 
     /* ── Misc ─────────────────────────────────────────────────────── */
     .section-title {
@@ -426,14 +409,9 @@
     <div class="logo-icon">⚡</div>
     Adaptive Prompt Engine
   </div>
-  <div style="display:flex; gap:12px; align-items:center">
-    <div class="status-pill">
-      <div class="status-dot"></div>
-      <span id="api-status">Connecting…</span>
-    </div>
-    <button class="btn btn-danger" onclick="clearCache()" style="padding:8px 16px; font-size:0.78rem">
-      Clear Cache
-    </button>
+  <div class="status-pill">
+    <div class="status-dot"></div>
+    <span id="api-status">Connecting…</span>
   </div>
 </header>
 
@@ -444,7 +422,7 @@
     <div class="stat-card purple">
       <div class="stat-label">Total Queries</div>
       <div class="stat-value" id="stat-total">—</div>
-      <div class="stat-sub" id="stat-cache-rate">—% cache hit rate</div>
+      <div class="stat-sub" id="stat-total-sub">queries processed</div>
     </div>
     <div class="stat-card green">
       <div class="stat-label">Total Cost Saved</div>
@@ -536,13 +514,12 @@
             <th>Cost $</th>
             <th>Saved $</th>
             <th>Latency</th>
-            <th>Cache</th>
             <th>Conf.</th>
             <th>Time</th>
           </tr>
         </thead>
         <tbody id="log-body">
-          <tr class="loading-row"><td colspan="10">Loading…</td></tr>
+          <tr class="loading-row"><td colspan="9">Loading…</td></tr>
         </tbody>
       </table>
     </div>
@@ -641,8 +618,6 @@ async function loadStats() {
     if (!r.ok) throw new Error();
     const d = await r.json();
     document.getElementById('stat-total').textContent   = d.total_queries.toLocaleString();
-    document.getElementById('stat-cache-rate').textContent =
-      `${(d.cache_hit_rate * 100).toFixed(1)}% cache hit rate`;
     document.getElementById('stat-saved').textContent   = `$${d.total_saved_usd.toFixed(4)}`;
     document.getElementById('stat-cost').textContent    = `$${d.total_cost_usd.toFixed(4)}`;
     document.getElementById('stat-tokens').textContent  = `${(d.total_tokens||0).toLocaleString()} tokens`;
@@ -695,7 +670,7 @@ async function loadDistChart() {
   const r = await fetch(`${API}/v1/model-dist`);
   const data = await r.json();
   if (!data.length) return;
-  const colors = { low: '#22d3a0', medium: '#f6c94e', high: '#f46e6e', cached: '#4eb8f6' };
+  const colors = { low: '#22d3a0', medium: '#f6c94e', high: '#f46e6e' };
 
   const ctx = document.getElementById('dist-chart').getContext('2d');
   if (distChart) distChart.destroy();
@@ -724,19 +699,18 @@ async function loadDistChart() {
 // ── Query log ────────────────────────────────────────────────────────────
 async function loadLogs() {
   const tbody = document.getElementById('log-body');
-  tbody.innerHTML = '<tr class="loading-row"><td colspan="10">Loading…</td></tr>';
+  tbody.innerHTML = '<tr class="loading-row"><td colspan="9">Loading…</td></tr>';
   const r = await fetch(`${API}/v1/logs?limit=30`);
   const rows = await r.json();
 
   if (!rows.length) {
-    tbody.innerHTML = '<tr class="loading-row"><td colspan="10">No queries yet.</td></tr>';
+    tbody.innerHTML = '<tr class="loading-row"><td colspan="9">No queries yet.</td></tr>';
     return;
   }
 
   tbody.innerHTML = rows.map(row => {
     const tierClass = `tier-${row.complexity_tier || 'low'}`;
     const tierLabel = (row.complexity_tier || 'low').toUpperCase();
-    const cacheIcon = row.cache_hit ? '<span class="cache-hit-yes">✓ hit</span>' : '<span class="cache-hit-no">—</span>';
     const query = row.query.length > 50 ? row.query.slice(0, 50) + '…' : row.query;
     const time = new Date(row.timestamp).toLocaleTimeString();
     return `<tr>
@@ -747,7 +721,6 @@ async function loadLogs() {
       <td style="color:var(--yellow)">$${row.cost_usd.toFixed(6)}</td>
       <td style="color:var(--green)">$${row.cost_saved_usd.toFixed(6)}</td>
       <td>${row.latency_ms.toFixed(0)}ms</td>
-      <td>${cacheIcon}</td>
       <td>${row.confidence.toFixed(2)}</td>
       <td style="color:var(--muted)">${time}</td>
     </tr>`;
@@ -799,8 +772,6 @@ async function sendQuery() {
       { label: 'Saved', value: `$${d.cost_saved_usd.toFixed(6)}`, color: '#22d3a0' },
       { label: 'Latency', value: `${d.latency_ms.toFixed(0)}ms` },
       { label: 'Confidence', value: d.confidence.toFixed(2) },
-      { label: 'Cache', value: d.cache_hit ? '✓ HIT' : 'MISS',
-        color: d.cache_hit ? '#22d3a0' : '#6b7280' },
     ];
 
     let metaHtml = metaTags.map(t =>
@@ -967,13 +938,7 @@ async function deleteTool(name) {
   loadTools();
 }
 
-// ── Clear cache ──────────────────────────────────────────────────────────
-async function clearCache() {
-  if (!confirm('Clear the entire semantic cache?')) return;
-  await fetch(`${API}/v1/cache`, { method: 'DELETE' });
-  alert('Cache cleared.');
-  loadStats();
-}
+
 
 // ── Helpers ──────────────────────────────────────────────────────────────
 function escHtml(s) {
