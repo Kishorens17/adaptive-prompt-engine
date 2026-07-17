@@ -1,0 +1,151 @@
+query,expected_type,config,complexity_tier,model_used,input_tokens,output_tokens,cost_usd,cost_saved_usd,latency_ms,confidence,cache_hit
+What year was Python created?,factual,adaptive_v2,low,openai/gpt-oss-120b,85,3,0.0,0.0,7519.369602203369,0.9915,False
+What year was Python created?,factual,always_medium,low,openai/gpt-oss-120b,85,3,0.0,0.0,2309.4732761383057,0.9915,False
+What year was Python created?,factual,no_cache,low,openai/gpt-oss-120b,85,3,0.0,0.0,6139.793157577515,0.9915,False
+What is the capital of France?,factual,adaptive_v2,low,openai/gpt-oss-120b,86,3,0.0,0.0,4049.5378971099854,0.9915,False
+What is the capital of France?,factual,always_medium,low,openai/gpt-oss-120b,86,3,0.0,0.0,1527.8129577636719,1.0,False
+What is the capital of France?,factual,no_cache,low,openai/gpt-oss-120b,86,3,0.0,0.0,4117.3996925354,0.9915,False
+Who wrote the novel 1984?,factual,adaptive_v2,medium,openai/gpt-oss-120b,85,4,0.0,0.0,3902.4741649627686,0.9915,False
+Who wrote the novel 1984?,factual,always_medium,medium,openai/gpt-oss-120b,85,4,0.0,0.0,2684.344530105591,0.9915,False
+Who wrote the novel 1984?,factual,no_cache,medium,openai/gpt-oss-120b,85,4,0.0,0.0,3111.605167388916,1.0,False
+What is the boiling point of water at sea level?,factual,adaptive_v2,low,openai/gpt-oss-120b,90,6,0.0,0.0,3314.59379196167,0.9915,False
+What is the boiling point of water at sea level?,factual,always_medium,low,openai/gpt-oss-120b,90,6,0.0,0.0,3939.1565322875977,0.9915,False
+What is the boiling point of water at sea level?,factual,no_cache,low,openai/gpt-oss-120b,90,6,0.0,0.0,4436.186075210571,0.9915,False
+How many continents are there on Earth?,factual,adaptive_v2,low,openai/gpt-oss-120b,87,3,0.0,0.0,4175.698757171631,0.9915,False
+How many continents are there on Earth?,factual,always_medium,low,openai/gpt-oss-120b,87,3,0.0,0.0,4272.438764572144,0.9915,False
+How many continents are there on Earth?,factual,no_cache,low,openai/gpt-oss-120b,87,3,0.0,0.0,4298.121929168701,0.9915,False
+Define photosynthesis.,factual,adaptive_v2,medium,openai/gpt-oss-120b,82,25,0.0,0.0,5207.7929973602295,0.9915,False
+Define photosynthesis.,factual,always_medium,medium,openai/gpt-oss-120b,82,34,0.0,0.0,4102.675676345825,0.9915,False
+Define photosynthesis.,factual,no_cache,medium,openai/gpt-oss-120b,82,41,0.0,0.0,3555.0289154052734,0.9915,False
+What is the chemical symbol for gold?,factual,adaptive_v2,low,openai/gpt-oss-120b,87,3,0.0,0.0,4365.257978439331,1.0,False
+What is the chemical symbol for gold?,factual,always_medium,low,openai/gpt-oss-120b,87,3,0.0,0.0,3415.9910678863525,1.0,False
+What is the chemical symbol for gold?,factual,no_cache,low,openai/gpt-oss-120b,87,3,0.0,0.0,3825.0391483306885,1.0,False
+When did World War II end?,factual,adaptive_v2,low,openai/gpt-oss-120b,86,5,0.0,0.0,4262.707710266113,0.9915,False
+When did World War II end?,factual,always_medium,low,openai/gpt-oss-120b,86,5,0.0,0.0,4623.058080673218,0.9915,False
+When did World War II end?,factual,no_cache,low,openai/gpt-oss-120b,86,7,0.0,0.0,4882.218599319458,0.9915,False
+What is the capital of Japan?,factual,adaptive_v2,low,openai/gpt-oss-120b,86,3,0.0,0.0,4492.82693862915,1.0,False
+What is the capital of Japan?,factual,always_medium,low,openai/gpt-oss-120b,86,3,0.0,0.0,5835.565805435181,0.9915,False
+What is the capital of Japan?,factual,no_cache,low,openai/gpt-oss-120b,86,3,0.0,0.0,3299.340009689331,1.0,False
+How many bones are in the human body?,factual,adaptive_v2,low,openai/gpt-oss-120b,88,3,0.0,0.0,3649.1780281066895,0.9915,False
+How many bones are in the human body?,factual,always_medium,low,openai/gpt-oss-120b,88,3,0.0,0.0,3999.738931655884,0.9915,False
+How many bones are in the human body?,factual,no_cache,low,openai/gpt-oss-120b,88,3,0.0,0.0,5323.631525039673,0.9915,False
+What is the speed of light in a vacuum?,factual,adaptive_v2,low,openai/gpt-oss-120b,89,4,0.0,0.0,3367.762804031372,1.0,False
+What is the speed of light in a vacuum?,factual,always_medium,low,openai/gpt-oss-120b,89,4,0.0,0.0,3415.721893310547,1.0,False
+What is the speed of light in a vacuum?,factual,no_cache,low,openai/gpt-oss-120b,89,4,0.0,0.0,3148.9357948303223,1.0,False
+Who is credited with inventing the telephone?,factual,adaptive_v2,low,openai/gpt-oss-120b,87,5,0.0,0.0,4216.394662857056,0.9915,False
+Who is credited with inventing the telephone?,factual,always_medium,low,openai/gpt-oss-120b,87,5,0.0,0.0,5456.148147583008,0.9915,False
+Who is credited with inventing the telephone?,factual,no_cache,low,openai/gpt-oss-120b,87,5,0.0,0.0,5010.689973831177,0.9915,False
+Prove that the sum of two odd numbers is always even.,reasoning,adaptive_v2,high,openai/gpt-oss-120b,91,72,0.0,0.0,5172.447681427002,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,always_medium,high,openai/gpt-oss-120b,91,42,0.0,0.0,5145.549297332764,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,no_cache,high,openai/gpt-oss-120b,91,29,0.0,0.0,4957.556486129761,0.9915,False
+Prove that the square root of 2 is irrational.,reasoning,adaptive_v2,high,openai/gpt-oss-120b,89,96,0.0,0.0,4512.838125228882,1.0,False
+Prove that the square root of 2 is irrational.,reasoning,always_medium,high,openai/gpt-oss-120b,89,68,0.0,0.0,7984.522104263306,0.9915,False
+Prove that the square root of 2 is irrational.,reasoning,no_cache,high,openai/gpt-oss-120b,89,70,0.0,0.0,5809.318780899048,1.0,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,adaptive_v2,high,openai/gpt-oss-120b,86,75,0.0,0.0,6059.7052574157715,0.9915,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,always_medium,high,openai/gpt-oss-120b,86,69,0.0,0.0,5018.597841262817,0.9915,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,no_cache,high,openai/gpt-oss-120b,86,40,0.0,0.0,5422.88064956665,0.9915,False
+Show that the product of two even numbers is even.,reasoning,adaptive_v2,high,openai/gpt-oss-120b,90,27,0.0,0.0,5455.9197425842285,0.9915,False
+Show that the product of two even numbers is even.,reasoning,always_medium,high,openai/gpt-oss-120b,90,26,0.0,0.0,5182.3670864105225,0.9915,False
+Show that the product of two even numbers is even.,reasoning,no_cache,high,openai/gpt-oss-120b,90,19,0.0,0.0,5085.593461990356,1.0,False
+Why does increasing temperature increase reaction rate?,reasoning,adaptive_v2,medium,openai/gpt-oss-120b,87,29,0.0,0.0,3700.8543014526367,0.9745,False
+Why does increasing temperature increase reaction rate?,reasoning,always_medium,medium,openai/gpt-oss-120b,87,48,0.0,0.0,4962.257623672485,0.983,False
+Why does increasing temperature increase reaction rate?,reasoning,no_cache,medium,openai/gpt-oss-120b,87,33,0.0,0.0,5202.776670455933,0.9915,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,adaptive_v2,medium,openai/gpt-oss-120b,92,37,0.0,0.0,5724.674701690674,0.9915,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,always_medium,medium,openai/gpt-oss-120b,92,38,0.0,0.0,5236.603736877441,1.0,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,no_cache,medium,openai/gpt-oss-120b,92,42,0.0,0.0,5691.988468170166,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,adaptive_v2,high,openai/gpt-oss-120b,95,29,0.0,0.0,3936.2916946411133,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,always_medium,high,openai/gpt-oss-120b,95,41,0.0,0.0,4657.4952602386475,0.9915,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,no_cache,high,openai/gpt-oss-120b,95,28,0.0,0.0,4187.333345413208,1.0,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,adaptive_v2,medium,openai/gpt-oss-120b,92,88,0.0,0.0,5014.446973800659,0.9915,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,always_medium,medium,openai/gpt-oss-120b,92,113,0.0,0.0,4526.925086975098,0.9915,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,no_cache,medium,openai/gpt-oss-120b,92,83,0.0,0.0,5062.537908554077,0.966,False
+Prove that there are infinitely many prime numbers.,reasoning,adaptive_v2,medium,openai/gpt-oss-120b,88,56,0.0,0.0,8320.893287658691,0.9915,False
+Prove that there are infinitely many prime numbers.,reasoning,always_medium,medium,openai/gpt-oss-120b,88,57,0.0,0.0,6123.062610626221,1.0,False
+Prove that there are infinitely many prime numbers.,reasoning,no_cache,medium,openai/gpt-oss-120b,88,52,0.0,0.0,5306.161165237427,1.0,False
+Derive Newton's second law from the definition of momentum.,reasoning,adaptive_v2,high,openai/gpt-oss-120b,89,91,0.0,0.0,6391.42370223999,0.9915,False
+Derive Newton's second law from the definition of momentum.,reasoning,always_medium,high,openai/gpt-oss-120b,89,42,0.0,0.0,7925.535678863525,0.9915,False
+Derive Newton's second law from the definition of momentum.,reasoning,no_cache,high,openai/gpt-oss-120b,89,40,0.0,0.0,4859.935283660889,0.9915,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,adaptive_v2,high,openai/gpt-oss-120b,92,86,0.0,0.0,6356.793403625488,0.9915,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,always_medium,high,openai/gpt-oss-120b,92,136,0.0,0.0,5125.070333480835,0.9915,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,no_cache,high,openai/gpt-oss-120b,92,105,0.0,0.0,3484.73858833313,0.9915,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,adaptive_v2,medium,openai/gpt-oss-120b,91,48,0.0,0.0,4201.162815093994,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,always_medium,medium,openai/gpt-oss-120b,91,53,0.0,0.0,4131.336450576782,0.9915,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,no_cache,medium,openai/gpt-oss-120b,91,49,0.0,0.0,4380.780935287476,1.0,False
+Why does ice float on water? Explain logically using density.,reasoning,adaptive_v2,medium,openai/gpt-oss-120b,90,42,0.0,0.0,5063.944101333618,0.9915,False
+Why does ice float on water? Explain logically using density.,reasoning,always_medium,medium,openai/gpt-oss-120b,90,52,0.0,0.0,3851.6526222229004,0.9915,False
+Why does ice float on water? Explain logically using density.,reasoning,no_cache,medium,openai/gpt-oss-120b,90,50,0.0,0.0,6192.521810531616,0.9915,False
+Write a Tamil folk song about monsoon season.,creative,adaptive_v2,medium,openai/gpt-oss-120b,88,24,0.0,0.0,4748.165607452393,0.9575,False
+Write a Tamil folk song about monsoon season.,creative,always_medium,medium,openai/gpt-oss-120b,88,26,0.0,0.0,5997.395992279053,0.9745,False
+Write a Tamil folk song about monsoon season.,creative,no_cache,medium,openai/gpt-oss-120b,88,47,0.0,0.0,6219.702243804932,0.9745,False
+Write a short poem about the ocean at sunset.,creative,adaptive_v2,medium,openai/gpt-oss-120b,89,22,0.0,0.0,4552.4091720581055,0.9915,False
+Write a short poem about the ocean at sunset.,creative,always_medium,medium,openai/gpt-oss-120b,89,24,0.0,0.0,5908.655405044556,0.9915,False
+Write a short poem about the ocean at sunset.,creative,no_cache,medium,openai/gpt-oss-120b,89,21,0.0,0.0,4291.025876998901,0.983,False
+Compose a haiku about autumn leaves.,creative,adaptive_v2,low,openai/gpt-oss-120b,86,15,0.0,0.0,5339.0936851501465,0.9915,False
+Compose a haiku about autumn leaves.,creative,always_medium,low,openai/gpt-oss-120b,86,14,0.0,0.0,4399.040460586548,0.9915,False
+Compose a haiku about autumn leaves.,creative,no_cache,low,openai/gpt-oss-120b,86,13,0.0,0.0,6254.770040512085,0.9915,False
+Write a short story about a robot learning to paint.,creative,adaptive_v2,high,openai/gpt-oss-120b,90,82,0.0,0.0,8374.59421157837,0.966,False
+Write a short story about a robot learning to paint.,creative,always_medium,high,openai/gpt-oss-120b,90,242,0.0,0.0,7526.090383529663,0.9745,False
+Write a short story about a robot learning to paint.,creative,no_cache,high,openai/gpt-oss-120b,90,158,0.0,0.0,7526.322603225708,0.9915,False
+Imagine a city built entirely underwater and describe a day there.,creative,adaptive_v2,medium,openai/gpt-oss-120b,91,83,0.0,0.0,5281.080961227417,0.9745,False
+Imagine a city built entirely underwater and describe a day there.,creative,always_medium,medium,openai/gpt-oss-120b,91,70,0.0,0.0,5260.97846031189,0.966,False
+Imagine a city built entirely underwater and describe a day there.,creative,no_cache,medium,openai/gpt-oss-120b,91,45,0.0,0.0,4919.790506362915,0.9745,False
+Write a joke about software developers.,creative,adaptive_v2,medium,openai/gpt-oss-120b,86,12,0.0,0.0,4864.383697509766,0.983,False
+Write a joke about software developers.,creative,always_medium,medium,openai/gpt-oss-120b,86,12,0.0,0.0,3702.6193141937256,0.9915,False
+Write a joke about software developers.,creative,no_cache,medium,openai/gpt-oss-120b,86,12,0.0,0.0,3522.958993911743,0.9915,False
+Brainstorm three creative names for a coffee shop.,creative,adaptive_v2,medium,openai/gpt-oss-120b,88,9,0.0,0.0,2766.8697834014893,0.9915,False
+Brainstorm three creative names for a coffee shop.,creative,always_medium,medium,openai/gpt-oss-120b,88,9,0.0,0.0,3215.280532836914,0.983,False
+Brainstorm three creative names for a coffee shop.,creative,no_cache,medium,openai/gpt-oss-120b,88,12,0.0,0.0,3242.025136947632,0.983,False
+Write a lullaby about the stars.,creative,adaptive_v2,medium,openai/gpt-oss-120b,86,44,0.0,0.0,5017.738342285156,0.983,False
+Write a lullaby about the stars.,creative,always_medium,medium,openai/gpt-oss-120b,86,44,0.0,0.0,3897.841215133667,0.9915,False
+Write a lullaby about the stars.,creative,no_cache,medium,openai/gpt-oss-120b,86,25,0.0,0.0,6642.250537872314,0.9915,False
+Compose a short script for a two-character comedy sketch.,creative,adaptive_v2,high,openai/gpt-oss-120b,89,165,0.0,0.0,7023.756742477417,0.9745,False
+Compose a short script for a two-character comedy sketch.,creative,always_medium,high,openai/gpt-oss-120b,89,163,0.0,0.0,6879.976272583008,0.9915,False
+Compose a short script for a two-character comedy sketch.,creative,no_cache,high,openai/gpt-oss-120b,89,70,0.0,0.0,5985.190629959106,0.9745,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,adaptive_v2,medium,openai/gpt-oss-120b,92,17,0.0,0.0,7530.071020126343,0.983,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,always_medium,medium,openai/gpt-oss-120b,92,36,0.0,0.0,5405.495405197144,0.983,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,no_cache,medium,openai/gpt-oss-120b,92,21,0.0,0.0,7166.345119476318,0.983,False
+Imagine you are a tree and describe your life across four seasons.,creative,adaptive_v2,medium,openai/gpt-oss-120b,92,51,0.0,0.0,6178.725719451904,0.9745,False
+Imagine you are a tree and describe your life across four seasons.,creative,always_medium,medium,openai/gpt-oss-120b,92,44,0.0,0.0,4790.204286575317,0.9745,False
+Imagine you are a tree and describe your life across four seasons.,creative,no_cache,medium,openai/gpt-oss-120b,92,59,0.0,0.0,7953.191757202148,0.983,False
+Write a creative product description for a futuristic backpack.,creative,adaptive_v2,high,openai/gpt-oss-120b,89,37,0.0,0.0,4816.8439865112305,0.9745,False
+Write a creative product description for a futuristic backpack.,creative,always_medium,high,openai/gpt-oss-120b,89,74,0.0,0.0,3932.7492713928223,0.9745,False
+Write a creative product description for a futuristic backpack.,creative,no_cache,high,openai/gpt-oss-120b,89,60,0.0,0.0,5551.13673210144,0.9915,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,adaptive_v2,medium,openai/gpt-oss-120b,88,87,0.0,0.0,6646.0747718811035,0.983,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,always_medium,medium,openai/gpt-oss-120b,88,87,0.0,0.0,6525.334596633911,0.9745,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,no_cache,medium,openai/gpt-oss-120b,88,87,0.0,0.0,8337.320804595947,0.966,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,adaptive_v2,high,openai/gpt-oss-120b,90,74,0.0,0.0,5767.632961273193,0.966,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,always_medium,high,openai/gpt-oss-120b,90,95,0.0,0.0,4582.716703414917,0.983,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,no_cache,high,openai/gpt-oss-120b,90,52,0.0,0.0,5037.894725799561,0.9745,False
+Contrast supervised and unsupervised learning approaches.,analytical,adaptive_v2,high,openai/gpt-oss-120b,86,61,0.0,0.0,7027.738809585571,0.9915,False
+Contrast supervised and unsupervised learning approaches.,analytical,always_medium,high,openai/gpt-oss-120b,86,50,0.0,0.0,5011.347532272339,0.9915,False
+Contrast supervised and unsupervised learning approaches.,analytical,no_cache,high,openai/gpt-oss-120b,86,57,0.0,0.0,5502.590894699097,0.9915,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,adaptive_v2,high,openai/gpt-oss-120b,89,77,0.0,0.0,5149.038314819336,0.9745,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,always_medium,high,openai/gpt-oss-120b,89,82,0.0,0.0,4818.810939788818,0.8835,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,no_cache,high,openai/gpt-oss-120b,89,58,0.0,0.0,7789.795637130737,0.966,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,adaptive_v2,high,openai/gpt-oss-120b,88,78,0.0,0.0,3987.3359203338623,0.966,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,always_medium,high,openai/gpt-oss-120b,88,102,0.0,0.0,5626.584529876709,0.9745,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,no_cache,high,openai/gpt-oss-120b,88,82,0.0,0.0,5964.363098144531,0.966,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,adaptive_v2,high,openai/gpt-oss-120b,90,49,0.0,0.0,6508.662700653076,0.966,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,always_medium,high,openai/gpt-oss-120b,90,56,0.0,0.0,3903.5167694091797,0.966,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,no_cache,high,openai/gpt-oss-120b,90,74,0.0,0.0,6767.1380043029785,0.966,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,adaptive_v2,medium,openai/gpt-oss-120b,90,58,0.0,0.0,5433.483839035034,0.9745,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,always_medium,medium,openai/gpt-oss-120b,90,68,0.0,0.0,5822.622776031494,0.9745,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,no_cache,medium,openai/gpt-oss-120b,90,60,0.0,0.0,6241.778135299683,0.9745,False
+Contrast agile and waterfall software development methodologies.,analytical,adaptive_v2,high,openai/gpt-oss-120b,87,58,0.0,0.0,6090.03472328186,0.983,False
+Contrast agile and waterfall software development methodologies.,analytical,always_medium,high,openai/gpt-oss-120b,87,54,0.0,0.0,5398.34189414978,0.983,False
+Contrast agile and waterfall software development methodologies.,analytical,no_cache,high,openai/gpt-oss-120b,87,60,0.0,0.0,4281.089782714844,0.9915,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,adaptive_v2,medium,openai/gpt-oss-120b,91,77,0.0,0.0,5418.245315551758,0.892,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,always_medium,medium,openai/gpt-oss-120b,91,74,0.0,0.0,6503.384351730347,0.9745,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,no_cache,medium,openai/gpt-oss-120b,91,65,0.0,0.0,9678.2865524292,0.9745,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,adaptive_v2,medium,openai/gpt-oss-120b,93,81,0.0,0.0,4774.092435836792,0.9745,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,always_medium,medium,openai/gpt-oss-120b,93,117,0.0,0.0,5837.17679977417,0.892,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,no_cache,medium,openai/gpt-oss-120b,93,94,0.0,0.0,5076.840162277222,0.966,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,adaptive_v2,high,openai/gpt-oss-120b,89,164,0.0,0.0,5982.966184616089,0.9745,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,always_medium,high,openai/gpt-oss-120b,89,127,0.0,0.0,4853.639602661133,0.9745,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,no_cache,high,openai/gpt-oss-120b,89,75,0.0,0.0,6696.840047836304,0.966,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,adaptive_v2,high,openai/gpt-oss-120b,91,47,0.0,0.0,4808.802843093872,0.983,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,always_medium,high,openai/gpt-oss-120b,91,41,0.0,0.0,5957.9102993011475,0.9745,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,no_cache,high,openai/gpt-oss-120b,91,41,0.0,0.0,5794.614553451538,0.9745,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,adaptive_v2,high,openai/gpt-oss-120b,90,66,0.0,0.0,3907.9806804656982,0.9745,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,always_medium,high,openai/gpt-oss-120b,90,78,0.0,0.0,4376.6374588012695,0.9745,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,no_cache,high,openai/gpt-oss-120b,90,59,0.0,0.0,4851.431608200073,0.983,False
