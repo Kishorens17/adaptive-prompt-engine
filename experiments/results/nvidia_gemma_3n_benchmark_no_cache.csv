@@ -1,0 +1,151 @@
+query,expected_type,config,complexity_tier,model_used,input_tokens,output_tokens,cost_usd,cost_saved_usd,latency_ms,confidence,cache_hit
+What year was Python created?,factual,adaptive_v2,low,google/gemma-3n-e4b-it,85,3,0.0,0.0,5677.8059005737305,1.0,False
+What year was Python created?,factual,always_medium,low,google/gemma-3n-e4b-it,85,3,0.0,0.0,4879.031419754028,1.0,False
+What year was Python created?,factual,no_cache,low,google/gemma-3n-e4b-it,85,3,0.0,0.0,4202.876567840576,1.0,False
+What is the capital of France?,factual,adaptive_v2,low,google/gemma-3n-e4b-it,86,3,0.0,0.0,3668.7910556793213,1.0,False
+What is the capital of France?,factual,always_medium,low,google/gemma-3n-e4b-it,86,3,0.0,0.0,2816.9524669647217,1.0,False
+What is the capital of France?,factual,no_cache,low,google/gemma-3n-e4b-it,86,3,0.0,0.0,2772.1662521362305,1.0,False
+Who wrote the novel 1984?,factual,adaptive_v2,medium,google/gemma-3n-e4b-it,85,4,0.0,0.0,3468.9276218414307,1.0,False
+Who wrote the novel 1984?,factual,always_medium,medium,google/gemma-3n-e4b-it,85,4,0.0,0.0,3217.583656311035,1.0,False
+Who wrote the novel 1984?,factual,no_cache,medium,google/gemma-3n-e4b-it,85,4,0.0,0.0,3234.1148853302,1.0,False
+What is the boiling point of water at sea level?,factual,adaptive_v2,low,google/gemma-3n-e4b-it,90,3,0.0,0.0,2886.4872455596924,1.0,False
+What is the boiling point of water at sea level?,factual,always_medium,low,google/gemma-3n-e4b-it,90,3,0.0,0.0,4336.613416671753,1.0,False
+What is the boiling point of water at sea level?,factual,no_cache,low,google/gemma-3n-e4b-it,90,3,0.0,0.0,3370.8364963531494,1.0,False
+How many continents are there on Earth?,factual,adaptive_v2,low,google/gemma-3n-e4b-it,87,3,0.0,0.0,3692.5342082977295,1.0,False
+How many continents are there on Earth?,factual,always_medium,low,google/gemma-3n-e4b-it,87,3,0.0,0.0,3069.042205810547,1.0,False
+How many continents are there on Earth?,factual,no_cache,low,google/gemma-3n-e4b-it,87,3,0.0,0.0,3971.3783264160156,1.0,False
+Define photosynthesis.,factual,adaptive_v2,medium,google/gemma-3n-e4b-it,82,21,0.0,0.0,5182.238340377808,0.9575,False
+Define photosynthesis.,factual,always_medium,medium,google/gemma-3n-e4b-it,82,21,0.0,0.0,5301.0008335113525,0.9575,False
+Define photosynthesis.,factual,no_cache,medium,google/gemma-3n-e4b-it,82,10,0.0,0.0,4304.179430007935,0.9575,False
+What is the chemical symbol for gold?,factual,adaptive_v2,low,google/gemma-3n-e4b-it,87,3,0.0,0.0,3725.949764251709,1.0,False
+What is the chemical symbol for gold?,factual,always_medium,low,google/gemma-3n-e4b-it,87,3,0.0,0.0,4418.315410614014,1.0,False
+What is the chemical symbol for gold?,factual,no_cache,low,google/gemma-3n-e4b-it,87,3,0.0,0.0,3413.5138988494873,1.0,False
+When did World War II end?,factual,adaptive_v2,low,google/gemma-3n-e4b-it,86,3,0.0,0.0,3969.460964202881,1.0,False
+When did World War II end?,factual,always_medium,low,google/gemma-3n-e4b-it,86,3,0.0,0.0,4711.172103881836,1.0,False
+When did World War II end?,factual,no_cache,low,google/gemma-3n-e4b-it,86,3,0.0,0.0,5133.1071853637695,1.0,False
+What is the capital of Japan?,factual,adaptive_v2,low,google/gemma-3n-e4b-it,86,3,0.0,0.0,4798.875093460083,1.0,False
+What is the capital of Japan?,factual,always_medium,low,google/gemma-3n-e4b-it,86,3,0.0,0.0,3977.613687515259,1.0,False
+What is the capital of Japan?,factual,no_cache,low,google/gemma-3n-e4b-it,86,3,0.0,0.0,3564.535617828369,1.0,False
+How many bones are in the human body?,factual,adaptive_v2,low,google/gemma-3n-e4b-it,88,19,0.0,0.0,5059.60488319397,1.0,False
+How many bones are in the human body?,factual,always_medium,low,google/gemma-3n-e4b-it,88,21,0.0,0.0,5852.525234222412,1.0,False
+How many bones are in the human body?,factual,no_cache,low,google/gemma-3n-e4b-it,88,20,0.0,0.0,4351.619005203247,1.0,False
+What is the speed of light in a vacuum?,factual,adaptive_v2,low,google/gemma-3n-e4b-it,89,4,0.0,0.0,3397.7720737457275,1.0,False
+What is the speed of light in a vacuum?,factual,always_medium,low,google/gemma-3n-e4b-it,89,4,0.0,0.0,5168.776750564575,1.0,False
+What is the speed of light in a vacuum?,factual,no_cache,low,google/gemma-3n-e4b-it,89,4,0.0,0.0,4991.132020950317,1.0,False
+Who is credited with inventing the telephone?,factual,adaptive_v2,low,google/gemma-3n-e4b-it,87,5,0.0,0.0,4147.305727005005,1.0,False
+Who is credited with inventing the telephone?,factual,always_medium,low,google/gemma-3n-e4b-it,87,5,0.0,0.0,3611.450672149658,1.0,False
+Who is credited with inventing the telephone?,factual,no_cache,low,google/gemma-3n-e4b-it,87,5,0.0,0.0,3686.7387294769287,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,adaptive_v2,high,google/gemma-3n-e4b-it,91,45,0.0,0.0,8367.345571517944,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,always_medium,high,google/gemma-3n-e4b-it,91,49,0.0,0.0,9296.3707447052,1.0,False
+Prove that the sum of two odd numbers is always even.,reasoning,no_cache,high,google/gemma-3n-e4b-it,91,44,0.0,0.0,8119.5173263549805,1.0,False
+Prove that the square root of 2 is irrational.,reasoning,adaptive_v2,high,google/gemma-3n-e4b-it,89,82,0.0,0.0,11799.678087234497,1.0,False
+Prove that the square root of 2 is irrational.,reasoning,always_medium,high,google/gemma-3n-e4b-it,89,85,0.0,0.0,11553.621292114258,0.9575,False
+Prove that the square root of 2 is irrational.,reasoning,no_cache,high,google/gemma-3n-e4b-it,89,82,0.0,0.0,11427.594423294067,1.0,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,adaptive_v2,high,google/gemma-3n-e4b-it,86,64,0.0,0.0,13647.849798202515,1.0,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,always_medium,high,google/gemma-3n-e4b-it,86,64,0.0,0.0,12168.664932250977,1.0,False
+Derive the quadratic formula from ax^2+bx+c=0.,reasoning,no_cache,high,google/gemma-3n-e4b-it,86,20,0.0,0.0,5821.870565414429,1.0,False
+Show that the product of two even numbers is even.,reasoning,adaptive_v2,high,google/gemma-3n-e4b-it,90,40,0.0,0.0,7122.945785522461,1.0,False
+Show that the product of two even numbers is even.,reasoning,always_medium,high,google/gemma-3n-e4b-it,90,40,0.0,0.0,8497.679471969604,1.0,False
+Show that the product of two even numbers is even.,reasoning,no_cache,high,google/gemma-3n-e4b-it,90,36,0.0,0.0,6637.61568069458,1.0,False
+Why does increasing temperature increase reaction rate?,reasoning,adaptive_v2,medium,google/gemma-3n-e4b-it,87,5,0.0,0.0,6065.958023071289,0.9575,False
+Why does increasing temperature increase reaction rate?,reasoning,always_medium,medium,google/gemma-3n-e4b-it,87,25,0.0,0.0,4730.897903442383,0.9575,False
+Why does increasing temperature increase reaction rate?,reasoning,no_cache,medium,google/gemma-3n-e4b-it,87,30,0.0,0.0,6395.383358001709,0.9575,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,adaptive_v2,medium,google/gemma-3n-e4b-it,92,20,0.0,0.0,6094.192028045654,1.0,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,always_medium,medium,google/gemma-3n-e4b-it,92,15,0.0,0.0,4390.926122665405,1.0,False
+"Solve for x: 2x + 5 = 17, and explain each step.",reasoning,no_cache,medium,google/gemma-3n-e4b-it,92,20,0.0,0.0,4524.626016616821,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,adaptive_v2,high,google/gemma-3n-e4b-it,95,21,0.0,0.0,9434.231758117676,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,always_medium,high,google/gemma-3n-e4b-it,95,20,0.0,0.0,5949.968338012695,1.0,False
+Calculate the area under the curve y=x^2 from 0 to 3 and show your work.,reasoning,no_cache,high,google/gemma-3n-e4b-it,95,20,0.0,0.0,4921.007871627808,1.0,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,adaptive_v2,medium,google/gemma-3n-e4b-it,92,44,0.0,0.0,8906.417846679688,0.9575,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,always_medium,medium,google/gemma-3n-e4b-it,92,49,0.0,0.0,7277.498722076416,0.9575,False
+Why is the sky blue? Explain the underlying physics step by step.,reasoning,no_cache,medium,google/gemma-3n-e4b-it,92,47,0.0,0.0,8568.699836730957,0.9575,False
+Prove that there are infinitely many prime numbers.,reasoning,adaptive_v2,medium,google/gemma-3n-e4b-it,88,63,0.0,0.0,8261.621475219727,1.0,False
+Prove that there are infinitely many prime numbers.,reasoning,always_medium,medium,google/gemma-3n-e4b-it,88,65,0.0,0.0,8807.878732681274,0.9575,False
+Prove that there are infinitely many prime numbers.,reasoning,no_cache,medium,google/gemma-3n-e4b-it,88,48,0.0,0.0,8410.017967224121,1.0,False
+Derive Newton's second law from the definition of momentum.,reasoning,adaptive_v2,high,google/gemma-3n-e4b-it,89,7,0.0,0.0,4112.402677536011,1.0,False
+Derive Newton's second law from the definition of momentum.,reasoning,always_medium,high,google/gemma-3n-e4b-it,89,82,0.0,0.0,10512.539625167847,1.0,False
+Derive Newton's second law from the definition of momentum.,reasoning,no_cache,high,google/gemma-3n-e4b-it,89,7,0.0,0.0,3414.2823219299316,1.0,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,adaptive_v2,high,google/gemma-3n-e4b-it,92,82,0.0,0.0,9580.021142959595,0.9575,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,always_medium,high,google/gemma-3n-e4b-it,92,89,0.0,0.0,9800.067663192749,0.9575,False
+Show step by step why a triangle's angles sum to 180 degrees.,reasoning,no_cache,high,google/gemma-3n-e4b-it,92,75,0.0,0.0,9197.544574737549,0.9575,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,adaptive_v2,medium,google/gemma-3n-e4b-it,91,28,0.0,0.0,7628.38888168335,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,always_medium,medium,google/gemma-3n-e4b-it,91,28,0.0,0.0,7664.875030517578,1.0,False
+"Solve the system of equations x+y=10 and x-y=4, step by step.",reasoning,no_cache,medium,google/gemma-3n-e4b-it,91,31,0.0,0.0,6814.838409423828,1.0,False
+Why does ice float on water? Explain logically using density.,reasoning,adaptive_v2,medium,google/gemma-3n-e4b-it,90,29,0.0,0.0,5659.255266189575,0.9575,False
+Why does ice float on water? Explain logically using density.,reasoning,always_medium,medium,google/gemma-3n-e4b-it,90,24,0.0,0.0,4770.464658737183,0.9575,False
+Why does ice float on water? Explain logically using density.,reasoning,no_cache,medium,google/gemma-3n-e4b-it,90,32,0.0,0.0,5920.46332359314,0.9575,False
+Write a Tamil folk song about monsoon season.,creative,adaptive_v2,medium,google/gemma-3n-e4b-it,88,19,0.0,0.0,6579.424142837524,0.9575,False
+Write a Tamil folk song about monsoon season.,creative,always_medium,medium,google/gemma-3n-e4b-it,88,19,0.0,0.0,6051.2964725494385,0.9575,False
+Write a Tamil folk song about monsoon season.,creative,no_cache,medium,google/gemma-3n-e4b-it,88,33,0.0,0.0,8661.571502685547,0.9575,False
+Write a short poem about the ocean at sunset.,creative,adaptive_v2,medium,google/gemma-3n-e4b-it,89,13,0.0,0.0,4181.22124671936,0.9575,False
+Write a short poem about the ocean at sunset.,creative,always_medium,medium,google/gemma-3n-e4b-it,89,13,0.0,0.0,5428.08985710144,0.9575,False
+Write a short poem about the ocean at sunset.,creative,no_cache,medium,google/gemma-3n-e4b-it,89,9,0.0,0.0,3994.946241378784,0.9575,False
+Compose a haiku about autumn leaves.,creative,adaptive_v2,low,google/gemma-3n-e4b-it,86,14,0.0,0.0,4751.723051071167,1.0,False
+Compose a haiku about autumn leaves.,creative,always_medium,low,google/gemma-3n-e4b-it,86,15,0.0,0.0,4991.37282371521,1.0,False
+Compose a haiku about autumn leaves.,creative,no_cache,low,google/gemma-3n-e4b-it,86,14,0.0,0.0,5210.370063781738,1.0,False
+Write a short story about a robot learning to paint.,creative,adaptive_v2,high,google/gemma-3n-e4b-it,90,26,0.0,0.0,5594.062328338623,0.8724999999999999,False
+Write a short story about a robot learning to paint.,creative,always_medium,high,google/gemma-3n-e4b-it,90,38,0.0,0.0,7566.274881362915,0.915,False
+Write a short story about a robot learning to paint.,creative,no_cache,high,google/gemma-3n-e4b-it,90,30,0.0,0.0,6303.104877471924,0.8724999999999999,False
+Imagine a city built entirely underwater and describe a day there.,creative,adaptive_v2,medium,google/gemma-3n-e4b-it,91,14,0.0,0.0,4913.769721984863,0.9575,False
+Imagine a city built entirely underwater and describe a day there.,creative,always_medium,medium,google/gemma-3n-e4b-it,91,40,0.0,0.0,7026.756763458252,0.915,False
+Imagine a city built entirely underwater and describe a day there.,creative,no_cache,medium,google/gemma-3n-e4b-it,91,47,0.0,0.0,8115.3528690338135,0.9575,False
+Write a joke about software developers.,creative,adaptive_v2,medium,google/gemma-3n-e4b-it,86,12,0.0,0.0,4505.562782287598,0.9575,False
+Write a joke about software developers.,creative,always_medium,medium,google/gemma-3n-e4b-it,86,12,0.0,0.0,5845.346927642822,0.9575,False
+Write a joke about software developers.,creative,no_cache,medium,google/gemma-3n-e4b-it,86,12,0.0,0.0,4507.552623748779,0.9575,False
+Brainstorm three creative names for a coffee shop.,creative,adaptive_v2,medium,google/gemma-3n-e4b-it,88,10,0.0,0.0,6701.142311096191,0.9575,False
+Brainstorm three creative names for a coffee shop.,creative,always_medium,medium,google/gemma-3n-e4b-it,88,10,0.0,0.0,3668.393135070801,0.9575,False
+Brainstorm three creative names for a coffee shop.,creative,no_cache,medium,google/gemma-3n-e4b-it,88,10,0.0,0.0,4551.5782833099365,0.9575,False
+Write a lullaby about the stars.,creative,adaptive_v2,medium,google/gemma-3n-e4b-it,86,37,0.0,0.0,7051.618337631226,0.9575,False
+Write a lullaby about the stars.,creative,always_medium,medium,google/gemma-3n-e4b-it,86,23,0.0,0.0,5959.401607513428,1.0,False
+Write a lullaby about the stars.,creative,no_cache,medium,google/gemma-3n-e4b-it,86,25,0.0,0.0,5989.797353744507,0.9575,False
+Compose a short script for a two-character comedy sketch.,creative,adaptive_v2,high,google/gemma-3n-e4b-it,89,100,0.0,0.0,15980.353116989136,0.9575,False
+Compose a short script for a two-character comedy sketch.,creative,always_medium,high,google/gemma-3n-e4b-it,89,110,0.0,0.0,17023.524522781372,0.8724999999999999,False
+Compose a short script for a two-character comedy sketch.,creative,no_cache,high,google/gemma-3n-e4b-it,89,97,0.0,0.0,14561.535835266113,0.9575,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,adaptive_v2,medium,google/gemma-3n-e4b-it,92,15,0.0,0.0,77972.18871116638,0.9575,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,always_medium,medium,google/gemma-3n-e4b-it,92,33,0.0,0.0,8333.96029472351,0.9575,False
+Write a poem in the style of a monsoon evening in Chennai.,creative,no_cache,medium,google/gemma-3n-e4b-it,92,18,0.0,0.0,6718.2958126068115,0.9575,False
+Imagine you are a tree and describe your life across four seasons.,creative,adaptive_v2,medium,google/gemma-3n-e4b-it,92,10,0.0,0.0,6420.977354049683,0.9575,False
+Imagine you are a tree and describe your life across four seasons.,creative,always_medium,medium,google/gemma-3n-e4b-it,92,10,0.0,0.0,37805.280447006226,0.9575,False
+Imagine you are a tree and describe your life across four seasons.,creative,no_cache,medium,google/gemma-3n-e4b-it,92,10,0.0,0.0,7168.154239654541,0.9575,False
+Write a creative product description for a futuristic backpack.,creative,adaptive_v2,high,google/gemma-3n-e4b-it,89,59,0.0,0.0,45653.57971191406,0.9575,False
+Write a creative product description for a futuristic backpack.,creative,always_medium,high,google/gemma-3n-e4b-it,89,95,0.0,0.0,84707.12184906006,0.9575,False
+Write a creative product description for a futuristic backpack.,creative,no_cache,high,google/gemma-3n-e4b-it,89,15,0.0,0.0,9499.833583831787,0.9575,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,adaptive_v2,medium,google/gemma-3n-e4b-it,88,58,0.0,0.0,12525.079488754272,0.9575,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,always_medium,medium,google/gemma-3n-e4b-it,88,29,0.0,0.0,7520.882129669189,0.9575,False
+Compare LSTM vs Transformer architectures for NLP tasks.,analytical,no_cache,medium,google/gemma-3n-e4b-it,88,30,0.0,0.0,5597.837448120117,0.9575,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,adaptive_v2,high,google/gemma-3n-e4b-it,90,32,0.0,0.0,9436.226606369019,0.9575,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,always_medium,high,google/gemma-3n-e4b-it,90,33,0.0,0.0,6234.9183559417725,0.9575,False
+Analyze the pros and cons of microservices versus a monolith.,analytical,no_cache,high,google/gemma-3n-e4b-it,90,32,0.0,0.0,5979.829549789429,0.9575,False
+Contrast supervised and unsupervised learning approaches.,analytical,adaptive_v2,high,google/gemma-3n-e4b-it,86,12,0.0,0.0,3692.610502243042,0.9575,False
+Contrast supervised and unsupervised learning approaches.,analytical,always_medium,high,google/gemma-3n-e4b-it,86,25,0.0,0.0,4516.064405441284,1.0,False
+Contrast supervised and unsupervised learning approaches.,analytical,no_cache,high,google/gemma-3n-e4b-it,86,25,0.0,0.0,4627.532720565796,0.9575,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,adaptive_v2,high,google/gemma-3n-e4b-it,89,38,0.0,0.0,6285.731315612793,0.9575,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,always_medium,high,google/gemma-3n-e4b-it,89,36,0.0,0.0,5083.169460296631,0.9575,False
+Compare SQL and NoSQL databases for a high-write workload.,analytical,no_cache,high,google/gemma-3n-e4b-it,89,83,0.0,0.0,10084.258556365967,0.9575,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,adaptive_v2,high,google/gemma-3n-e4b-it,88,42,0.0,0.0,6780.919075012207,0.9575,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,always_medium,high,google/gemma-3n-e4b-it,88,47,0.0,0.0,7089.321851730347,0.9575,False
+Evaluate the trade-offs between REST and GraphQL APIs.,analytical,no_cache,high,google/gemma-3n-e4b-it,88,45,0.0,0.0,6561.2146854400635,0.9575,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,adaptive_v2,high,google/gemma-3n-e4b-it,90,47,0.0,0.0,7298.014402389526,0.9575,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,always_medium,high,google/gemma-3n-e4b-it,90,27,0.0,0.0,5058.716535568237,0.9575,False
+Compare renewable energy sources versus fossil fuels for grid stability.,analytical,no_cache,high,google/gemma-3n-e4b-it,90,83,0.0,0.0,10510.351657867432,0.9575,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,adaptive_v2,medium,google/gemma-3n-e4b-it,90,62,0.0,0.0,8395.283937454224,0.9575,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,always_medium,medium,google/gemma-3n-e4b-it,90,64,0.0,0.0,8481.717109680176,0.9575,False
+Analyze the differences between TCP and UDP for real-time applications.,analytical,no_cache,medium,google/gemma-3n-e4b-it,90,42,0.0,0.0,9086.151123046875,0.9575,False
+Contrast agile and waterfall software development methodologies.,analytical,adaptive_v2,high,google/gemma-3n-e4b-it,87,14,0.0,0.0,4086.6756439208984,0.9575,False
+Contrast agile and waterfall software development methodologies.,analytical,always_medium,high,google/gemma-3n-e4b-it,87,15,0.0,0.0,6288.302183151245,0.9575,False
+Contrast agile and waterfall software development methodologies.,analytical,no_cache,high,google/gemma-3n-e4b-it,87,14,0.0,0.0,3906.3713550567627,0.9575,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,adaptive_v2,medium,google/gemma-3n-e4b-it,91,70,0.0,0.0,8943.421125411987,0.9575,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,always_medium,medium,google/gemma-3n-e4b-it,91,60,0.0,0.0,8074.452877044678,0.9575,False
+"Compare Python and Rust for systems programming, considering safety and speed.",analytical,no_cache,medium,google/gemma-3n-e4b-it,91,52,0.0,0.0,6469.279527664185,0.9575,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,adaptive_v2,medium,google/gemma-3n-e4b-it,93,11,0.0,0.0,6102.724075317383,0.9575,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,always_medium,medium,google/gemma-3n-e4b-it,93,75,0.0,0.0,7909.8851680755615,0.9575,False
+Evaluate the trade-offs of caching at the application layer versus the database layer.,analytical,no_cache,medium,google/gemma-3n-e4b-it,93,92,0.0,0.0,9688.380718231201,0.9575,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,adaptive_v2,high,google/gemma-3n-e4b-it,89,20,0.0,0.0,4856.480598449707,0.9575,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,always_medium,high,google/gemma-3n-e4b-it,89,27,0.0,0.0,5259.210109710693,0.9575,False
+Compare zero-shot and few-shot prompting for low-resource NLP tasks.,analytical,no_cache,high,google/gemma-3n-e4b-it,89,31,0.0,0.0,6044.680833816528,0.9575,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,adaptive_v2,high,google/gemma-3n-e4b-it,91,28,0.0,0.0,5757.744550704956,0.9575,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,always_medium,high,google/gemma-3n-e4b-it,91,38,0.0,0.0,7969.016075134277,0.9575,False
+Analyze the pros and cons of remote work versus in-office work.,analytical,no_cache,high,google/gemma-3n-e4b-it,91,29,0.0,0.0,7331.005811691284,0.9575,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,adaptive_v2,high,google/gemma-3n-e4b-it,90,12,0.0,0.0,5788.172006607056,0.9575,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,always_medium,high,google/gemma-3n-e4b-it,90,12,0.0,0.0,4597.607374191284,0.9575,False
+Contrast classical machine learning and deep learning for tabular data.,analytical,no_cache,high,google/gemma-3n-e4b-it,90,12,0.0,0.0,4257.415771484375,0.9575,False
