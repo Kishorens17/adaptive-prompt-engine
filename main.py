@@ -149,7 +149,7 @@ class AdaptivePromptEngine:
         api_key: Optional[str] = None,
         budget: str = "balanced",
         confidence_threshold: float = 0.75,
-        use_cache: bool = True,
+        use_cache: bool = False,   # default OFF — prevents accidental cache contamination
         verbose: bool = False,
     ) -> None:
         self.provider = provider
@@ -459,7 +459,7 @@ def main(argv: list[str] | None = None) -> None:
 
     provider_label = args.provider
     print(f"\nAdaptive Prompt Engine — interactive mode")
-    print(f"Provider: {provider_label} | Budget: {args.budget} | Cache: {'on' if not args.no_cache else 'off'}")
+    print(f"Provider: {provider_label} | Budget: {args.budget} | Cache: off")
     print("Type a query and press Enter. Type 'exit' to stop.\n")
 
     while True:

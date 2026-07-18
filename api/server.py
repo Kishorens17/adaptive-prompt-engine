@@ -10,8 +10,6 @@ Endpoints:
     GET  /v1/daily-usage        — Token + cost usage per day
     GET  /v1/model-dist         — Query count by complexity tier
 
-    DELETE /v1/cache            — Clear semantic cache
-    GET    /v1/cache/stats      — Cache size and hit stats
 
     POST   /v1/sessions                 — Create a conversation session
     POST   /v1/sessions/{id}/query      — Query within a session (history-aware)
@@ -107,7 +105,7 @@ def _get_engine(provider: str, budget: str, model: Optional[str] = None) -> Adap
             provider=provider,
             model=model,
             budget=budget,
-            use_cache=True,
+            use_cache=False,   # semantic cache disabled — benchmarks run clean
             verbose=False,
         )
     return _engines[key]
@@ -234,15 +232,7 @@ async def model_distribution_endpoint():
     return _logger.model_distribution()
 
 
-@app.delete("/v1/cache")
-async def clear_cache_endpoint():
-    _cache.clear()
-    return {"message": "Cache cleared."}
-
-
-@app.get("/v1/cache/stats")
-async def cache_stats_endpoint():
-    return _cache.stats()
+# /v1/cache endpoints removed — semantic cache is disabled
 
 
 # ===========================================================================
